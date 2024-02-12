@@ -47,6 +47,18 @@
     text-transform: capitalize;
 }
 
+.footer-wrap:hover .footer-link{
+    color: orange;
+    cursor: pointer;
+
+}
+
+.footer-link:hover{
+    color: orange;
+    cursor: pointer;
+
+}
+
 @media screen and (max-width:768px) {
    
     

@@ -122,20 +122,24 @@ function Footer() {
               <div className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm footer-link-wrapper">
                 <div className="flex gap-2 items-center">
                   <FaPhoneAlt className="text-[10] lg:text-sm hidden" />
-                  <span className="text-[10px] ">Who we are</span>
+                  <span className="text-[10px] footer-link ">Who we are</span>
                 </div>
 
                 <div className="flex items-center">
                   <IoMailOutline className="text-sm hidden" />
-                  <span className="text-[9px] ">Privacy Policy</span>
+                  <span className="text-[9px] footer-link">Privacy Policy</span>
                 </div>
                 <div className="flex lg:items-center">
                   <MdLocationPin className="text-2xl lg:text-lg  hidden" />
-                  <span className="text-[10px] ">Refund and Cancellation</span>
+                  <span className="text-[10px] footer-link">
+                    Refund and Cancellation
+                  </span>
                 </div>
                 <div className="flex lg:items-center">
                   <MdLocationPin className="text-2xl lg:text-lg  hidden" />
-                  <span className="text-[10px] ">Refund and Cancellation</span>
+                  <span className="text-[10px] footer-link">
+                    Refund and Cancellation
+                  </span>
                 </div>
               </div>
             </div>
@@ -154,28 +158,28 @@ function Footer() {
               </h1>
 
               <div className="flex flex-col lg:gap-y-7 gap-y-5 lg:text-2xl text-sm footer-link-wrapper">
-                <div className="flex gap-2 items-center">
-                  <FaPhoneAlt size={15} />
+                <div className="flex gap-2 items-center footer-wrap">
+                  <FaPhoneAlt size={15} className="footer-link" />
                   <a
                     href={`tel:${firstFooterData?.contactNumber}`}
-                    className="text-[10px] "
+                    className="text-[10px] footer-link"
                   >
                     {firstFooterData?.contactNumber}
                   </a>
                 </div>
 
-                <div className="flex gap-2 items-center">
-                  <IoMailOutline size={15} />
+                <div className="flex gap-2 items-center footer-wrap">
+                  <IoMailOutline size={15} className="footer-link" />
                   <a
                     href={`mailto:${firstFooterData?.email}`}
-                    className="text-[10px] "
+                    className="text-[10px] footer-link"
                   >
                     {firstFooterData?.email}
                   </a>
                 </div>
-                <div className="flex gap-2 lg:items-center">
-                  <MdLocationPin size={15} />
-                  <span className="text-[10px] text-capitalize ">
+                <div className="flex gap-2 lg:items-center footer-wrap">
+                  <MdLocationPin size={15} className="footer-link" />
+                  <span className="text-[10px] text-capitalize footer-link">
                     {firstFooterData?.address}
                   </span>
                 </div>
