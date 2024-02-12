@@ -1,0 +1,1711 @@
+03:59:31.130[ {...} ]
+03:59:31.161[ {...} ]
+03:59:35.608Warning: Received `%s` for a non-boolean attribute `%s`. If you want to write it to the DOM, pass a string instead: %s="%s" or %s={value.toString()}. If you used to conditionally omit it with %s={condition && value}, pass %s={condition ? value : undefined} instead.%s
+03:59:35.620product_data: null
+03:59:35.620product_data: null
+03:59:35.621Warning: You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.%s
+03:59:35.622Warning: You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.%s
+03:59:35.658product_data: null
+03:59:35.658product_data: null
+03:59:35.716product_data: null
+03:59:35.717product_data: null
+03:59:35.737data: { data: {...}, status: 200, statusText: 'OK', headers: AxiosHeaders {...}, config: {...}, ... }
+03:59:35.760data: { data: {...}, status: 200, statusText: 'OK', headers: AxiosHeaders {...}, config: {...}, ... }
+03:59:35.767data: { data: {...}, status: 200, statusText: 'OK', headers: AxiosHeaders {...}, config: {...}, ... }
+03:59:35.846product_data: null
+03:59:35.847product_data: null
+03:59:35.897product_data: null
+03:59:35.898product_data: null
+03:59:41.020data: { data: {...}, status: 200, statusText: 'OK', headers: AxiosHeaders {...}, config: {...}, ... }
+data:
+
+{
+
+  data: {
+
+    data: Array(48) [
+
+      {
+
+        _id: '6585d93d113cc2b6de8e7297',
+
+        name: 'Gobi Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/754c37a3-2f03-4fe4-bd74-e85cc67bf979/1703270717730_gobi-manchurian-in-bowl-at-black-concrete-background-gobi-manchurian-is-indian-chinese.jpg',
+
+        price: '100',
+
+        offer: '5',
+
+        discountPrice: 95,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585d9e3113cc2b6de8e72c7',
+
+        name: 'Mixed Veg Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/447accaf-c5e0-4eda-a4c0-f09999f8613e/1703270883520_mix-vegetable-curry-indian-main-course-recipe-contains-carrots-cauliflower-green-peas-beans-baby-corn-capsicum-paneer-cottage-cheese-with-traditional-masala-curry_466689-35413.jpg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585dc9a113cc2b6de8e7315',
+
+        name: 'Penner Butter Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/1be2e471-2e4b-4256-b550-a79e69e5ea8c/1703271578058_butter masala roti.jpeg',
+
+        price: '100',
+
+        offer: '5',
+
+        discountPrice: 95,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585dd65113cc2b6de8e7329',
+
+        name: 'Dal Fry ',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/f6ad3724-f821-486d-96ba-2e5e098e1031/1703271781444_dal-fry-1.jpg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ddf1113cc2b6de8e7334',
+
+        name: 'Aloo Mutter',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/203f6fe4-5503-43c7-9ecc-0306e4f0d0b5/1703271921202_Aloo_Matar_1000x1000.jpg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585de3d113cc2b6de8e733f',
+
+        name: 'Mushroom Briyani',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/cb58dd21-2538-4ffe-84eb-68331776bdd9/1703271997718_mushroombiryani_F.jpg',
+
+        price: '200',
+
+        offer: '10',
+
+        discountPrice: 180,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585de71113cc2b6de8e7347',
+
+        name: 'Chana masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5b1943a0-c079-4f91-a2a7-01e76dff55f0/1703272049883_360_F_394998333_oUSrAfdOXSJVUFk9RUWMkbhLtIhx1jQf (1).jpg',
+
+        price: '200',
+
+        offer: '10',
+
+        discountPrice: 180,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585deef113cc2b6de8e735a',
+
+        name: 'Dal',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5fe3dffb-c3a1-45a0-bd88-b8af297784b4/1703272175764_360_F_228147186_LNqGgB8OnPKF06475mvJM9s6MSUy65GI.jpg',
+
+        price: '200',
+
+        offer: '10',
+
+        discountPrice: 180,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d28c113cc2b6de8e7269',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Vegetarian',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585df21113cc2b6de8e736a',
+
+        name: 'Cheese Omelette',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/269fca2a-5871-4d23-acd6-8d4d7cefedf3/1703272225639_WhatsApp Image 2023-12-21 at 4.06.12 PM.jpeg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e019113cc2b6de8e737e',
+
+        name: 'Chilly Eggs',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/c69695df-7545-4a73-98f4-977a78020d7a/1703272473089_WhatsApp Image 2023-12-21 at 4.08.58 PM.jpeg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e04d113cc2b6de8e7386',
+
+        name: 'Egg Masala Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/30cf6a47-f0dc-464d-9fc0-483a5bb0101a/1703272524949_egg curry.jpeg',
+
+        price: '200',
+
+        offer: '10',
+
+        discountPrice: 180,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e076113cc2b6de8e738e',
+
+        name: 'Bread Omelet',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/44d0f235-2a45-439b-aa93-93258a33702d/1703272566312_Bread Omelet.jpeg',
+
+        price: '200',
+
+        offer: '10',
+
+        discountPrice: 180,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e130113cc2b6de8e7397',
+
+        name: 'Boiled Egg',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/ba8cc7a6-275a-4602-b2dc-9019f90a737b/1703272752415_food-avocado-toast-avocado-toast.jpg',
+
+        price: '100',
+
+        offer: '5',
+
+        discountPrice: 95,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e21d113cc2b6de8e73ae',
+
+        name: 'Chicken Omelet',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/9bc0c834-53ba-4f94-89f4-b1b2149a8783/1703272989819_WhatsApp Image 2023-12-21 at 4.06.11 PM.jpeg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e296113cc2b6de8e73ba',
+
+        name: 'Egg Pakora',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/d904f251-526d-4b64-8c83-abe0574bca90/1703273110475_pakora-indian-food-indian-kitchen-meal.jpg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e2d2113cc2b6de8e73c2',
+
+        name: 'Egg Korma',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/b4ba0b88-a0b0-4c71-8b83-49072aff3cdc/1703273170276_desktop-wallpaper-indian-egg-masala-egg-curry.jpg',
+
+        price: '280',
+
+        offer: '5',
+
+        discountPrice: 266,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e320113cc2b6de8e73ce',
+
+        name: 'Egg Roast',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/0c342ae6-23c6-4511-85b8-6d03f62d01ca/1703273248138_146867-yaflfnewdh-1598982622.jpg',
+
+        price: '250',
+
+        offer: '5',
+
+        discountPrice: 237,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e35c113cc2b6de8e73d6',
+
+        name: 'Egg Butter Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/eb9bb6f0-acde-4855-adcc-35962fbe718d/1703273308860_egg-butter-masala-gravy-bowl-isolated-background-189760505.jpg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d2ff113cc2b6de8e726e',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Egg',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e3ea113cc2b6de8e73e3',
+
+        name: 'Chicken Briyani',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/94ec205d-8a78-43f9-b7ad-7dec69fdcff9/1703273450533_18bb697eac3bb12041cc397e8a250b94.jpg',
+
+        price: '300',
+
+        offer: '250',
+
+        discountPrice: -450,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e41e113cc2b6de8e73eb',
+
+        name: 'Butter Chicken Masala ',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/aeb6ae55-cc71-44a4-b825-f223075c1816/1703273502801_butter-chicken-meal-on-wooden-board-lwkh4uwy0f8o53zb.jpg',
+
+        price: '300',
+
+        offer: '5',
+
+        discountPrice: 285,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e450113cc2b6de8e73f3',
+
+        name: 'Kaadai 65',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/ef93a856-c871-4e48-a2c9-9dfe222aa232/1703273552450_wpyw3tzlf8271.jpg',
+
+        price: '250',
+
+        offer: '5',
+
+        discountPrice: 237,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e4c8113cc2b6de8e73fb',
+
+        name: 'Pepper Chicken',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/0dbc883e-cce4-4601-ad20-23769239e9a0/1703273672091_Andhra_Pepper_Chicken_Recipe_1_1600.jpg',
+
+        price: '300',
+
+        offer: '5',
+
+        discountPrice: 285,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e536113cc2b6de8e7403',
+
+        name: 'Chicken chukka',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5d964074-9f58-43d4-9e80-183d6c478b3c/1703273782592_sukha-mutton-chicken-dry-spicy-murgh-goat-meat-served-plate-bowl_466689-82792.jpg',
+
+        price: '200',
+
+        offer: '5',
+
+        discountPrice: 190,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e5d0113cc2b6de8e740b',
+
+        name: ' Chicken Chettinad',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/3236c6dc-7236-4765-b342-7353789ebc53/1703273936447_CHICKEN-CHETTINAD-1.jpg',
+
+        price: '300',
+
+        offer: '250',
+
+        discountPrice: -450,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e621113cc2b6de8e7413',
+
+        name: 'Chicken 65',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/a4b28c9d-47e1-4db2-a253-97fdad31aab5/1703274017456_Restaurant-Style-Chicken-65.jpg',
+
+        price: '200',
+
+        offer: '100',
+
+        discountPrice: 0,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e708113cc2b6de8e7429',
+
+        name: 'Chicken  Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/62b9ba01-666f-4677-aa96-b947d6a97ae6/1703274248360_thumb__700_0_0_0_auto.jpg',
+
+        price: '200',
+
+        offer: '150',
+
+        discountPrice: -100,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e831113cc2b6de8e7438',
+
+        name: 'Chicken pepper Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/c6d5c3d6-e521-4810-9bbf-606369c65687/1703274545589_pepper chicken curry.jpeg',
+
+        price: '250',
+
+        offer: '150',
+
+        discountPrice: -125,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585e9a3113cc2b6de8e7440',
+
+        name: 'Chicken Keema Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/7bb3321e-3c13-46f0-b0eb-820311f7d5f2/1703274914883_chicken keema masala.jpeg',
+
+        price: '300',
+
+        offer: '150',
+
+        discountPrice: -150,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585eaa8113cc2b6de8e7453',
+
+        name: 'Mutton Biryani',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/dc236261-f9d4-4170-b5b5-6f480c12d55d/1703275176362_360_F_517968988_hFHjQT6Flfksjx8n0KxfvMtP2tqlmGKk.jpg',
+
+        price: '400',
+
+        offer: '200',
+
+        discountPrice: -400,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ead1113cc2b6de8e745c',
+
+        name: 'Mutton Korma',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/63fb7fa7-68aa-4d1e-bd89-2e54568549e0/1703275216991_hq720.jpg',
+
+        price: '500',
+
+        offer: '350',
+
+        discountPrice: -1250,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585eb34113cc2b6de8e7468',
+
+        name: 'Mutton Kola Balls',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/57fff2c3-a5a7-46a5-b459-e6b83fea6b94/1703275316651_mutton-kola-urundai-chicken-signature-600nw-2333706273.jpg',
+
+        price: '500',
+
+        offer: '200',
+
+        discountPrice: -500,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585eb6c113cc2b6de8e7470',
+
+        name: 'Mutton Pepper Fry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/9475ee69-881d-473d-91b0-c838109a97ba/1703275372666_Mutton-Pepper-Fry-2.jpg',
+
+        price: '500',
+
+        offer: '350',
+
+        discountPrice: -1250,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ebb8113cc2b6de8e7478',
+
+        name: 'Mutton Chukka',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/79795f25-e779-469d-beff-388bc06d8717/1703275448022_Mutton-Pepper-Roast-500x500.png',
+
+        price: '500',
+
+        offer: '350',
+
+        discountPrice: -1250,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ebfc113cc2b6de8e7480',
+
+        name: 'Sangal Chili Mutton',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5f61e1ed-5fca-4a1e-840d-fa91e10b1459/1703275516553_bhuna-gosht-mutton-masala-indian-lamb-curry-served-bowl-moody-background-selective-focus_466689-21925.jpg',
+
+        price: '500',
+
+        offer: '300',
+
+        discountPrice: -1000,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ec44113cc2b6de8e7488',
+
+        name: 'Mutton Keema Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/89b4eebd-ce99-4bb3-9f2b-3add4492cd07/1703275588209_Mrs_Balbir_Singh_s_Mughlai_Keema_Masala_Recipe_grande.png',
+
+        price: '500',
+
+        offer: '300',
+
+        discountPrice: -1000,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ec8a113cc2b6de8e7490',
+
+        name: 'Chettinad Mutton Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/1a12ebe8-e13f-427e-8466-6ab3a09e8ecf/1703275658740_indian-style-meat-dish-mutton-gosht-masala-lamb-rogan-josh-served-bowl-selective-focus_466689-53448.jpg',
+
+        price: '500',
+
+        offer: '300',
+
+        discountPrice: -1000,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ecc5113cc2b6de8e7498',
+
+        name: 'Mutton Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/929016a9-181b-4df9-b29d-4182d956e98d/1703275716929_indian-style-meat-dish-mutton-gosht-masala-lamb-rogan-josh-served-bowl-selective-focus_466689-53402.jpg',
+
+        price: '500',
+
+        offer: '300',
+
+        discountPrice: -1000,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ed25113cc2b6de8e74a0',
+
+        name: 'Mutton Rogan Josh',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/a4cf9306-8a56-4c17-aaed-aa426d041afd/1703275813154_mutton-masala-curry-in-plastic-container-for-home-delivery.webp',
+
+        price: '500',
+
+        offer: '300',
+
+        discountPrice: -1000,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ed9f113cc2b6de8e74ac',
+
+        name: 'Nethili Fry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/84db6021-fca7-44d6-ad6c-16bdc8a13bb6/1703275935866_fried-anchovy-fish-fry-ceramic-bowl-kerala-style-85839313.jpg',
+
+        price: '500',
+
+        offer: '300',
+
+        discountPrice: -1000,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d4c2113cc2b6de8e727d',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585edf3113cc2b6de8e74be',
+
+        name: 'Vanjaram Fry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/828e3071-7149-4492-8f5c-0b647f00b31b/1703276018946_360_F_434974852_GscMkRvbSqOccv9Rxy6X2dFZVPItTgUZ.jpg',
+
+        price: '500',
+
+        offer: '450',
+
+        discountPrice: -1750,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d4c2113cc2b6de8e727d',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ee35113cc2b6de8e74c6',
+
+        name: 'Prawn Fry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/39887030-71a5-438a-bf4b-711613ed0df1/1703276084960_cc149f32947614666b6193b20e0dde12.jpg',
+
+        price: '500',
+
+        offer: '450',
+
+        discountPrice: -1750,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d4c2113cc2b6de8e727d',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ee66113cc2b6de8e74ce',
+
+        name: 'Fish Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/035c89a4-e92a-446d-949d-bb897180e494/1703276134710_fish-curry-seer-fish-curry-traditional-indian-fish-curry-kerala-special-dish-using-coconut-arranged-white-bowl-garnished-with-curry-leaves-malabar-tamarind-white-textured-background_527904-2014.jpg',
+
+        price: '500',
+
+        offer: '450',
+
+        discountPrice: -1750,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d4c2113cc2b6de8e727d',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ef18113cc2b6de8e74d6',
+
+        name: 'Crab Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/96e0712a-93cb-434c-861d-06da683586b3/1703276312381_crab curry.jpeg',
+
+        price: '500',
+
+        offer: '450',
+
+        discountPrice: -1750,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d4c2113cc2b6de8e727d',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585ef7a113cc2b6de8e74de',
+
+        name: 'Prawn Pepper fry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/3ab63ea4-55e7-42fa-a6fa-2ebd5e9f27cf/1703276409906_prawn-pepper-fry-1644063137.jpg',
+
+        price: '500',
+
+        offer: '10',
+
+        discountPrice: 450,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: 'sea food',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585efb2113cc2b6de8e74e6',
+
+        name: 'Chettinad Prawn Masala',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/670c2fac-95a8-411d-bada-534a6d85f845/1703276466144_1-50-1-500x427.jpg',
+
+        price: '500',
+
+        offer: '450',
+
+        discountPrice: -1750,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d498113cc2b6de8e7278',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585eff1113cc2b6de8e74ee',
+
+        name: 'Nethili  Fish Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/SubCuisines/ba0df2da-f926-4020-840a-177e6e05e167/1703276612911_fish-curry-red-gravy-fish-indian-food.jpg',
+
+        price: '500',
+
+        offer: '450',
+
+        discountPrice: -1750,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: 'mutton',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'mutton',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '6585f076113cc2b6de8e74fa',
+
+        name: 'Vanjaram  Fish Curry',
+
+        image: 
+
+          'https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/42f27d90-b826-4f62-9a61-0b64d1c840d5/1703276662666_fish-curry-seer-fish-curry-traditional-indian-fish-curry-kerala-special-dish-using-coconut-arranged-white-bowl-garnished-with-curry-leaves-malabar-tamarind-white-textured-background_527904-2014.jpg',
+
+        price: '500',
+
+        offer: '5',
+
+        discountPrice: 475,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d4c2113cc2b6de8e727d',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'sea food',
+
+        __v: 0,
+
+        types: []
+
+      },
+
+      {
+
+        _id: '65940d56a2a0f0e40e292930',
+
+        name: 'kfc',
+
+        image: 
+
+          'https://bromagindia-s3bucket.s3.ap-south-1.amazonaws.com/Menu/Restuarant_Closed.png1704201140833/1704201140678_Restuarant_Closed.png',
+
+        price: '1000',
+
+        offer: '10',
+
+        types: [
+
+          { type: null, price: null, _id: '65940d56a2a0f0e40e292931' },
+
+          { type: null, price: null, _id: '65940d56a2a0f0e40e292932' }
+
+        ],
+
+        discountPrice: 900,
+
+        status: true,
+
+        categoryId: '6585c811113cc2b6de8e7259',
+
+        subCategoryId: '6585d426113cc2b6de8e7273',
+
+        categoryName: 'Indian',
+
+        subCategoryName: 'Chicken',
+
+        __v: 0
+
+      }
+
+    ]
+
+  },
+
+  status: 200,
+
+  statusText: 'OK',
+
+  headers: AxiosHeaders {
+
+    'content-length': '21693',
+
+    'content-type': 'application/json; charset=utf-8'
+
+  },
+
+  config: {
+
+    transitional: {
+
+      silentJSONParsing: true,
+
+      forcedJSONParsing: true,
+
+      clarifyTimeoutError: false
+
+    },
+
+    adapter: [ 'xhr', 'http' ],
+
+    transformRequest: [ 0: λ:transformRequest ],
+
+    transformResponse: [ 0: λ:transformResponse ],
+
+    timeout: 0,
+
+    xsrfCookieName: 'XSRF-TOKEN',
+
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+
+    maxContentLength: -1,
+
+    maxBodyLength: -1,
+
+    env: {},
+
+    headers: AxiosHeaders {
+
+      Accept: 'application/json, text/plain, */*',
+
+      'Content-Type': null,
+
+      'aizasycoxsewxv2t64dxca-wl8n8qfq0gzux1as': 
+
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTAwNGJhOThkOWM5YThiMWM1NDQ2NiIsInBob25lbnVtYmVyIjoiKzkxODU5Mjk2MzMzNyIsInVzZXJuYW1lIjoianVuYWlkIiwiZW1haWwiOiJqdW5haWRhaGFtbWVkMTVAZ21haWwuY29tIiwiaWF0IjoxNzA0MDEzMjQ1fQ.qRLArFEbqKeeuh41KkkB_gqfBE7Li_06yJPeyRTeBr4'
+
+    },
+
+    method: 'get',
+
+    url: 
+
+      'http://localhost:5000/get_filtered_products/{"cat":"6585c811113cc2b6de8e7259","subCat":""}',
+
+    data: undefined
+
+  },
+
+  request: XMLHttpRequest {
+
+    onreadystatechange: null,
+
+    readyState: 4,
+
+    timeout: 0,
+
+    withCredentials: false,
+
+    upload: XMLHttpRequestUpload {
+
+      onloadstart: null,
+
+      onprogress: null,
+
+      onabort: null,
+
+      onerror: null,
+
+      onload: null,
+
+      ontimeout: null,
+
+      onloadend: null
+
+    },
+
+    responseURL: 
+
+      'http://localhost:5000/get_filtered_products/%7B%22cat%22:%226585c811113cc2b6de8e7259%22,%22subCat%22:%22%22%7D',
+
+    status: 200,
+
+    statusText: 'OK',
+
+    responseType: '',
+
+    response: 
+
+      '{"data":[{"_id":"6585d93d113cc2b6de8e7297","name":"Gobi Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/754c37a3-2f03-4fe4-bd74-e85cc67bf979/1703270717730_gobi-manchurian-in-bowl-at-black-concrete-background-gobi-manchurian-is-indian-chinese.jpg","price":"100","offer":"5","discountPrice":95,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585d9e3113cc2b6de8e72c7","name":"Mixed Veg Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/447accaf-c5e0-4eda-a4c0-f09999f8613e/1703270883520_mix-vegetable-curry-indian-main-course-recipe-contains-carrots-cauliflower-green-peas-beans-baby-corn-capsicum-paneer-cottage-cheese-with-traditional-masala-curry_466689-35413.jpg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585dc9a113cc2b6de8e7315","name":"Penner Butter Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/1be2e471-2e4b-4256-b550-a79e69e5ea8c/1703271578058_butter masala roti.jpeg","price":"100","offer":"5","discountPrice":95,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585dd65113cc2b6de8e7329","name":"Dal Fry ","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/f6ad3724-f821-486d-96ba-2e5e098e1031/1703271781444_dal-fry-1.jpg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585ddf1113cc2b6de8e7334","name":"Aloo Mutter","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/203f6fe4-5503-43c7-9ecc-0306e4f0d0b5/1703271921202_Aloo_Matar_1000x1000.jpg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585de3d113cc2b6de8e733f","name":"Mushroom Briyani","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/cb58dd21-2538-4ffe-84eb-68331776bdd9/1703271997718_mushroombiryani_F.jpg","price":"200","offer":"10","discountPrice":180,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585de71113cc2b6de8e7347","name":"Chana masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5b1943a0-c079-4f91-a2a7-01e76dff55f0/1703272049883_360_F_394998333_oUSrAfdOXSJVUFk9RUWMkbhLtIhx1jQf (1).jpg","price":"200","offer":"10","discountPrice":180,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585deef113cc2b6de8e735a","name":"Dal","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5fe3dffb-c3a1-45a0-bd88-b8af297784b4/1703272175764_360_F_228147186_LNqGgB8OnPKF06475mvJM9s6MSUy65GI.jpg","price":"200","offer":"10","discountPrice":180,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d28c113cc2b6de8e7269","categoryName":"Indian","subCategoryName":"Vegetarian","__v":0,"types":[]},{"_id":"6585df21113cc2b6de8e736a","name":"Cheese Omelette","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/269fca2a-5871-4d23-acd6-8d4d7cefedf3/1703272225639_WhatsApp Image 2023-12-21 at 4.06.12 PM.jpeg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e019113cc2b6de8e737e","name":"Chilly Eggs","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/c69695df-7545-4a73-98f4-977a78020d7a/1703272473089_WhatsApp Image 2023-12-21 at 4.08.58 PM.jpeg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e04d113cc2b6de8e7386","name":"Egg Masala Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/30cf6a47-f0dc-464d-9fc0-483a5bb0101a/1703272524949_egg curry.jpeg","price":"200","offer":"10","discountPrice":180,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e076113cc2b6de8e738e","name":"Bread Omelet","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/44d0f235-2a45-439b-aa93-93258a33702d/1703272566312_Bread Omelet.jpeg","price":"200","offer":"10","discountPrice":180,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e130113cc2b6de8e7397","name":"Boiled Egg","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/ba8cc7a6-275a-4602-b2dc-9019f90a737b/1703272752415_food-avocado-toast-avocado-toast.jpg","price":"100","offer":"5","discountPrice":95,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e21d113cc2b6de8e73ae","name":"Chicken Omelet","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/9bc0c834-53ba-4f94-89f4-b1b2149a8783/1703272989819_WhatsApp Image 2023-12-21 at 4.06.11 PM.jpeg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e296113cc2b6de8e73ba","name":"Egg Pakora","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/d904f251-526d-4b64-8c83-abe0574bca90/1703273110475_pakora-indian-food-indian-kitchen-meal.jpg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e2d2113cc2b6de8e73c2","name":"Egg Korma","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/b4ba0b88-a0b0-4c71-8b83-49072aff3cdc/1703273170276_desktop-wallpaper-indian-egg-masala-egg-curry.jpg","price":"280","offer":"5","discountPrice":266,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e320113cc2b6de8e73ce","name":"Egg Roast","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/0c342ae6-23c6-4511-85b8-6d03f62d01ca/1703273248138_146867-yaflfnewdh-1598982622.jpg","price":"250","offer":"5","discountPrice":237,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e35c113cc2b6de8e73d6","name":"Egg Butter Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/eb9bb6f0-acde-4855-adcc-35962fbe718d/1703273308860_egg-butter-masala-gravy-bowl-isolated-background-189760505.jpg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d2ff113cc2b6de8e726e","categoryName":"Indian","subCategoryName":"Egg","__v":0,"types":[]},{"_id":"6585e3ea113cc2b6de8e73e3","name":"Chicken Briyani","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/94ec205d-8a78-43f9-b7ad-7dec69fdcff9/1703273450533_18bb697eac3bb12041cc397e8a250b94.jpg","price":"300","offer":"250","discountPrice":-450,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e41e113cc2b6de8e73eb","name":"Butter Chicken Masala ","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/aeb6ae55-cc71-44a4-b825-f223075c1816/1703273502801_butter-chicken-meal-on-wooden-board-lwkh4uwy0f8o53zb.jpg","price":"300","offer":"5","discountPrice":285,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e450113cc2b6de8e73f3","name":"Kaadai 65","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/ef93a856-c871-4e48-a2c9-9dfe222aa232/1703273552450_wpyw3tzlf8271.jpg","price":"250","offer":"5","discountPrice":237,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e4c8113cc2b6de8e73fb","name":"Pepper Chicken","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/0dbc883e-cce4-4601-ad20-23769239e9a0/1703273672091_Andhra_Pepper_Chicken_Recipe_1_1600.jpg","price":"300","offer":"5","discountPrice":285,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e536113cc2b6de8e7403","name":"Chicken chukka","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5d964074-9f58-43d4-9e80-183d6c478b3c/1703273782592_sukha-mutton-chicken-dry-spicy-murgh-goat-meat-served-plate-bowl_466689-82792.jpg","price":"200","offer":"5","discountPrice":190,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e5d0113cc2b6de8e740b","name":" Chicken Chettinad","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/3236c6dc-7236-4765-b342-7353789ebc53/1703273936447_CHICKEN-CHETTINAD-1.jpg","price":"300","offer":"250","discountPrice":-450,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e621113cc2b6de8e7413","name":"Chicken 65","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/a4b28c9d-47e1-4db2-a253-97fdad31aab5/1703274017456_Restaurant-Style-Chicken-65.jpg","price":"200","offer":"100","discountPrice":0,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e708113cc2b6de8e7429","name":"Chicken  Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/62b9ba01-666f-4677-aa96-b947d6a97ae6/1703274248360_thumb__700_0_0_0_auto.jpg","price":"200","offer":"150","discountPrice":-100,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e831113cc2b6de8e7438","name":"Chicken pepper Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/c6d5c3d6-e521-4810-9bbf-606369c65687/1703274545589_pepper chicken curry.jpeg","price":"250","offer":"150","discountPrice":-125,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585e9a3113cc2b6de8e7440","name":"Chicken Keema Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/7bb3321e-3c13-46f0-b0eb-820311f7d5f2/1703274914883_chicken keema masala.jpeg","price":"300","offer":"150","discountPrice":-150,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0,"types":[]},{"_id":"6585eaa8113cc2b6de8e7453","name":"Mutton Biryani","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/dc236261-f9d4-4170-b5b5-6f480c12d55d/1703275176362_360_F_517968988_hFHjQT6Flfksjx8n0KxfvMtP2tqlmGKk.jpg","price":"400","offer":"200","discountPrice":-400,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ead1113cc2b6de8e745c","name":"Mutton Korma","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/63fb7fa7-68aa-4d1e-bd89-2e54568549e0/1703275216991_hq720.jpg","price":"500","offer":"350","discountPrice":-1250,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585eb34113cc2b6de8e7468","name":"Mutton Kola Balls","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/57fff2c3-a5a7-46a5-b459-e6b83fea6b94/1703275316651_mutton-kola-urundai-chicken-signature-600nw-2333706273.jpg","price":"500","offer":"200","discountPrice":-500,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585eb6c113cc2b6de8e7470","name":"Mutton Pepper Fry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/9475ee69-881d-473d-91b0-c838109a97ba/1703275372666_Mutton-Pepper-Fry-2.jpg","price":"500","offer":"350","discountPrice":-1250,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ebb8113cc2b6de8e7478","name":"Mutton Chukka","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/79795f25-e779-469d-beff-388bc06d8717/1703275448022_Mutton-Pepper-Roast-500x500.png","price":"500","offer":"350","discountPrice":-1250,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ebfc113cc2b6de8e7480","name":"Sangal Chili Mutton","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/5f61e1ed-5fca-4a1e-840d-fa91e10b1459/1703275516553_bhuna-gosht-mutton-masala-indian-lamb-curry-served-bowl-moody-background-selective-focus_466689-21925.jpg","price":"500","offer":"300","discountPrice":-1000,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ec44113cc2b6de8e7488","name":"Mutton Keema Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/89b4eebd-ce99-4bb3-9f2b-3add4492cd07/1703275588209_Mrs_Balbir_Singh_s_Mughlai_Keema_Masala_Recipe_grande.png","price":"500","offer":"300","discountPrice":-1000,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ec8a113cc2b6de8e7490","name":"Chettinad Mutton Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/1a12ebe8-e13f-427e-8466-6ab3a09e8ecf/1703275658740_indian-style-meat-dish-mutton-gosht-masala-lamb-rogan-josh-served-bowl-selective-focus_466689-53448.jpg","price":"500","offer":"300","discountPrice":-1000,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ecc5113cc2b6de8e7498","name":"Mutton Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/929016a9-181b-4df9-b29d-4182d956e98d/1703275716929_indian-style-meat-dish-mutton-gosht-masala-lamb-rogan-josh-served-bowl-selective-focus_466689-53402.jpg","price":"500","offer":"300","discountPrice":-1000,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ed25113cc2b6de8e74a0","name":"Mutton Rogan Josh","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/a4cf9306-8a56-4c17-aaed-aa426d041afd/1703275813154_mutton-masala-curry-in-plastic-container-for-home-delivery.webp","price":"500","offer":"300","discountPrice":-1000,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585ed9f113cc2b6de8e74ac","name":"Nethili Fry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/84db6021-fca7-44d6-ad6c-16bdc8a13bb6/1703275935866_fried-anchovy-fish-fry-ceramic-bowl-kerala-style-85839313.jpg","price":"500","offer":"300","discountPrice":-1000,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d4c2113cc2b6de8e727d","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"6585edf3113cc2b6de8e74be","name":"Vanjaram Fry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/828e3071-7149-4492-8f5c-0b647f00b31b/1703276018946_360_F_434974852_GscMkRvbSqOccv9Rxy6X2dFZVPItTgUZ.jpg","price":"500","offer":"450","discountPrice":-1750,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d4c2113cc2b6de8e727d","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"6585ee35113cc2b6de8e74c6","name":"Prawn Fry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/39887030-71a5-438a-bf4b-711613ed0df1/1703276084960_cc149f32947614666b6193b20e0dde12.jpg","price":"500","offer":"450","discountPrice":-1750,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d4c2113cc2b6de8e727d","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"6585ee66113cc2b6de8e74ce","name":"Fish Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/035c89a4-e92a-446d-949d-bb897180e494/1703276134710_fish-curry-seer-fish-curry-traditional-indian-fish-curry-kerala-special-dish-using-coconut-arranged-white-bowl-garnished-with-curry-leaves-malabar-tamarind-white-textured-background_527904-2014.jpg","price":"500","offer":"450","discountPrice":-1750,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d4c2113cc2b6de8e727d","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"6585ef18113cc2b6de8e74d6","name":"Crab Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/96e0712a-93cb-434c-861d-06da683586b3/1703276312381_crab curry.jpeg","price":"500","offer":"450","discountPrice":-1750,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d4c2113cc2b6de8e727d","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"6585ef7a113cc2b6de8e74de","name":"Prawn Pepper fry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/3ab63ea4-55e7-42fa-a6fa-2ebd5e9f27cf/1703276409906_prawn-pepper-fry-1644063137.jpg","price":"500","offer":"10","discountPrice":450,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"sea food","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"6585efb2113cc2b6de8e74e6","name":"Chettinad Prawn Masala","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/670c2fac-95a8-411d-bada-534a6d85f845/1703276466144_1-50-1-500x427.jpg","price":"500","offer":"450","discountPrice":-1750,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d498113cc2b6de8e7278","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585eff1113cc2b6de8e74ee","name":"Nethili  Fish Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/SubCuisines/ba0df2da-f926-4020-840a-177e6e05e167/1703276612911_fish-curry-red-gravy-fish-indian-food.jpg","price":"500","offer":"450","discountPrice":-1750,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"mutton","categoryName":"Indian","subCategoryName":"mutton","__v":0,"types":[]},{"_id":"6585f076113cc2b6de8e74fa","name":"Vanjaram  Fish Curry","image":"https://bromagindia-qabucket.s3.ap-south-1.amazonaws.com/Menu/42f27d90-b826-4f62-9a61-0b64d1c840d5/1703276662666_fish-curry-seer-fish-curry-traditional-indian-fish-curry-kerala-special-dish-using-coconut-arranged-white-bowl-garnished-with-curry-leaves-malabar-tamarind-white-textured-background_527904-2014.jpg","price":"500","offer":"5","discountPrice":475,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d4c2113cc2b6de8e727d","categoryName":"Indian","subCategoryName":"sea food","__v":0,"types":[]},{"_id":"65940d56a2a0f0e40e292930","name":"kfc","image":"https://bromagindia-s3bucket.s3.ap-south-1.amazonaws.com/Menu/Restuarant_Closed.png1704201140833/1704201140678_Restuarant_Closed.png","price":"1000","offer":"10","types":[{"type":null,"price":null,"_id":"65940d56a2a0f0e40e292931"},{"type":null,"price":null,"_id":"65940d56a2a0f0e40e292932"}],"discountPrice":900,"status":true,"categoryId":"6585c811113cc2b6de8e7259","subCategoryId":"6585d426113cc2b6de8e7273","categoryName":"Indian","subCategoryName":"Chicken","__v":0}]}',
+
+    responseText: ' ... (length: 21693)',
+
+    responseXML: null,
+
+    mozAnon: false,
+
+    mozSystem: false,
+
+    UNSENT: 0,
+
+    OPENED: 1,
+
+    HEADERS_RECEIVED: 2,
+
+    LOADING: 3,
+
+    DONE: 4,
+
+    onloadstart: null,
+
+    onprogress: null,
+
+    onload: null
+
+  }
+
+}
+
+03:59:41.106product_data: null
+03:59:41.106product_data: null
+03:59:41.147product_data: null
+03:59:41.148product_data: null

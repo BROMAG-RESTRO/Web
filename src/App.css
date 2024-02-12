@@ -1,0 +1,168 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+html {
+    scrollbar-width: none !important;
+}
+
+/* Swiper  */
+
+.swiper-pagination {
+    position: static !important;
+    /* bottom: -2px !important; */
+    z-index: 100;
+    margin-top: 20px;
+    padding-bottom: 20px !important;
+}
+.swiper-pagination-bullet-active {
+    background: black !important;
+    transform: scale(2, 2);
+}
+
+/* antd */
+.ant-modal .ant-modal-content,
+:where(.css-dev-only-do-not-override-nllxry).ant-modal .ant-modal-content {
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.react-tel-input .flag-dropdown {
+    border-radius: 6px 0px 0px 6px !important;
+    /* height: 40px !important; */
+}
+.react-tel-input .form-control {
+    /* height: 40px !important; */
+    /* width: 230px !important; */
+    border-radius: 10px !important;
+    background-color: #eeeeee !important;
+}
+
+.ant-input {
+    background-color: transparent !important;
+}
+
+.antd_input {
+    /* border: transparent !important; */
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fff;
+    font-size: 18px;
+    background-color: #ffffff80;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    line-height: 40px;
+    text-align: center;
+    margin: 10px;
+}
+
+.swiper-scrollbar {
+    background-color: #007bff; /* Scrollbar background color */
+    width: 8px; /* Scrollbar width */
+}
+
+.swiper-scrollbar-drag {
+    background-color: #0056b3; /* Scrollbar handle color on drag */
+}
+
+.swiper-horizontal {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.swiper-horizontal > .swiper-scrollbar,
+.swiper-scrollbar.swiper-scrollbar-horizontal {
+    position: relative !important;
+    height: 8px !important;
+    background: #d9d9d9 !important;
+    width: 200px !important;
+    /* bottom: -2px !important; */
+    /* margin-top: -5px !important; */
+    margin-top: 50px !important;
+    right: 0 !important;
+    left: 0 !important;
+    inset: 0 !important;
+}
+.swiper-scrollbar-drag {
+    width: 30% !important;
+    position: static !important;
+    background: black !important;
+}
+
+.ant-select-show-search:where(
+        .css-dev-only-do-not-override-nllxry
+    ).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
+    min-width: 200px !important;
+}
+
+.react-international-phone-country-selector-button {
+    height: 50px !important;
+    padding-left: 10px !important;
+    background: inherit !important;
+}
+.react-international-phone-input-container .react-international-phone-input {
+    height: 50px !important;
+    width: inherit !important;
+    background: inherit !important;
+}
+.react-international-phone-flag-emoji {
+    width: 12px !important;
+}
+.ant-pagination-prev,
+.ant-pagination-next {
+    visibility: hidden !important;
+}
+
+:where(.css-dev-only-do-not-override-nllxry).ant-table-wrapper
+    .ant-table-thead
+    > tr
+    > th,
+:where(.css-dev-only-do-not-override-nllxry).ant-table-wrapper
+    .ant-table-thead
+    > tr
+    > td {
+    font-style: 12px !important;
+}
+
+.ant-pagination-item .ant-pagination-item-1 .ant-pagination-item-active,
+:where(.css-dev-only-do-not-override-nllxry).ant-pagination
+    .ant-pagination-item-active {
+    border: 1px solid #df9300 !important;
+}
+
+:where(.css-dev-only-do-not-override-nllxry).ant-pagination
+    .ant-pagination-item-active
+    a {
+    color: #df9300 !important;
+}
+:where(.css-dev-only-do-not-override-nllxry).ant-drawer .ant-drawer-body {
+    padding: 2px !important;
+}
+
+@media only screen and (orientation: portrait) {
+    .react-international-phone-input-container
+        .react-international-phone-input {
+        height: 50px !important;
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .swiper-horizontal > .swiper-scrollbar,
+    .swiper-scrollbar.swiper-scrollbar-horizontal {
+        width: 100px !important;
+    }
+}
+@media only screen and (max-width: 425px) {
+    .swiper-horizontal > .swiper-scrollbar,
+    .swiper-scrollbar.swiper-scrollbar-horizontal {
+        width: 100px !important;
+    }
+}

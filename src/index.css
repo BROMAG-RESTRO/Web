@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:ital,wght@1,900&family=Bruno+Ace&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+    display: none !important;
+}
+
+* {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+@layer components {
+    .center_div {
+        @apply flex items-center justify-center flex-wrap;
+    }
+    .center_div_col {
+        @apply flex flex-col;
+    }
+    .animated_border {
+        @apply absolute w-[80%] transition-all duration-1000 ease-in-out border border-primary_color;
+    }
+    .input_topdiv {
+        @apply bg-[#DFDFDF] rounded-[10px] center_div pl-2 w-[400px];
+    }
+    .antd_input {
+        @apply lg:w-[400px] w-[98%]  h-[50px] !bg-[#DFDFDF] placeholder:text-label_color focus:border-2 focus:border-primary_color hover:border-primary_color hover:border-2;
+    }
+    .heading_text {
+        @apply lg:text-6xl md:text-5xl font-bold text-lg text-left w-screen  text-light_gray;
+    }
+    .booking_input {
+        @apply flex items-center bg-[#EEEEEE] w-[500px] h-[50px] px-4 rounded-lg;
+    }
+    .booking_input_pic {
+        @apply text-light_gray  w-[12px] h-[12px];
+    }
+    .profile_cards_grid {
+        @apply grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 !w-full gap-x-6 gap-y-6 pt-4 items-center justify-center;
+    }
+    .profile_head {
+        @apply lg:w-[90vw] w-full lg:px-2 flex flex-col;
+    }
+}
+
+.play_font {
+    font-family: "Audiowide", sans-serif !important;
+}
+
+.play_sub_font {
+    font-family: "Bruno Ace", sans-serif !important;
+}
+
+.context_success {
+    font-family: "Alegreya Sans SC", sans-serif !important;
+}
+
+textarea:where(.css-dev-only-do-not-override-nllxry).ant-input {
+    background-color: #dfdfdf !important;
+}
+
+:where(.css-dev-only-do-not-override-nllxry) .ant-btn-primary,
+:where(.css-dev-only-do-not-override-nllxry).ant-btn-primary,
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn {
+    background: #df9300 !important;
+    background-color: #df9300 !important;
+    color: white !important;
+}
+
+:where(.css-dev-only-do-not-override-nllxry).ant-btn:disabled > *,
+:where(.css-dev-only-do-not-override-nllxry).ant-btn > span {
+    color: inherit !important;
+}
+
+.ant-select-selector {
+    background: #eeeeee !important  ;
+}
+
+:where(.css-dev-only-do-not-override-nllxry).ant-radio-wrapper
+    .ant-radio-checked
+    .ant-radio-inner {
+    background-color: #df9300 !important;
+    border-color: #df9300 !important;
+}
+:where(.css-nllxry).ant-btn-primary {
+    background-color: #df9300 !important;
+    color: white !important;
+}
+
+:where(.css-dev-only-do-not-override-nllxry).ant-drawer-left
+    > .ant-drawer-content-wrapper {
+    box-shadow: none !important;
+}
