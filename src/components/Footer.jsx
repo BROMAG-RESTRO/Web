@@ -9,7 +9,7 @@ import { colorTheme } from "../redux/authSlice";
 import { MdLocationPin } from "react-icons/md";
 import { IoMailOutline } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
-
+import "../assets/css/footer.css";
 function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -96,74 +96,90 @@ function Footer() {
           : "#000000",
       }}
     >
-      <div className="!flex !flex-col  overflow-hidden">
-        <div className="ultraSm:px-4 lg:px-8 py-2">
+      <div className="footer-container">
+        {/* <div className="ultraSm:px-4 lg:px-8 py-2">
           {/* Logo */}
-          {/* <img
+        {/* <img
             src={firstFooterData?.logo}
             className="lg:w-[150px] lg:h-[150px]"
             alt="Footer Logo"
-          /> */}
-        </div>
-        <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 px-2 ">
+          /> 
+        </div> */}
+        <div className="footer-wrapper">
           {/* About Us */}
 
-          <div className="flex flex-col gap-y-10  justify-center items-center ">
+          <div className="footer-part1">
             <div className="flex flex-col lg:gap-y-10 gap-y-8">
-              <h1 className="lg:text-2xl text-sm font-bold   text-[#EFEFEF] ">
+              <h1 className="lg:text-2xl text-sm font-bold   text-[#EFEFEF] footer-link-header">
                 ABOUT US
-                <img src="/assets/icons/footerborder.png" alt="Footer Border" />
+                <img
+                  src="/assets/icons/footerborder.png"
+                  alt="Footer Border"
+                  className="lg:pt-1 pt-2 footer-line"
+                />
               </h1>
 
-              <div className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm">
+              <div className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm footer-link-wrapper">
                 <div className="flex gap-2 items-center">
                   <FaPhoneAlt className="text-[10] lg:text-sm hidden" />
-                  <span className="text-[10px] ">Who we are</span>
+                  <span className="text-[10px] footer-link ">Who we are</span>
                 </div>
 
                 <div className="flex items-center">
                   <IoMailOutline className="text-sm hidden" />
-                  <span className="text-[9px] ">Privacy Policy</span>
+                  <span className="text-[9px] footer-link">Privacy Policy</span>
                 </div>
                 <div className="flex lg:items-center">
                   <MdLocationPin className="text-2xl lg:text-lg  hidden" />
-                  <span className="text-[10px] ">Refund and Cancellation</span>
+                  <span className="text-[10px] footer-link">
+                    Refund and Cancellation
+                  </span>
                 </div>
                 <div className="flex lg:items-center">
                   <MdLocationPin className="text-2xl lg:text-lg  hidden" />
-                  <span className="text-[10px] ">Refund and Cancellation</span>
+                  <span className="text-[10px] footer-link">
+                    Refund and Cancellation
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Contact Us */}
-          <div className="flex flex-col gap-y-10  justify-center items-center ">
-            <div className="flex flex-col lg:gap-y-10 gap-y-8">
-              <h1 className="lg:text-2xl text-sm font-bold   text-[#EFEFEF] ">
+          <div className="footer-part2">
+            <div className="flex flex-col lg:gap-y-10 sm:gap-y-8 gap-y-7 ">
+              <h1 className="lg:text-2xl text-sm font-bold   text-[#EFEFEF]  footer-link-header">
                 CONTACT US
                 <img
                   src="/assets/icons/footerborder.png"
                   alt="Footer Border"
-                  className="lg:pt-1 pt-2"
+                  className="lg:pt-1 pt-2 footer-line"
                 />
               </h1>
 
-              <div className="flex flex-col lg:gap-y-7 gap-y-7 lg:text-2xl text-sm">
-                <div className="flex gap-2 items-center">
-                  <FaPhoneAlt className="text-[10] lg:text-sm" />
-                  <span className="text-[10px] ">
+              <div className="flex flex-col lg:gap-y-7 gap-y-5 lg:text-2xl text-sm footer-link-wrapper">
+                <div className="flex gap-2 items-center footer-wrap">
+                  <FaPhoneAlt size={15} className="footer-link" />
+                  <a
+                    href={`tel:${firstFooterData?.contactNumber}`}
+                    className="text-[10px] footer-link"
+                  >
                     {firstFooterData?.contactNumber}
-                  </span>
+                  </a>
                 </div>
 
-                <div className="flex gap-2 items-center">
-                  <IoMailOutline className="text-sm" />
-                  <span className="text-[9px] ">{firstFooterData?.email}</span>
+                <div className="flex gap-2 items-center footer-wrap">
+                  <IoMailOutline size={15} className="footer-link" />
+                  <a
+                    href={`mailto:${firstFooterData?.email}`}
+                    className="text-[10px] footer-link"
+                  >
+                    {firstFooterData?.email}
+                  </a>
                 </div>
-                <div className="flex gap-2 lg:items-center">
-                  <MdLocationPin className="text-2xl lg:text-lg " />
-                  <span className="text-[10px] ">
+                <div className="flex gap-2 lg:items-center footer-wrap">
+                  <MdLocationPin size={15} className="footer-link" />
+                  <span className="text-[10px] text-capitalize footer-link">
                     {firstFooterData?.address}
                   </span>
                 </div>
@@ -172,9 +188,9 @@ function Footer() {
           </div>
 
           {/*  */}
-          <div className="flex pt-10 items-center ultraSm:hidden md:block lg:block xl:block 2xl:block p-3 ">
+          <div className="footer-part3">
             <div className="flex flex-col border-l border-white/50 pl-10 pr-3">
-              <h1 className="text-3xl font-sans  text-[#5e5e5e] font-extrabold  ">
+              <h1 className="text-2xl font-sans  text-[#5e5e5e] font-extrabold mb-1">
                 GIVE YOUR FEEDBACK
               </h1>
               <div className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm pr-3">
@@ -217,7 +233,10 @@ function Footer() {
         <div className="flex gap-x-5 justify-center items-center mt-6">
           {social.map((res, index) => (
             <a key={index} href={res.link} target="_blank" rel="noreferrer">
-              <img src={`/assets/icons/${res.name}.png`} className="w-5" />
+              <img
+                src={`/assets/icons/${res.name}.png`}
+                className="footer_icons"
+              />
             </a>
           ))}
         </div>

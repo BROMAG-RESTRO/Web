@@ -4,6 +4,7 @@ import { Tag, message, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useHref, useLocation, useNavigate } from "react-router-dom";
 import _ from "lodash";
+import "../../assets/css/customize.css";
 import {
   addToCart,
   decrementCartQuantity,
@@ -38,15 +39,14 @@ const Customization = ({ product_data, id }) => {
 
   useEffect(() => {
     let maxPrice = 0;
-    let correspondingOfferPercentage = 0
-    
-    console.log(product_data,"product");
+    let correspondingOfferPercentage = 0;
+
+    console.log(product_data, "product");
     if (
       product_data &&
       product_data?.types &&
       product_data?.types?.length > 0
     ) {
-
       for (const type of product_data?.types) {
         if (type.TypeOfferPrice && type.TypeOfferPrice > maxPrice) {
           maxPrice = type.TypeOfferPrice;
@@ -57,23 +57,22 @@ const Customization = ({ product_data, id }) => {
         }
       }
       if (correspondingOfferPercentage > 0) {
-      
-        setTypeOfferPer(correspondingOfferPercentage)
+        setTypeOfferPer(correspondingOfferPercentage);
       }
       if (maxPrice > 0 && maxPrice) {
         setPrice(maxPrice);
         setProductPrice(maxPrice);
-      setMultipleTypesMenu(true)
-      
-    }
-    // const initialPrice =
-    //   maxPrice !== 0 ? maxPrice : product_data?.discountPrice || 0;
- 
+        setMultipleTypesMenu(true);
+      }
+      // const initialPrice =
+      //   maxPrice !== 0 ? maxPrice : product_data?.discountPrice || 0;
     } else {
-      const price = product_data?.discountPrice ? product_data?.discountPrice : product_data?.price
-      setPrice(price)
-      setProductPrice(price)
-    } 
+      const price = product_data?.discountPrice
+        ? product_data?.discountPrice
+        : product_data?.price;
+      setPrice(price);
+      setProductPrice(price);
+    }
   }, [product_data]);
 
   const handleTypeChange = (selectedType, selectedPrice, id) => {
@@ -406,8 +405,8 @@ const Customization = ({ product_data, id }) => {
                   alt="Shoes"
                   className="rounded-xl h-[300px] object-cover w-full"
                 />
-                <div className="flex mt-5 justify-between px-3 items-center border-b-2 border-black/25 py-5 relative ">
-                  {product_data?.offer && (!isMultipleTypeMenu) && (
+                <div className="flex mt-5 justify-between px-3 items-center border-b-2 border-black/25 py-5 relative  price__wrapper">
+                  {product_data?.offer && !isMultipleTypeMenu && (
                     <Tag
                       color="green"
                       className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
@@ -417,23 +416,27 @@ const Customization = ({ product_data, id }) => {
                     </Tag>
                   )}
 
-                  {product_data?.types.length > 0 && isMultipleTypeMenu && typeOfferPercentage>0&& (
-                    
-                    <Tag
-                      color="green"
-                      className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
-                    >
-                      <CiDiscount1 className="text-white text-sm font-bold" />
-                      {typeOfferPercentage}% Discount
-                    </Tag>
+                  {product_data?.types.length > 0 &&
+                    isMultipleTypeMenu &&
+                    typeOfferPercentage > 0 && (
+                      <Tag
+                        color="green"
+                        className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
+                      >
+                        <CiDiscount1 className="text-white text-sm font-bold" />
+                        {typeOfferPercentage}% Discount
+                      </Tag>
+                    )}
 
-                  )}
-                  
                   <div>
-                    <h1 className="text-xl text-start">{product_data?.name}</h1>
+                    <h1 className="text-xl text-start item_name">
+                      {product_data?.name}
+                    </h1>
                   </div>
-                  <h1 className="absolute right-10 top-0 text-lg">Price</h1>
-                  <div className="flex items-center px-2 py-2">
+                  <h1 className="absolute right-10 top-0 text-lg price_label">
+                    Price
+                  </h1>
+                  <div className="flex items-center px-2 py-2 item_amount">
                     <MdCurrencyRupee className="text-[25px]" />
                     <h1 className="text-[25px] font-extrabold">{`${price}.00`}</h1>
                   </div>
@@ -447,36 +450,45 @@ const Customization = ({ product_data, id }) => {
                 </div>
 
                 {/* ====================================== */}
-                <div className="mt-4">
-                  {product_data?.types && product_data?.types.map((data) => {
-                    return (
-                      <div className="form-control" key={data._id}>
-                        {!data?.Type ? null : (
-                          <label className="label cursor-pointer relative ">
-                            <input
-                              type="radio"
-                              name="radio-10"
-                              className="radio checked:bg-gray-500"
-                              onChange={() =>
-                                handleTypeChange(
-                                  data?.Type,
-                                  data?.TypeOfferPrice?data?.TypeOfferPrice:data?.TypePrice,
-                                  data?._id
-                                  
-                                )
-                              }
-                            />
-                            <span className="absolute left-12">
-                              {data?.Type}
-                            </span>
-                            <span className="absolute right-5">
-                              ₹ {data?.TypeOfferPrice?data?.TypeOfferPrice:data?.TypePrice}.00
-                            </span>
-                          </label>
-                        )}
-                      </div>
-                    );
-                  })}
+                <div className="mt-2 mb-1">
+                  {product_data?.types &&
+                    product_data?.types.map((data) => {
+                      return (
+                        <div className="item__type--wrapper" key={data._id}>
+                          {!data?.Type ? null : (
+                            <>
+                              <div className="item__type--btn">
+                                <input
+                                  type="radio"
+                                  name="radio-10"
+                                  className="radio checked:bg-gray-500"
+                                  onChange={() =>
+                                    handleTypeChange(
+                                      data?.Type,
+                                      data?.TypeOfferPrice
+                                        ? data?.TypeOfferPrice
+                                        : data?.TypePrice,
+                                      data?._id
+                                    )
+                                  }
+                                />
+                                <span className="item__type--name">
+                                  {data?.Type}
+                                </span>
+                                <div></div>
+                              </div>
+                              <span className="item__type--price">
+                                ₹{" "}
+                                {data?.TypeOfferPrice
+                                  ? data?.TypeOfferPrice
+                                  : data?.TypePrice}
+                                .00
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
                 </div>
                 {/* ====================================== */}
               </div>
