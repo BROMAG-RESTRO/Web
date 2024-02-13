@@ -31,18 +31,18 @@ const Banner = ({ banners }) => {
         }}
         loop={true}
         pagination={{
-          clickable: true,
+          clickable: false,
         }}
       >
         {bannersData.map((res, index) => {
           return (
             <SwiperSlide key={index}>
               <img
-                onClick={() => {
-                  navigate("/food-deatils", {
-                    state: { currentCatid: res.productId },
-                  });
-                }}
+                // onClick={() => {
+                //   navigate("/food-deatils", {
+                //     state: { currentCatid: res.productId },
+                //   });
+                // }}
                 src={_.get(res, "image[0]", "")}
                 alt=""
                 className="object-cover cursor-pointer lg:h-[620px] h-1/2 w-full"
