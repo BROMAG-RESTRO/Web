@@ -450,38 +450,41 @@ const Customization = ({ product_data, id }) => {
                 </div>
 
                 {/* ====================================== */}
-                <div className="mt-4">
+                <div className="mt-2 mb-1">
                   {product_data?.types &&
                     product_data?.types.map((data) => {
                       return (
-                        <div className="form-control" key={data._id}>
+                        <div className="item__type--wrapper" key={data._id}>
                           {!data?.Type ? null : (
-                            <label className="label cursor-pointer relative ">
-                              <input
-                                type="radio"
-                                name="radio-10"
-                                className="radio checked:bg-gray-500"
-                                onChange={() =>
-                                  handleTypeChange(
-                                    data?.Type,
-                                    data?.TypeOfferPrice
-                                      ? data?.TypeOfferPrice
-                                      : data?.TypePrice,
-                                    data?._id
-                                  )
-                                }
-                              />
-                              <span className="absolute left-12">
-                                {data?.Type}
-                              </span>
-                              <span className="absolute right-5">
+                            <>
+                              <div className="item__type--btn">
+                                <input
+                                  type="radio"
+                                  name="radio-10"
+                                  className="radio checked:bg-gray-500"
+                                  onChange={() =>
+                                    handleTypeChange(
+                                      data?.Type,
+                                      data?.TypeOfferPrice
+                                        ? data?.TypeOfferPrice
+                                        : data?.TypePrice,
+                                      data?._id
+                                    )
+                                  }
+                                />
+                                <span className="item__type--name">
+                                  {data?.Type}
+                                </span>
+                                <div></div>
+                              </div>
+                              <span className="item__type--price">
                                 ₹{" "}
                                 {data?.TypeOfferPrice
                                   ? data?.TypeOfferPrice
                                   : data?.TypePrice}
                                 .00
                               </span>
-                            </label>
+                            </>
                           )}
                         </div>
                       );
