@@ -1,27 +1,24 @@
 /* eslint-disable react/jsx-no-target-blank */
 import { GrMapLocation } from "react-icons/gr";
 import { FaLocationDot } from "react-icons/fa6";
-import "../../../stylesheets/location.css"
+import "../../../stylesheets/location.css";
 
 const Locations = () => {
   return (
-    <div className="flex lg:pt-10 pt-4 flex-col items-center justify-center pb-20">
-      <div className="my-5 flex justify-center items-center  w-full">
+    <div className="flex lg:pt-2 pt-0 flex-col items-center justify-center pb-20">
+      <div className="my-1 flex justify-center items-center  w-full">
         <div>
-          <FaLocationDot className="ultraSm:text-2xl lg:text-6xl  " />
+          <FaLocationDot className="ultraSm:text-2xl lg:text-4xl  " />
         </div>
         <div className=" p-2">
           <img
             src="/assets/icons/certificate of.png"
             alt=""
-            className="ultraSm:w-[200px] lg:w-[500px]"
+            className="ultraSm:w-[200px] lg:w-[250px]"
           />
         </div>
       </div>
-      <a
-        href=""
-        target="_blank"
-      >
+      <a href="" target="_blank">
         {/* <img
           src={"/assets/images/map.png"}
           className="mt-[-25px] sm:mt-[-55px] md:mt-[-70px] lg:!mt-[-80px] px-2"

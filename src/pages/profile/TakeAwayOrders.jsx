@@ -334,6 +334,10 @@ const TakeAwayOrders = () => {
             <br />
             <div className="bg-[#F2F2F2] px-4 py-4 flex flex-col gap-y-5">
               <div className="flex items-center justify-between border-b-2">
+                <p>Mode of payment</p>{" "}
+                {_.get(currentSelected, "payment_mode", "NA")}
+              </div>
+              <div className="flex items-center justify-between border-b-2">
                 <p>Total Items</p>{" "}
                 {_.get(currentSelected, "orderedFood", []).length}
               </div>
@@ -363,6 +367,10 @@ const TakeAwayOrders = () => {
         <div className="flex flex-col gap-y-2 px-2 text-black">
           <p className="text-dark3a_color text-lg font-bold">Menus</p>
           {_.get(currentSelected, "orderedFood", []).map((res, index) => {
+            const foodId = _.get(res, "id", "");
+            const foodInstructions = _.get(instructions, "[0]", {});
+            const foodInstruction = _.get(foodInstructions, foodId, []);
+            console.log(foodId, foodInstructions, foodInstruction);
             return (
               <Card loading={loading} key={index}>
                 <Card.Meta
@@ -386,21 +394,11 @@ const TakeAwayOrders = () => {
                 />
                 <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
                   <p className="py-1 font-bold">Instructions*</p>
-                  {currentSelected?.instructionsTakeaway?.map(
-                    (takeaway, idx) => (
-                      <div key={idx}>
-                        {Object.entries(takeaway).map(([id, instructions]) => (
-                          <div key={id}>
-                            {instructions?.map((instruction, index) => (
-                              <p key={index} className="text-sm">
-                                - {instruction}
-                              </p>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    )
-                  )}
+                  {foodInstruction?.map((instruction, idx) => (
+                    <p key={idx} className="text-sm">
+                      - {instruction}
+                    </p>
+                  ))}
                 </div>
               </Card>
             );
