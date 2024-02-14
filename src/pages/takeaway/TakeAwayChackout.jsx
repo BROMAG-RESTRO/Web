@@ -79,7 +79,7 @@ const TakeAwayChackout = () => {
   };
 
   //=====================
-
+  const [paymentMethod, setPaymentMethod] = useState("COD");
   const [makeCartforOrder, setMakeCartforOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const [dummy, setDummy] = useState(false);
@@ -170,6 +170,8 @@ const TakeAwayChackout = () => {
           comment: "",
         };
       });
+
+      console.log({ initialData });
       setMakeCartforOrder(initialData || []);
       setLoading(false);
     } catch (err) {
@@ -300,15 +302,17 @@ const TakeAwayChackout = () => {
   useEffect(() => {
     getTotalAmount();
   }, [dummy, makeCartforOrder]);
-
+  console.log({ cartData });
   const getFoodDetails = () => {
     let food_data = cartData.map((res) => {
       const typeRefId = _.get(res, "typeRef", "");
+      const product = _.get(res, "productRef", {});
       const selectedType = _.get(res, "productRef.types", []).find(
         (type) => type._id === typeRefId
       );
-
+      console.log({ product });
       return {
+        id: res._id,
         pic: _.get(res, "productRef.image", ""),
         foodName: _.get(res, "productRef.name", ""),
         foodPrice: _.get(res, "productRef.price", ""),
@@ -319,7 +323,7 @@ const TakeAwayChackout = () => {
     });
     return food_data;
   };
-
+  console.log({ productInstructions });
   const handlePlaceOrder = async () => {
     let food_data = getFoodDetails();
     try {
@@ -334,6 +338,7 @@ const TakeAwayChackout = () => {
         item_price: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
         instructionsTakeaway: ProductInstructions,
+        payment_mode: paymentMethod,
         orderId:
           "BIPL031023" +
           uuidv4()?.slice(0, 4)?.toUpperCase() +
@@ -460,6 +465,8 @@ const TakeAwayChackout = () => {
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
+                checked={paymentMethod === "Credit/Debit"}
+                onChange={() => setPaymentMethod("Credit/Debit")}
               />
             </label>
           </div>
@@ -473,6 +480,8 @@ const TakeAwayChackout = () => {
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
+                checked={paymentMethod === "UPI"}
+                onChange={() => setPaymentMethod("UPI")}
               />
             </label>
           </div>
@@ -486,6 +495,8 @@ const TakeAwayChackout = () => {
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
+                checked={paymentMethod === "COD"}
+                onChange={() => setPaymentMethod("COD")}
               />
             </label>
           </div>

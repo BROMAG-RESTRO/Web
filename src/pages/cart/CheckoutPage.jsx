@@ -51,6 +51,7 @@ const CheckoutPage = () => {
   const ProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
+  const [paymentMethod, setPaymentMethod] = useState("COD");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,7 +69,7 @@ const CheckoutPage = () => {
         JSON.stringify(formdatas)
       );
 
-      console.log(result," ia am result for cvatrr");
+      console.log(result, " ia am result for cvatrr");
       if (_.isEmpty(_.get(result, "data.data", []))) {
         navigate(-1);
       }
@@ -116,12 +117,15 @@ const CheckoutPage = () => {
         // const price = selectedType
         //   ? selectedType.price
         //   : _.get(res, "productRef.discountPrice", "");
-        
-        const price =  typeRefId.Type 
-        ? ((typeRefId.TypeOfferPrice ? typeRefId.TypeOfferPrice : typeRefId.TypePrice) )
-        : ((productRef.discountPrice?parseFloat(productRef.discountPrice) : parseFloat(productRef.price))  );
-        
-        
+
+        const price = typeRefId.Type
+          ? typeRefId.TypeOfferPrice
+            ? typeRefId.TypeOfferPrice
+            : typeRefId.TypePrice
+          : productRef.discountPrice
+          ? parseFloat(productRef.discountPrice)
+          : parseFloat(productRef.price);
+
         return {
           id: res._id,
           pic: _.get(res, "productRef.image", ""),
@@ -144,6 +148,7 @@ const CheckoutPage = () => {
         couponAmount: _.get(getTotalAmount(), "couponDiscount", 0),
         itemPrice: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
+        payment_mode: paymentMethod,
         location: selectedDeliveryAddress,
         instructions: ProductInstructions,
         status: "placed",
@@ -203,28 +208,27 @@ const CheckoutPage = () => {
     // );
 
     let itemPrice = _.sum(
-
       cartData?.map((res) => {
-
         const typeRefId = _.get(res, "typeRef", "");
         const productRef = _.get(res, "productRef", "");
         const selectedType = _.get(res, "productRef.types", []).find(
           (type) => type._id === typeRefId
         );
 
-
         // const price = selectedType
         //   ? selectedType.price
         //   : _.get(res, "productRef.discountPrice", "");
 
-        const price =  typeRefId.Type 
-        ? ((typeRefId.TypeOfferPrice ? typeRefId.TypeOfferPrice : typeRefId.TypePrice) )
-        : ((productRef.discountPrice?parseFloat(productRef.discountPrice) : parseFloat(productRef.price))  );
+        const price = typeRefId.Type
+          ? typeRefId.TypeOfferPrice
+            ? typeRefId.TypeOfferPrice
+            : typeRefId.TypePrice
+          : productRef.discountPrice
+          ? parseFloat(productRef.discountPrice)
+          : parseFloat(productRef.price);
 
         return Number(price) * res.quantity;
       })
-
-
     );
 
     let itemdiscountPrice = _.sum(
@@ -345,6 +349,8 @@ const CheckoutPage = () => {
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
+                checked={paymentMethod === "Credit/Debit"}
+                onChange={() => setPaymentMethod("Credit/Debit")}
               />
             </label>
           </div>
@@ -358,6 +364,8 @@ const CheckoutPage = () => {
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
+                checked={paymentMethod === "UPI"}
+                onChange={() => setPaymentMethod("UPI")}
               />
             </label>
           </div>
@@ -371,6 +379,8 @@ const CheckoutPage = () => {
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
+                checked={paymentMethod === "COD"}
+                onChange={() => setPaymentMethod("COD")}
               />
             </label>
           </div>

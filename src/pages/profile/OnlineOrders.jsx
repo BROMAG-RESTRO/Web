@@ -214,7 +214,6 @@ const OnlineOrders = () => {
                           "Order ready to preparing",
                           "Order ready to pack",
                         ].includes(res.status) ? (
-                           
                           getStatus(res)
                         ) : (
                           <div className="flex justify-center">
@@ -325,6 +324,9 @@ const OnlineOrders = () => {
             <br />
             <div className="bg-[#F2F2F2] px-4 py-4 flex flex-col gap-y-5">
               <div className="flex items-center justify-between border-b-2">
+                <p>Payment Mode</p> {_.get(currentSelected, "payment_mode", "")}
+              </div>
+              <div className="flex items-center justify-between border-b-2">
                 <p>Total Items</p>{" "}
                 {_.get(currentSelected, "orderedFood", []).length}
               </div>
@@ -338,8 +340,7 @@ const OnlineOrders = () => {
                 <p>Packing Charge</p> &#8377; {currentSelected?.packingCharge}
               </div>
               <div className="flex items-center justify-between border-b-2">
-                <p>Delivery Charge</p> &#8377;{" "}
-                {currentSelected?.deliveryCharge}
+                <p>Delivery Charge</p> &#8377; {currentSelected?.deliveryCharge}
               </div>
               <div className="flex items-center justify-between border-b-2">
                 <p>Transaction Charge</p> &#8377;{" "}
@@ -356,7 +357,7 @@ const OnlineOrders = () => {
         <div className="flex flex-col gap-y-2 px-2">
           <p className="text-dark3a_color text-lg font-bold">Menus</p>
           {_.get(currentSelected, "orderedFood", []).map((res, index) => {
-            console.log(currentSelected," selecetdd");
+            console.log(currentSelected, " selecetdd");
             const foodId = _.get(res, "id", "");
             const foodInstructions = _.get(instructions, "[0]", {});
             const foodInstruction = _.get(foodInstructions, foodId, []);
@@ -370,15 +371,17 @@ const OnlineOrders = () => {
                     />
                   }
                   title={
-                    <div className="capitalize" style={{whiteSpace: "normal"}}>
+                    <div
+                      className="capitalize"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       {_.get(res, "foodName", "")}
                     </div>
                   }
                   description={
                     <div>
                       {_.get(res, "foodQuantity", "")} &times; ₹
-                      {_.get(res, "foodPrice", "")} - 
-                      {' '+ res.type}
+                      {_.get(res, "foodPrice", "")} -{" " + res.type}
                     </div>
                   }
                 />
