@@ -552,6 +552,7 @@ const Customization = ({ product_data, id }) => {
                 ) : (
                   <button
                     className="btn w-1/2 h-16 hover:bg-black bg-black/90 text-lg text-white"
+                    disabled={!typeRef}
                     onClick={() => {
                       handleCartClick(product_data, typeRef);
                     }}

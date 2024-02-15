@@ -30,6 +30,7 @@ import CheckoutPage from "./CheckoutPage";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import "../../assets/css/address-modal.css";
 const Delivery = () => {
   const [changeRight, setChangeRight] = useState(false);
   const ProductInstructions = useSelector(
@@ -98,7 +99,7 @@ const Delivery = () => {
       const result = await getCurrentUserCartProducts(
         JSON.stringify(formdatas)
       );
-      console.log(result,"res from delivery");
+      console.log(result, "res from delivery");
       if (_.isEmpty(_.get(result, "data.data", []))) {
         navigate(-1);
       }
@@ -218,30 +219,28 @@ const Delivery = () => {
     //   })
     // );
 
-    
     let itemPrice = _.sum(
-
       cartData?.map((res) => {
-
         const typeRefId = _.get(res, "typeRef", "");
         const productRef = _.get(res, "productRef", "");
         const selectedType = _.get(res, "productRef.types", []).find(
           (type) => type._id === typeRefId
         );
 
-
         // const price = selectedType
         //   ? selectedType.price
         //   : _.get(res, "productRef.discountPrice", "");
 
-        const price =  typeRefId.Type 
-        ? ((typeRefId.TypeOfferPrice ? typeRefId.TypeOfferPrice : typeRefId.TypePrice) )
-        : ((productRef.discountPrice?parseFloat(productRef.discountPrice) : parseFloat(productRef.price))  );
+        const price = typeRefId.Type
+          ? typeRefId.TypeOfferPrice
+            ? typeRefId.TypeOfferPrice
+            : typeRefId.TypePrice
+          : productRef.discountPrice
+          ? parseFloat(productRef.discountPrice)
+          : parseFloat(productRef.price);
 
         return Number(price) * res.quantity;
       })
-
-
     );
 
     let itemdiscountPrice = _.sum(
@@ -303,7 +302,7 @@ const Delivery = () => {
       <LoadingScreen />
     </div>
   ) : (
-    <div className="min-h-screen">
+    <div className="min-h-screen" id="delivery-container">
       {_.isEmpty(allDeliveryAddress) ? (
         <div className="min-h-screen center_div">
           <Empty
@@ -439,30 +438,36 @@ const Delivery = () => {
 
             {/* right */}
 
-            <div className="lg:w-[70%] w-full lg:h-[600px] overflow-y-scroll bg-white rounded-2xl lg:px-10 pt-0 flex flex-col gap-y-2 pb-10 px-2">
+            <div
+              className="lg:w-[70%] w-full lg:h-[600px] overflow-y-auto bg-white rounded-2xl lg:px-10 pt-0 flex flex-col gap-y-2 pb-10 px-2"
+              id="address-cart-summary"
+            >
               {/* foods */}
-              <div className="flex flex-col gap-y-2 pt-4">
+              <div className="flex flex-col gap-y-2 pt-4 ">
                 {cartData.map((res, index) => {
                   const productId = res._id;
-                const productRef = _.get(res, "productRef", "");
+                  const productRef = _.get(res, "productRef", "");
                   const typeRefId = _.get(res, "typeRef", "");
                   const selectedType = _.get(res, "productRef.types", []).find(
                     (type) => type._id === typeRefId
                   );
-
 
                   // Determine the price to display based on whether the selectedType exists
                   // const displayPrice = selectedType
                   //   ? selectedType.price * res.quantity
                   //   : _.get(res, "productRef.discountPrice", "") * res.quantity;
 
+                  const displayPrice = typeRefId.Type
+                    ? (typeRefId.TypeOfferPrice
+                        ? typeRefId.TypeOfferPrice
+                        : typeRefId.TypePrice) * _.get(res, "quantity", "")
+                    : (productRef.discountPrice
+                        ? parseFloat(productRef.discountPrice)
+                        : parseFloat(productRef.price)) *
+                      _.get(res, "quantity", "");
 
-                  const displayPrice = typeRefId.Type 
-  ? ((typeRefId.TypeOfferPrice ? typeRefId.TypeOfferPrice : typeRefId.TypePrice) * _.get(res, "quantity", ""))
-  : ((productRef.discountPrice?parseFloat(productRef.discountPrice) : parseFloat(productRef.price)) * _.get(res, "quantity", "")  );
-               
-                  const displayType = typeRefId.Type
-                  
+                  const displayType = typeRefId.Type;
+
                   // const displayType = selectedType
                   //   ? selectedType.type
                   //   : "Regular";
@@ -474,12 +479,7 @@ const Delivery = () => {
                     >
                       {/* food picture */}
 
-
-
-
                       <div className="items-center rounded-t-2xl shadow-2xl flex flex-row overflow-hidden w-full">
-
-
                         <div className=" p-3 ">
                           <img
                             src={_.get(res, "productRef.image", "")}
@@ -488,46 +488,28 @@ const Delivery = () => {
                           />
                         </div>
 
-
-
                         {/* name icn/dec button */}
 
-
                         <div className=" flex items-center justify-between w-full">
-
-                        <div className="flex flex-col pb-0  ">
-                          <div className="flex items-start justify-between ">
-                            {_.get(res, "productRef.name", "")}
+                          <div className="flex flex-col pb-0  ">
+                            <div className="flex items-start justify-between ">
+                              {_.get(res, "productRef.name", "")}
+                            </div>
+                            <div className="text-[#B6B6B6] w-[80px]  flex justify-start whitespace-nowrap">
+                              {" "}
+                              {_.get(res, "quantity", "")}
+                              &times;
+                              {displayType ? displayType : "Regular"}{" "}
+                            </div>
                           </div>
-                          <div className="text-[#B6B6B6] w-[80px]  flex justify-start whitespace-nowrap">
-                            {" "}
-                            {_.get(res, "quantity", "")}
-                            &times;
-                            {displayType?displayType:"Regular"}{" "}
-                          </div>
-                        </div>
 
-
-
-                        <div className="flex justify-between whitespace-nowrap px-5 ml-auto">
-                          <div className="text-lg text-[#3A3A3A] flex justify-end">
-                            &#8377; {displayPrice}
+                          <div className="flex justify-between whitespace-nowrap px-5 ml-auto">
+                            <div className="text-lg text-[#3A3A3A] flex justify-end">
+                              &#8377; {displayPrice}
+                            </div>
                           </div>
                         </div>
-
-
-                        </div>
-
-
-
-
-
-
                       </div>
-
-
-
-
 
                       <div className="h-6 w-full bg-white px-7 flex gap-2 border border-5">
                         {Object.entries(ProductInstructions).map(

@@ -1,4 +1,10 @@
-.mySwiper .swiper-card{
-    /* background-color: aqua; */
-    min-height: 300px;
+.mySwiper .swiper-card {
+  /* background-color: aqua; */
+  min-height: 270px;
+}
+
+@media screen and (max-width: 1024px) {
+  .mySwiper .swiper-card {
+    min-height: 226px;
+  }
 }
