@@ -148,7 +148,7 @@ const DeliveryAddress = () => {
         }}
         destroyOnClose
         width={500}
-        title="Enter New Address"
+        title={updateId ? "Edit your address" : "Enter New Address"}
       >
         <div className="lg:px-10 px-4">
           <AddNewAddress

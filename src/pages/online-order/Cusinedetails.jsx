@@ -487,7 +487,7 @@ const Cusinedetails = () => {
               </div>
 
               <div className="flex items-center	gap-1">
-              <div>Veg</div>
+                <div>Veg</div>
                 <input
                   checked={isVegOnly}
                   onChange={() => {
@@ -502,7 +502,6 @@ const Cusinedetails = () => {
                   }}
                 />
               </div>
-              
             </div>
 
             <div className="px-3 relative">

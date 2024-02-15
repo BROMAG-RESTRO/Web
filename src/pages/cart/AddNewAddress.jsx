@@ -16,10 +16,11 @@ const AddNewAddress = ({
   setOpen,
   updateId = "",
 }) => {
+  console.log({ updateId });
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
-  const [otherAddressType, setOtherAddressType] = useState("")
+  const [otherAddressType, setOtherAddressType] = useState("");
 
   const [userDetail, setUserDetail] = useState("");
 
@@ -46,16 +47,19 @@ const AddNewAddress = ({
   useEffect(() => {
     if (updateId) {
       form.setFieldsValue({ name: updateId?.user });
-      form.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
+      // form.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
       form.setFieldsValue(updateId);
     }
   }, [updateId]);
 
   const handleFinish = async (values) => {
-    form.setFieldsValue({ name: "Helloooooooooooooooooooo"})
-    form.getFieldsValue()
+    console.log({ values });
+
+    // form.setFieldsValue({ name: "Helloooooooooooooooooooo"})
+    // form.getFieldsValue()
     // if(form.getFieldValue("addressType") === "Other") form.setfi
-    console.log("valueeeeeeeeeee", values)
+    console.log("valueeeeeeeeeee", values);
+
     try {
       setLoading(true);
       if (updateId) {
@@ -76,6 +80,7 @@ const AddNewAddress = ({
     }
   };
 
+  form?.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
   return (
     <Skeleton
       active
@@ -85,7 +90,7 @@ const AddNewAddress = ({
       <div className="lg:w-[500px] w-full min-h-[400px] bg-white rounded-2xl   relative pb-10">
         <div>
           <div className="text-dark3a_color font-semibold lg:text-2xl tracking-wider pt-2">
-            Add your address
+            {updateId ? "Edit your address" : "Add your address"}
           </div>
           <Form className="pt-4" form={form} onFinish={handleFinish}>
             <div className="flex flex-col gap-y-2">
@@ -120,8 +125,10 @@ const AddNewAddress = ({
               >
                 <PhoneInput
                   defaultCountry={"in"}
+                  disableDialCodeAndPrefix
                   inputStyle={{ background: "red" }}
                   className="!w-full !bg-white"
+                  value={form.getFieldValue("mobileNumber")}
                 />
               </Form.Item>
             </div>
@@ -145,7 +152,6 @@ const AddNewAddress = ({
                   />
                 </Form.Item> */}
 
-
                 <Form.Item
                   name="addressType"
                   rules={[
@@ -157,11 +163,8 @@ const AddNewAddress = ({
                     <Radio value={"Work"}>Work</Radio>
                     <Radio value={"Other"}>Other</Radio>
                   </Radio.Group>
-
-
                 </Form.Item>
-                <input onChange={(e)=>setOtherAddressType(e.target.value)} />
-
+                {/* <input onChange={(e) => setOtherAddressType(e.target.value)} /> */}
 
                 <Form.Item
                   name="streetName"

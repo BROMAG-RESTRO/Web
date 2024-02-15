@@ -6,9 +6,8 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
-    display: none !important;
-}
+
+
 
 * {
     font-family: "Montserrat", sans-serif !important;
@@ -94,4 +93,9 @@ textarea:where(.css-dev-only-do-not-override-nllxry).ant-input {
 :where(.css-dev-only-do-not-override-nllxry).ant-drawer-left
     > .ant-drawer-content-wrapper {
     box-shadow: none !important;
+}
+
+
+body ::-webkit-scrollbar {
+    display: none ;
 }
