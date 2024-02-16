@@ -337,13 +337,6 @@ const Cusinedetails = () => {
     }
   };
 
-  const getLargeAmountItem = (types) => {
-    const orderedItems = types?.sort((a, b) => b.TypePrice - a.TypePrice);
-
-    // Get the item with the largest TypePrice
-    return orderedItems[0];
-  };
-
   const getQuantity = (id) => {
     try {
       let qty = getCardId(id);
@@ -430,7 +423,7 @@ const Cusinedetails = () => {
         <Skeleton
           active
           loading={loading}
-          className="lg:w-[500px] lg:h-[100px] mb-2"
+          className="lg:w-[500px] lg:h-[100px]"
         >
           <div className="flex flex-col lg:gap-y-10 gap-y-8">
             <div className="flex gap-x-10 lg:items-center items-start justify-between lg:flex-row flex-col">
@@ -589,79 +582,133 @@ const Cusinedetails = () => {
         </Skeleton>
       </div>
       {/* foods */}
-      {/* ======================skeleton lodaer for food */}
-      {loading ? (
-        Array(5)
-          .fill("1")
-          ?.map((td, i) => {
-            return (
-              <Skeleton
-                key={i}
-                loading={loading}
-                active
-                className="w-4/5 ms-3 h-[200px] mt-2"
-              ></Skeleton>
-            );
-          })
-      ) : (
-        <>
-          {/* ====================== food list*/}
-          <div className="flex flex-col lg:gap-y-24 gap-y-4">
-            {productData.map((res, index) => {
-              const available = res?.status;
-              const isMultityped = res?.types?.length;
-              const largeItem = isMultityped
-                ? getLargeAmountItem(res?.types)
-                : null;
-              const foodName = res?.name;
-              const actualPrice = isMultityped
-                ? largeItem?.TypePrice || 0
-                : Number(res?.price || 0);
-              const offerPercentage = isMultityped
-                ? largeItem?.TypeOfferPercentage || 0
-                : Number(res?.offer || 0);
-              const offerPrice = isMultityped
-                ? offerPercentage
-                  ? actualPrice - actualPrice * (offerPercentage / 100)
-                  : actualPrice
-                : Number(res?.discountPrice || 0);
+      {/* ====================== */}
 
-              const isAddedtoCart = currentCartsData?.includes(res?._id);
-              console.log({ foodName, actualPrice, offerPercentage });
-              return (
-                <>
-                  <div className="flex w-full items-center justify-between gap-y-10 flex-row  shadow-none  rounded-lg px-0 py-0">
-                    <div className="center_div justify-start lg:justify-start sm:justify-start 2xl:justify-start gap-x-3 lg:gap-x-5 flex-row items-center w-full">
+      <div className="flex flex-col lg:gap-y-24 gap-y-4">
+        {productData.map((res, index) => {
+          console.log({ products: res });
+          return (
+            <Skeleton
+              key={index}
+              loading={loading}
+              active
+              className="w-[500px] h-[200px] "
+            >
+              <div className="flex w-full items-center justify-between gap-y-10 flex-row shadow-none  rounded-lg px-0 py-0">
+                {!res?.status ? (
+                  <div className="center_div justify-between lg:justify-start xl:justify-start 2xl:justify-start lg:gap-x-4 flex-row items-center w-full ">
+                    {/* image */}
+                    <div className="ultraSm:w-1/3 relative">
+                      <img
+                        src={res.image}
+                        alt=""
+                        className="ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover blur-sm"
+                      />
+                      <h1 className="absolute inset-0 lg:left-24 items-center flex px-3 text-red-700 font-bold">
+                        unavailable
+                      </h1>
+                    </div>
+                    {/* price details */}
+                    <div className="flex flex-col gap-y-1 px-2 ultraSm:w-1/3">
+                      <h1 className="text-[#3A3A3A] text-lg ultraSm:text-sm lg:text-3xl font-extrabold">
+                        {res.name}
+                      </h1>
+                      {res.offer != 0 ? (
+                        <div className="flex items-center gap-2">
+                          <div className="text-[#999999] relative ultraSm:hidden lg:block">
+                            &#8377; {res.price}
+                            <img
+                              src="/assets/icons/linecross.png"
+                              alt=""
+                              className="absolute top-1"
+                            />
+                          </div>
+                          {res?.offer ? (
+                            <Tag
+                              color="green"
+                              className="flex items-center bg-primary_color text-white rounded-md border-none"
+                            >
+                              <CiDiscount1 className="me-1 text-white text-sm font-bold" />{" "}
+                              {res?.offer} % Discount
+                            </Tag>
+                          ) : null}
+                        </div>
+                      ) : null}
+                      <div className="text-[#262525] ultraSm:text-sm  lg:text-xl flex items-center gap-x-2 ">
+                        Price{" "}
+                        <div className="text-[#292929] font-bold ">
+                          &#8377; {res.discountPrice}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* cart button */}
+                    <div className="lg:hidden block px-3 ultraSm:w-1/3 ">
+                      {currentCartsData.includes(res._id) ? (
+                        <div
+                          className={` text-white bg-gray-300  font-medium center_div rounded-2xl   min-w-[100px] cursor-pointer flex justify-between items-center `}
+                        >
+                          <div
+                            onClick={() => {
+                              handleDecrement(res._id);
+                            }}
+                            className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div text-black"
+                          >
+                            -
+                          </div>
+                          <div className=" font-bold text-black">
+                            {getQuantity(res._id)}
+                          </div>
+                          <div
+                            onClick={() => {
+                              handleIncrement(res._id);
+                            }}
+                            className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div text-black"
+                          >
+                            +
+                          </div>
+                        </div>
+                      ) : (
+                        <div className=" bg-black text-white  hover:bg-primary_color  font-medium center_div rounded-2xl px-2 py-3 text-sm cursor-not-allowed">
+                          Add
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="center_div justify-between lg:justify-start xl:justify-start 2xl:justify-start lg:gap-x-4 flex-row items-center w-full">
+                    {/* image */}
+                    {!res?.status ? (
                       <div className="ultraSm:w-1/3 relative">
                         <img
-                          src={res?.image}
-                          alt={res?.name}
-                          className={
-                            available
-                              ? "ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover "
-                              : "ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover blur-sm"
-                          }
+                          src={res.image}
+                          alt=""
+                          className="ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover blur-sm"
                         />
-                        {available ? null : (
-                          <h1 className="absolute inset-0 lg:left-24 items-center flex px-3 text-red-700 font-bold">
-                            unavailable
-                          </h1>
-                        )}
-                      </div>
-
-                      {/* price details */}
-                      <div className="flex flex-col gap-y-1 px-2 w-2/4 md-w-1/3 ">
-                        <h1 className="text-[#3A3A3A] text-lg ultraSm:text-sm lg:text-3xl font-extrabold">
-                          {foodName}
+                        <h1 className="absolute inset-0 lg:left-24 items-center flex px-3 text-red-700 font-bold">
+                          unavailable
                         </h1>
+                      </div>
+                    ) : (
+                      <div className="ultraSm:w-1/3 ">
+                        <img
+                          src={res.image}
+                          alt=""
+                          className="ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover "
+                        />
+                      </div>
+                    )}
+                    {/* price details */}
+                    <div className="flex flex-col gap-y-1 px-2 ultraSm:w-1/3">
+                      <h1 className="text-[#3A3A3A] text-lg ultraSm:text-sm lg:text-3xl font-extrabold">
+                        {res.name}
+                      </h1>
+                      {res.offer != 0 ? (
                         <div className="flex items-center gap-2">
-                          <div
-                            className="text-[#999999] relative ultraSm:hidden lg:block"
-                            style={{
-                              display: offerPercentage ? "block" : "none",
-                            }}
-                          >
-                            {actualPrice}
+                          <div className="text-[#999999] relative ultraSm:hidden lg:block">
+                            {/* &#8377; {res.price ? res.price : 0} */}
+                            {_.get(getPriceAndOffers(res), "actualPrice", 0)}
+                            {/* &#8377; {res.price?res.price:0} */}
                             <img
                               src="/assets/icons/linecross.png"
                               alt=""
@@ -669,81 +716,170 @@ const Cusinedetails = () => {
                             />
                           </div>
 
-                          <Tag
-                            color="green"
-                            className="flex items-center bg-primary_color text-white rounded-md border-none"
-                            style={{
-                              display: offerPercentage ? "flex" : "none",
-                            }}
-                          >
-                            <CiDiscount1 className="me-1 text-white text-sm font-bold" />{" "}
-                            {offerPercentage}% Discount
-                          </Tag>
+                          {!res?.offer ? (
+                            <Tag
+                              color="green"
+                              className="flex items-center bg-primary_color text-white rounded-md border-none"
+                            >
+                              <CiDiscount1 className="text-white text-sm font-bold me-1" />{" "}
+                              {res?.offer
+                                ? ` ${_.get(
+                                    getPriceAndOffers(res),
+                                    "OfferPercentage",
+                                    0
+                                  )}%  Discount `
+                                : null}
+                            </Tag>
+                          ) : (
+                            <Tag
+                              color="green"
+                              className="flex items-center bg-primary_color text-white rounded-md border-none"
+                            >
+                              <CiDiscount1 className="me-1 text-white text-sm font-bold" />{" "}
+                              {res?.offer} % Discount
+                            </Tag>
+                          )}
                         </div>
-                        <div className="text-[#262525] ultraSm:text-sm  lg:text-xl flex items-center gap-x-2 ">
-                          Price{" "}
-                          <div className="text-[#292929] font-bold ">
-                            &#8377; {offerPrice}
-                          </div>
+                      ) : null}
+                      <div className="text-[#262525] ultraSm:text-sm  lg:text-xl flex items-center gap-x-2 ">
+                        Price{" "}
+                        <div className="text-[#292929] font-bold ">
+                          &#8377;{" "}
+                          {_.get(getPriceAndOffers(res), "OfferPrice", 0)}
                         </div>
                       </div>
                     </div>
-                    <div className="!px-4 py-4  lg:block">
-                      {isAddedtoCart ? (
+
+                    {/* cart button */}
+                    <div className="lg:hidden block px-3 ultraSm:w-1/3 ">
+                      {currentCartsData.includes(res._id) ? (
                         <div
-                          className={` text-white bg-black    font-medium center_div rounded-2xl   min-w-[200px] cursor-pointer flex justify-between items-center `}
+                          className={` text-white bg-gray-300  font-medium center_div rounded-2xl   min-w-[100px] cursor-pointer flex justify-between items-center `}
                         >
                           <div
                             onClick={() => {
                               handleDecrement(res._id);
                             }}
-                            className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div"
+                            className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div text-black"
                           >
                             -
                           </div>
-                          <div className=" font-bold">
+                          <div className=" font-bold text-black">
                             {getQuantity(res._id)}
                           </div>
                           <div
                             onClick={() => {
                               handleIncrement(res._id);
                             }}
-                            className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div"
+                            className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div text-black"
                           >
                             +
                           </div>
                         </div>
                       ) : (
                         <div
-                          // onClick={() => {
-                          //   handleCartClick(res);
-                          // }}
                           onClick={() => {
-                            if (available) {
-                              document
-                                .getElementById("customization")
-                                .showModal();
-                              setCustomizeProduct(res);
-                            }
+                            document
+                              .getElementById("customization")
+                              .showModal();
+                            setCustomizeProduct(res);
                           }}
-                          className={
-                            available
-                              ? "bg-[#000000] text-white hover:bg-primary_color font-medium center_div lg:text-xl rounded-2xl px-3 py-3 min-w-[200px] cursor-pointer"
-                              : " bg-slate-500 text-white font-medium center_div lg:text-xl rounded-2xl px-3 py-3 min-w-[200px] cursor-not-allowed"
-                          }
+                          className={`${
+                            !res?.status
+                              ? " bg-black text-white  hover:bg-primary_color  font-medium center_div rounded-2xl px-2 py-3 text-sm cursor-not-allowed"
+                              : " bg-black text-white  hover:bg-primary_color  font-medium center_div rounded-2xl px-2 py-3 cursor-pointer text-sm"
+                          }`}
                         >
-                          Add to cart
+                          Add
                         </div>
                       )}
                     </div>
                   </div>
-                </>
-              );
-            })}
-          </div>
-          <Customization id={"customization"} product_data={customizeProduct} />
-        </>
-      )}
+                )}
+
+                {/* cart button */}
+                {!res?.status ? (
+                  <div className="!px-4 py-4 hidden lg:block">
+                    {currentCartsData.includes(res._id) ? (
+                      <div
+                        className={` text-white bg-black font-medium center_div rounded-2xl   min-w-[200px] cursor-pointer flex justify-between items-center `}
+                      >
+                        <div
+                          onClick={() => {
+                            handleDecrement(res._id);
+                          }}
+                          className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div"
+                        >
+                          -
+                        </div>
+                        <div className=" font-bold">{getQuantity(res._id)}</div>
+                        <div
+                          onClick={() => {
+                            handleIncrement(res._id);
+                          }}
+                          className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div"
+                        >
+                          +
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        // onClick={() => {
+                        //   document.getElementById("customization").showModal();
+                        //   setCustomizeProduct(res);
+                        // }}
+                        className="bg-[#000000] text-white  font-medium center_div lg:text-xl rounded-2xl px-3 py-4 min-w-[200px] cursor-not-allowed"
+                      >
+                        Add to cart
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="!px-4 py-4 hidden lg:block">
+                    {currentCartsData.includes(res._id) ? (
+                      <div
+                        className={` text-white bg-black    font-medium center_div rounded-2xl   min-w-[200px] cursor-pointer flex justify-between items-center `}
+                      >
+                        <div
+                          onClick={() => {
+                            handleDecrement(res._id);
+                          }}
+                          className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div"
+                        >
+                          -
+                        </div>
+                        <div className=" font-bold">{getQuantity(res._id)}</div>
+                        <div
+                          onClick={() => {
+                            handleIncrement(res._id);
+                          }}
+                          className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div"
+                        >
+                          +
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        // onClick={() => {
+                        //   handleCartClick(res);
+                        // }}
+                        onClick={() => {
+                          document.getElementById("customization").showModal();
+                          setCustomizeProduct(res);
+                        }}
+                        className="bg-[#000000] text-white hover:bg-primary_color font-medium center_div lg:text-xl rounded-2xl px-3 py-4 min-w-[200px] cursor-pointer"
+                      >
+                        Add to cart
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </Skeleton>
+          );
+        })}
+      </div>
+      <Customization id={"customization"} product_data={customizeProduct} />
     </div>
   );
 };

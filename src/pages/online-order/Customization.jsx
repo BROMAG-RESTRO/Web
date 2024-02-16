@@ -385,6 +385,11 @@ const Customization = ({ product_data, id }) => {
     }
   };
 
+  console.log({
+    product_data,
+    typeRef,
+    check: product_data?.types?.length && typeRef,
+  });
   return (
     <>
       <dialog id={id} className="modal">
@@ -552,7 +557,7 @@ const Customization = ({ product_data, id }) => {
                 ) : (
                   <button
                     className="btn w-1/2 h-16 hover:bg-black bg-black/90 text-lg text-white"
-                    disabled={!typeRef}
+                    disabled={product_data?.types?.length && !typeRef}
                     onClick={() => {
                       handleCartClick(product_data, typeRef);
                     }}
