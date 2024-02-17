@@ -297,6 +297,8 @@ const Delivery = () => {
     } catch (err) {}
   };
 
+  console.log({ selectedDeliveryAddress });
+
   return loading ? (
     <div>
       <LoadingScreen />
@@ -428,7 +430,13 @@ const Delivery = () => {
                 {/* proceed button */}
 
                 <div
-                  onClick={() => navigate(`/online-order-checkout`)}
+                  onClick={() =>
+                    navigate(`/online-order-checkout`, {
+                      state: {
+                        address: selectedDeliveryAddress,
+                      },
+                    })
+                  }
                   className="block lg:w-[450px] h-[80px] center_div bg-black cursor-pointer rounded-2xl text-[#EFEFEF] lg:text-xl font-semibold justify-center items-center py-7"
                 >
                   <h1 className="text-center ">Proceed & Continue to pay</h1>
