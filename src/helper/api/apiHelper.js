@@ -18,15 +18,12 @@ export const createFCMT = async (userId, fcmToken) => {
 export const sendOTP = async (number) => {
   return await axios.get(`${base_url}/sendOTP/${number}`);
 };
-export const verifyOTP = async (number,otp) => {
+export const verifyOTP = async (number, otp) => {
   return await axios.post(`${base_url}/verifyOTP`, {
     number: number,
-    otp: otp
+    otp: otp,
   });
 };
-
-
-
 
 // login
 export const makeUserToken = async (formData) => {
@@ -139,6 +136,9 @@ export const getDeliveryAddress = async () => {
 export const addDeliveryAddress = async (formData) => {
   return await axios.post(`${base_url}/add_delivery_address`, formData);
 };
+export const updateDeliveryAddress = async (formData) => {
+  return await axios.post(`${base_url}/update_delivery_address`, formData);
+};
 
 export const deleteDeliveryAddress = async (id) => {
   return await axios.delete(`${base_url}/delete_delivery_address/${id}`);
@@ -168,8 +168,6 @@ export const updateBoockings = async (formData) => {
 
 // Profile
 export const getMyOnlineOrder = async () => {
-
- 
   return await axios.get(`${base_url}/get_my_online_order`);
 };
 

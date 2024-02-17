@@ -4,6 +4,7 @@ import { memo, useEffect, useState } from "react";
 import {
   addDeliveryAddress,
   tokenVerification,
+  updateDeliveryAddress,
 } from "../../helper/api/apiHelper";
 import _ from "lodash";
 import { PhoneInput } from "react-international-phone";
@@ -63,7 +64,11 @@ const AddNewAddress = ({
     try {
       setLoading(true);
       if (updateId) {
-        return console.log(values);
+        await updateDeliveryAddress({
+          ...values,
+          _id: updateId?._id,
+          userId: updateId?.userId,
+        });
       } else {
         await addDeliveryAddress(values);
       }
@@ -74,6 +79,7 @@ const AddNewAddress = ({
         message: "The address has been added successfully",
       });
     } catch (err) {
+      console.log(err);
       notification.error({ message: "Something went wrong" });
     } finally {
       setLoading(false);
