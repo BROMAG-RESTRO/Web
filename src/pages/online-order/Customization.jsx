@@ -48,7 +48,7 @@ const Customization = ({ product_data, id }) => {
       product_data?.types?.length > 0
     ) {
       for (const type of product_data?.types) {
-        if (type.TypeOfferPrice && type.TypeOfferPrice > maxPrice) {
+        if (type?.TypeOfferPrice && type?.TypeOfferPrice > maxPrice) {
           maxPrice = type.TypeOfferPrice;
           correspondingOfferPercentage = type.TypeOfferPercentage;
         } else if (type.TypePrice && type.TypePrice > maxPrice) {
@@ -75,7 +75,12 @@ const Customization = ({ product_data, id }) => {
     }
   }, [product_data]);
 
-  const handleTypeChange = (selectedType, selectedPrice, id) => {
+  const handleTypeChange = (
+    selectedType,
+    selectedPrice,
+    id,
+    offerPercentage
+  ) => {
     setPrice(
       typeof selectedPrice === "number"
         ? selectedPrice
@@ -87,6 +92,7 @@ const Customization = ({ product_data, id }) => {
         : parseInt(selectedPrice)
     );
     setTypeRef(id);
+    setTypeOfferPer(offerPercentage);
   };
 
   // =============
@@ -385,6 +391,11 @@ const Customization = ({ product_data, id }) => {
     }
   };
 
+  console.log({
+    product_data,
+    typeRef,
+    check: product_data?.types?.length && typeRef,
+  });
   return (
     <>
       <dialog id={id} className="modal">
@@ -429,7 +440,7 @@ const Customization = ({ product_data, id }) => {
                     )}
 
                   <div>
-                    <h1 className="text-xl text-start item_name">
+                    <h1 className="text-xl text-start item_name uppercase">
                       {product_data?.name}
                     </h1>
                   </div>
@@ -468,11 +479,12 @@ const Customization = ({ product_data, id }) => {
                                       data?.TypeOfferPrice
                                         ? data?.TypeOfferPrice
                                         : data?.TypePrice,
-                                      data?._id
+                                      data?._id,
+                                      data?.TypeOfferPercentage
                                     )
                                   }
                                 />
-                                <span className="item__type--name">
+                                <span className="item__type--name uppercase">
                                   {data?.Type}
                                 </span>
                                 <div></div>
@@ -552,7 +564,7 @@ const Customization = ({ product_data, id }) => {
                 ) : (
                   <button
                     className="btn w-1/2 h-16 hover:bg-black bg-black/90 text-lg text-white"
-                    disabled={!typeRef}
+                    disabled={product_data?.types?.length && !typeRef}
                     onClick={() => {
                       handleCartClick(product_data, typeRef);
                     }}
