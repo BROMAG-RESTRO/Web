@@ -32,9 +32,12 @@ import { IoSearch } from "react-icons/io5";
 import { IoIosArrowBack } from "react-icons/io";
 import Customization from "./Customization";
 import axios from "axios";
+import "../../assets/css/cusines-details.css";
 let base_url = import.meta.env.VITE_base_url;
+import { useMediaQuery } from "react-responsive";
 
 const Cusinedetails = () => {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [subCategory, setSubCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentSubCategory, setCurrentSubCategory] = useState("");
@@ -630,16 +633,16 @@ const Cusinedetails = () => {
               console.log({ foodName, actualPrice, offerPercentage });
               return (
                 <>
-                  <div className="flex w-full items-center justify-between gap-y-10 flex-row  shadow-none  rounded-lg px-0 py-0">
-                    <div className="center_div justify-start lg:justify-start sm:justify-start 2xl:justify-start gap-x-3 lg:gap-x-5 flex-row items-center w-full">
-                      <div className="ultraSm:w-1/3 relative">
+                  <div className="food-container">
+                    <div className="food__image_wrapper">
+                      <div className="relative">
                         <img
                           src={res?.image}
                           alt={res?.name}
                           className={
                             available
-                              ? "ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover "
-                              : "ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover blur-sm"
+                              ? "ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover food--image"
+                              : "ultraSm:w-36 md:w-40 md:h-36 lg:w-72 ultraSm:h-28 lg:h-44 rounded-lg object-cover blur-sm food--image"
                           }
                         />
                         {available ? null : (
@@ -648,50 +651,51 @@ const Cusinedetails = () => {
                           </h1>
                         )}
                       </div>
+                    </div>
 
-                      {/* price details */}
-                      <div className="flex flex-col gap-y-1 px-2 w-2/4 md-w-1/3 ">
-                        <h1 className="text-[#3A3A3A] text-lg ultraSm:text-sm lg:text-3xl font-extrabold">
-                          {foodName}
-                        </h1>
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="text-[#999999] relative ultraSm:hidden lg:block"
-                            style={{
-                              display: offerPercentage ? "block" : "none",
-                            }}
-                          >
-                            {actualPrice}
-                            <img
-                              src="/assets/icons/linecross.png"
-                              alt=""
-                              className="absolute top-1"
-                            />
-                          </div>
-
-                          <Tag
-                            color="green"
-                            className="flex items-center bg-primary_color text-white rounded-md border-none"
-                            style={{
-                              display: offerPercentage ? "flex" : "none",
-                            }}
-                          >
-                            <CiDiscount1 className="me-1 text-white text-sm font-bold" />{" "}
-                            {offerPercentage}% Discount
-                          </Tag>
+                    {/* price details */}
+                    <div className="food__details_wrapper">
+                      <h1 className="text-[#3A3A3A] text-lg ultraSm:text-sm lg:text-3xl font-extrabold uppercase food_text">
+                        {foodName}
+                      </h1>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="text-[#999999] relative ultraSm:hidden lg:block"
+                          style={{
+                            display: offerPercentage ? "block" : "none",
+                          }}
+                        >
+                          {actualPrice}
+                          <img
+                            src="/assets/icons/linecross.png"
+                            alt=""
+                            className="absolute top-1"
+                          />
                         </div>
-                        <div className="text-[#262525] ultraSm:text-sm  lg:text-xl flex items-center gap-x-2 ">
-                          Price{" "}
-                          <div className="text-[#292929] font-bold ">
-                            &#8377; {offerPrice}
-                          </div>
+
+                        <Tag
+                          color="green"
+                          className="flex items-center bg-primary_color text-white rounded-md border-none"
+                          style={{
+                            display: offerPercentage ? "flex" : "none",
+                          }}
+                        >
+                          <CiDiscount1 className="me-1 text-white text-sm font-bold" />{" "}
+                          {offerPercentage}% Discount
+                        </Tag>
+                      </div>
+                      <div className="text-[#262525] ultraSm:text-sm  lg:text-xl flex items-center gap-x-2 ">
+                        Price{" "}
+                        <div className="text-[#292929] font-bold ">
+                          &#8377; {offerPrice}
                         </div>
                       </div>
                     </div>
-                    <div className="!px-4 py-4  lg:block">
+
+                    <div className="food__actions">
                       {isAddedtoCart ? (
                         <div
-                          className={` text-white bg-black    font-medium center_div rounded-2xl   min-w-[200px] cursor-pointer flex justify-between items-center `}
+                          className={` text-white bg-black    font-medium center_div rounded-2xl   min-w-[100px] sm-min-w-[200px] md-min-w-[200px]  lg-min-w-[200px]  cursor-pointer flex justify-between items-center `}
                         >
                           <div
                             onClick={() => {
@@ -728,11 +732,11 @@ const Cusinedetails = () => {
                           }}
                           className={
                             available
-                              ? "bg-[#000000] text-white hover:bg-primary_color font-medium center_div lg:text-xl rounded-2xl px-3 py-3 min-w-[200px] cursor-pointer"
-                              : " bg-slate-500 text-white font-medium center_div lg:text-xl rounded-2xl px-3 py-3 min-w-[200px] cursor-not-allowed"
+                              ? "hover:bg-primary_color font-medium  cursor-pointer cart__btn"
+                              : " cart__btn cart_disabled font-medium  cursor-not-allowed"
                           }
                         >
-                          Add to cart
+                          {isMobile ? "Add" : "Add to cart"}
                         </div>
                       )}
                     </div>

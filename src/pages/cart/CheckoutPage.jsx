@@ -38,6 +38,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 const CheckoutPage = () => {
   const [changeRight, setChangeRight] = useState(false);
   const location = useLocation();
+  const address = location?.state?.address;
   const [allDeliveryAddress, setAllDeliveryAddress] = useState([]);
   const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,7 @@ const CheckoutPage = () => {
     (state) => state.auth.foodInstructions
   );
   const [paymentMethod, setPaymentMethod] = useState("COD");
-
+  console.log({ address });
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -149,7 +150,7 @@ const CheckoutPage = () => {
         itemPrice: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
         payment_mode: paymentMethod,
-        location: selectedDeliveryAddress,
+        location: address,
         instructions: ProductInstructions,
         status: "placed",
         orderId:

@@ -140,18 +140,18 @@ function Navbar() {
         "/delivery-address",
       ],
     },
-    // {
-    //   id: 3,
-    //   name: "Dining",
-    //   link: "/dining",
-    //   navigations: [
-    //     "/dining",
-    //     "/dining-cusines",
-    //     "/dining-cart",
-    //     "/book-my-tables",
-    //     "/dining-payment",
-    //   ],
-    // },
+    {
+      id: 3,
+      name: "Dining",
+      link: "/dining",
+      navigations: [
+        "/dining",
+        "/dining-cusines",
+        "/dining-cart",
+        "/book-my-tables",
+        "/dining-payment",
+      ],
+    },
     {
       id: 4,
       name: "Call for order",
