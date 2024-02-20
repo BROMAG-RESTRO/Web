@@ -370,7 +370,7 @@ const TakeAwayOrders = () => {
             const foodId = _.get(res, "id", "");
             const foodInstructions = _.get(instructions, "[0]", {});
             const foodInstruction = _.get(foodInstructions, foodId, []);
-            console.log(foodId, foodInstructions, foodInstruction);
+            console.log(res,foodId, foodInstructions, foodInstruction);
             return (
               <Card loading={loading} key={index}>
                 <Card.Meta
@@ -388,18 +388,18 @@ const TakeAwayOrders = () => {
                   description={
                     <div>
                       {_.get(res, "foodQuantity", "")} &times; ₹
-                      {_.get(res, "originalPrice", "")} -{res.type}
+                      {_.get(res, "foodPrice", "")} -{res.type}
                     </div>
                   }
                 />
-                <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
+               {foodInstruction?.length? <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
                   <p className="py-1 font-bold">Instructions*</p>
                   {foodInstruction?.map((instruction, idx) => (
                     <p key={idx} className="text-sm">
                       - {instruction}
                     </p>
                   ))}
-                </div>
+                </div>:null}
               </Card>
             );
           })}

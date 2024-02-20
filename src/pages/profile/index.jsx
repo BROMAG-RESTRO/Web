@@ -67,13 +67,13 @@ const Profile = () => {
       icon: <IoIosCall />,
       goto: "/profile-call-for-order",
     },
-    // {
-    //   id: 4,
-    //   name: "Your  Table Bookings",
-    //   component: <BookedTables />,
-    //   icon: <MdOutlineTableBar />,
-    //   goto: "/profile-table-booking",
-    // },
+    {
+      id: 4,
+      name: "Your Table Bookings",
+      component: <BookedTables />,
+      icon: <MdOutlineTableBar />,
+      goto: "/profile-table-booking",
+    },
     {
       id: 5,
       name: "Your Delivery Address",
