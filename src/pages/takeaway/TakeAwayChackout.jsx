@@ -92,6 +92,8 @@ const TakeAwayChackout = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  console.log({makeCartforOrder,cartData})
+
   const handleCartClick = async () => {
     let path = _.get(location, "pathname", "");
 
@@ -241,9 +243,14 @@ const TakeAwayChackout = () => {
         const selectedType = _.get(res, "productRef.types", []).find(
           (type) => type._id === typeRefId
         );
-        const price = selectedType
-          ? selectedType.price
-          : _.get(res, "productRef.discountPrice", "");
+        const productRef = _.get(res, "productRef", "");
+        const price = typeRefId.Type
+          ? typeRefId.TypeOfferPrice
+            ? typeRefId.TypeOfferPrice
+            : typeRefId.TypePrice
+          : productRef.discountPrice
+          ? parseFloat(productRef.discountPrice)
+          : parseFloat(productRef.price);
 
         return Number(price) * res.quantity;
       })
@@ -305,20 +312,25 @@ const TakeAwayChackout = () => {
   console.log({ cartData });
   const getFoodDetails = () => {
     let food_data = cartData.map((res) => {
+    
       const typeRefId = _.get(res, "typeRef", "");
-      const product = _.get(res, "productRef", {});
-      const selectedType = _.get(res, "productRef.types", []).find(
-        (type) => type._id === typeRefId
-      );
-      console.log({ product });
+      const productRef = _.get(res, "productRef", "");
+      const price = typeRefId.Type
+      ? typeRefId.TypeOfferPrice
+        ? typeRefId.TypeOfferPrice
+        : typeRefId.TypePrice
+      : productRef.discountPrice
+      ? parseFloat(productRef.discountPrice)
+      : parseFloat(productRef.price);
+   
       return {
         id: res._id,
         pic: _.get(res, "productRef.image", ""),
         foodName: _.get(res, "productRef.name", ""),
-        foodPrice: _.get(res, "productRef.price", ""),
+        foodPrice:price,
         originalPrice: _.get(res, "productRef.discountPrice", ""),
         foodQuantity: _.get(res, "quantity", ""),
-        type: selectedType ? selectedType.type : "Regular",
+        type: typeRefId?.Type ? typeRefId.Type : "Regular",
       };
     });
     return food_data;
@@ -326,6 +338,8 @@ const TakeAwayChackout = () => {
   console.log({ productInstructions });
   const handlePlaceOrder = async () => {
     let food_data = getFoodDetails();
+ let prices=getTotalAmount()
+
     try {
       setLoadingPlaceOrder(true);
       let formData = {

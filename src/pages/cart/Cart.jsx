@@ -545,7 +545,7 @@ navigate('/online-order')
                         {/* title */}
                         <div className="flex items-start justify-between px-2 ">
                           <div className="flex flex-col gap-y-1">
-                            <h1 className="text-[#3A3A3A] font-semibold lg:text-2xl text-[14px]">
+                            <h1 className="text-[#3A3A3A] font-semibold lg:text-2xl text-[14px] uppercase">
                               {_.get(res, "productRef.name", "")}
                             </h1>
                             {/* <div className="flex items-center gap-x-2">

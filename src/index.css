@@ -75,6 +75,15 @@ textarea:where(.css-dev-only-do-not-override-nllxry).ant-input {
     color: inherit !important;
 }
 
+:where(.css-dev-only-do-not-override-1xg9z9n).ant-tag.ant-tag-green {
+    /* color: #389e0d; */
+    /* background: #f6ffed; */
+    /* border-color: #b7eb8f; */
+    background-color: #df9300 !important;
+    border-color: #df9300 !important;
+    color:#fff
+}
+
 .ant-select-selector {
     background: #eeeeee !important  ;
 }
