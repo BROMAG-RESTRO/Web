@@ -108,3 +108,17 @@ textarea:where(.css-dev-only-do-not-override-nllxry).ant-input {
 body ::-webkit-scrollbar {
     display: none ;
 }
+
+.cart-page
+:where(.css-dev-only-do-not-override-1xg9z9n).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+    color: #fff;
+    border-color: inherit;
+    background: inherit;
+}
+
+
+:where(.css-dev-only-do-not-override-1xg9z9n).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+    color: inherit;
+    border-color: inherit;
+    background: #000;
+}

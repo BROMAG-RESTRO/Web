@@ -404,7 +404,11 @@ const Customization = ({ product_data, id }) => {
             <form method="dialog">
               <div className="sticky top-0 z-50 flex justify-end ">
                 <button
-                  onClick={() => window.location.reload()}
+                  onClick={() => {
+                    document
+                    ?.getElementById("customization")
+                    .hideModal();
+                  }}
                   className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-50 text-black bg-white/50 hover:bg-white/50 hover:text-black"
                 >
                   ✕

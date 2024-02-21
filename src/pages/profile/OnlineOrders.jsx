@@ -361,6 +361,7 @@ const OnlineOrders = () => {
             const foodId = _.get(res, "id", "");
             const foodInstructions = _.get(instructions, "[0]", {});
             const foodInstruction = _.get(foodInstructions, foodId, []);
+
             return (
               <Card loading={loading} key={index}>
                 <Card.Meta
@@ -385,14 +386,14 @@ const OnlineOrders = () => {
                     </div>
                   }
                 />
-                <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
+              {foodInstruction?.length ? <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
                   <p className="py-1 font-bold">Instructions*</p>
                   {foodInstruction?.map((instruction, idx) => (
                     <p key={idx} className="text-sm">
                       - {instruction}
                     </p>
                   ))}
-                </div>
+                </div>:null}
               </Card>
             );
           })}
