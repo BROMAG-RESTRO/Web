@@ -530,7 +530,7 @@ navigate('/online-order')
                 return (
                   <div
                     key={index}
-                    className="relative justify-between items-center rounded-2xl shadow-2xl flex flex-col overflow-hidden w-full bg-white"
+                    className="relative justify-between items-center rounded-2xl shadow-2xl flex flex-col overflow-hidden w-full bg-white cart-page"
                   >
                     <div className="  justify-between items-center rounded-t-2xl shadow-2xl flex flex-row overflow-hidden w-full">
                       <div className="ultraSm:w-[30%] p-3 ">
@@ -596,8 +596,8 @@ navigate('/online-order')
                               </div>{" "}
                               <div className="lg:text-xl text-sm text-[#3A3A3A] font-medium">
                                 &#8377; {displayPrice}{" "}
-                                <span className="text-[#2f2e2e] lg:text-sm text-[12px] font-bold">
-                                  {displayType}
+                                <span className="text-[#2f2e2e] lg:text-sm text-[12px] font-bold capitalize">
+                                  ({displayType})
                                 </span>
                               </div>
                         </div>
@@ -852,9 +852,9 @@ navigate('/online-order')
                     <Button
                       block
                       loading={loadingPlaceOrder}
-                      className=" lg:h-[80px] h-[50px] bg-[#292929]   rounded-2xl cursor-pointer"
+                      className=" lg:h-[80px] h-[50px] bg-[#292929]   rounded-2xl cursor-pointer hover:bg-[#292929]"
                     >
-                      <div className="center_div font-semibold lg:text-xl text-white">
+                      <div className="center_div font-semibold lg:text-xl text-white hover:text-yellow-500">
                         {_.get(location, "pathname", "") === "/dining-cart"
                           ? "Place Order"
                           : "  Confirm and continue"}
