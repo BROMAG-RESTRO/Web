@@ -40,7 +40,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen bg-[url('/assets/images/loginhome.png')] pb-10 bg-cover bg-no-repeat flex items-center justify-center flex-col gap-y-4 lg:px-0 px-4">
+    <div className="w-screen min-h-screen bg-[url('/assets/images/loginhome.png')] pb-10 bg-cover bg-no-repeat flex items-center justify-center flex-col gap-y-4 lg:px-0 px-4 signup_wrap" >
       <img
         src="/assets/logo/logo.png"
         alt=""
@@ -53,15 +53,16 @@ const Signup = () => {
 
       <Form
         id="signup"
-        className="flex flex-col gap-y-2 lg:w-fit w-full pt-4"
+        className="flex flex-col gap-y-2  w-full  pt-4 items-center"
         form={form}
         onFinish={handleFinish}
       >
         <Form.Item
           name="user"
           rules={[{ required: true, message: "Enter user name Here" }]}
+          className="signup--input"
         >
-          <div className="rounded-[10px] center_div lg:w-[400px]  md:w-[400px] w-[98%] bg-white">
+          <div className="rounded-[10px] center_div  w-[98%] bg-white">
             <div className="w-[10%] flex justify-center items-center ">
               <FaUser className="text-xl text-black" />
             </div>
@@ -75,13 +76,14 @@ const Signup = () => {
           </div>
         </Form.Item>
         <Form.Item
+            className="signup--input"
           name="email"
           rules={[
             { required: true, message: "Enter E-mail Here" },
             { type: "email", message: "Enter Valid E-mail" },
           ]}
         >
-          <div className="rounded-[10px] center_div lg:w-[400px]  md:w-[400px] w-[98%] bg-white">
+          <div className="rounded-[10px] center_div  w-[98%] bg-white">
             <div className="w-[10%] flex justify-center items-center ">
               <MdOutlineEmail className="text-xl text-black" />
             </div>
@@ -95,6 +97,7 @@ const Signup = () => {
           </div>
         </Form.Item>
         <Form.Item
+            className="signup--input"
           name="phoneNumber"
           rules={[
             {
@@ -103,7 +106,7 @@ const Signup = () => {
             },
           ]}
         >
-          <div className="rounded-[10px] center_div lg:w-[400px]  md:w-[400px] w-[98%] bg-white">
+          <div className="rounded-[10px] center_div  w-[98%] bg-white">
             <div className="w-[10%] flex justify-center items-center ">
               <FaPhoneAlt className="text-xl text-black" />
             </div>

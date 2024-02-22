@@ -117,8 +117,26 @@ body ::-webkit-scrollbar {
 }
 
 
-:where(.css-dev-only-do-not-override-1xg9z9n).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
-    color: inherit;
+
+
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+    /* Your hover styles here */
+    color: #df9300 !important;
     border-color: inherit;
     background: #000;
-}
+    /* Add any other styles you want to apply on hover */
+  }
+ .signup_wrap
+  .signup--input{
+    width: 100%;
+  }
+  .signup_wrap
+  #signup{
+    width: 50%;
+  }
+
+  @media screen and (max-width:756px){
+   .signup_wrap #signup{
+        width: 98%;
+      }
+  }
