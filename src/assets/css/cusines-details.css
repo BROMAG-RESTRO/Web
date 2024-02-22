@@ -76,8 +76,12 @@ width: 20%;
             }
             .food-container
             .food--image{
-                width: 100%;
-                object-fit: contain;
+          
+    width: 100%;
+  
+    object-fit: cover;
+    height: 300px;
+
             }
 
             .food__image_wrapper{

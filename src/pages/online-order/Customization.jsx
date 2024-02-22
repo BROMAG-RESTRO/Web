@@ -421,7 +421,7 @@ const Customization = ({ product_data, id }) => {
                   className="rounded-xl h-[300px] object-cover w-full"
                 />
                 <div className="flex mt-5 justify-between px-3 items-center border-b-2 border-black/25 py-5 relative  price__wrapper">
-                  {product_data?.offer && !isMultipleTypeMenu && (
+                  {Number(product_data?.offer) && !isMultipleTypeMenu ? (
                     <Tag
                       color="green"
                       className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
@@ -429,7 +429,7 @@ const Customization = ({ product_data, id }) => {
                       <CiDiscount1 className="text-white text-sm font-bold" />
                       {product_data?.offer}% Discount
                     </Tag>
-                  )}
+                  ):null}
 
                   {product_data?.types.length > 0 &&
                     isMultipleTypeMenu &&
