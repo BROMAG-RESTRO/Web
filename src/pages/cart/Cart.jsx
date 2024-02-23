@@ -597,7 +597,7 @@ navigate('/online-order')
                               <div className="lg:text-xl text-sm text-[#3A3A3A] font-medium">
                                 &#8377; {displayPrice}{" "}
                                 <span className="text-[#2f2e2e] lg:text-sm text-[12px] font-bold capitalize">
-                                  ({displayType})
+                                  ({displayType || "Regular"})
                                 </span>
                               </div>
                         </div>

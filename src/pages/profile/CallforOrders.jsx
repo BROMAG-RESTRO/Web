@@ -206,7 +206,7 @@ const CallforOrders = () => {
           </div>
         ) : (
           <div className="profile_cards_grid">
-            {orders.map((res, index) => {
+            {orders?.map((res, index) => {
               return (
                 <div className=" !w-[98%] m-auto" key={index}>
                   <Badge.Ribbon
@@ -253,13 +253,13 @@ const CallforOrders = () => {
                         <Card.Meta
                           avatar={
                             <Avatar
-                              src={_.get(res, "orderedFood[0].image", "")}
+                              src={_.get(res, "orderedFood[0].pic", "")}
                               className="!w-[50px] !h-[50px] !rounded-lg !shadow-inner"
                             />
                           }
                           title={
                             <p className="text-ellipsis overflow-hidden">
-                              {_.get(res, "orderedFood[0].food", "")}
+                              {_.get(res, "orderedFood[0].foodName", "")}
                             </p>
                           }
                           description={
@@ -363,7 +363,7 @@ const CallforOrders = () => {
               </div>
               <div className="flex items-center justify-between border-b-2">
                 <p>Items Price</p> &#8377;{" "}
-                {_.get(currentSelected, "item_price", "")}
+                {_.get(currentSelected, "billAmount", "")}
               </div>
               <div className="flex items-center justify-between border-b-2">
                 <p>Total GST</p> &#8377; {_.get(currentSelected, "gst", "")}
@@ -394,22 +394,23 @@ const CallforOrders = () => {
         <div className="flex flex-col gap-y-2 px-2">
           <p className="text-dark3a_color text-lg font-bold">Menus</p>
           {_.get(currentSelected, "orderedFood", []).map((res, index) => {
+           let instruction=currentSelected?.callForOrderInstrcution?.[0]?.[res.id]
             return (
               <Card loading={loading} key={index}>
                 <Card.Meta
                   avatar={
                     <Avatar
-                      src={res.image}
+                      src={res.pic}
                       className="!w-[80px] !h-[80px] !rounded-lg"
                     />
                   }
                   title={
-                    <div className="capitalize">{_.get(res, "food", "")}</div>
+                    <div className="capitalize">{_.get(res, "foodName", "")}</div>
                   }
                   description={
                     <div>
-                      {res.quantity}  &times; ₹
-                      {res.price} - 
+                      {res.foodQuantity}  &times; ₹
+                      {res.foodPrice} - 
                       {' '+ res.type}
 
                     </div>
@@ -425,23 +426,19 @@ const CallforOrders = () => {
                   }
                 />
 
-                      <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
+                     {instruction? <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
                       <p className="py-1 font-bold text-black">Instructions*</p>
-                      {currentSelected?.callForOrderInstrcution?.map((data, idx) => {
-                        return data?.productId === res?.food ? (
-                          <pre key={idx} className="text-sm text-black">
-      {data?.instruction.split('\n').map((line, index) => (
+
+                          <pre key={res?.id} className="text-sm text-black">
+      {instruction.split('\n').map((line, index) => (
         <React.Fragment key={index}>
           - {line}
           <br />
         </React.Fragment>
       ))}
     </pre>
-  ) : null;
-})}
 
-
-                          </div>
+                          </div>:null}
 
               </Card>
             );
