@@ -59,7 +59,7 @@ const Cusinedetails = () => {
   const navigate = useNavigate();
   const currentLocation = useHref();
 
-  console.log(productData, "productdata");
+  console.log(filteredData, "filteredData");
 
   const fetchSearchData = async () => {
     try {
@@ -451,6 +451,7 @@ const Cusinedetails = () => {
                     showSearch
                     placeholder="Other cusines"
                     optionFilterProp="children"
+                    value={filteredData?.[0]?._id}
                     className=" !w-full !border-[#494949] focus:!border-[#494949] hover:!border-[#494949] ultraSm:w-[180px] cursor-pointer"
                     onChange={(e) => {
                       handleChange(e);
@@ -485,41 +486,43 @@ const Cusinedetails = () => {
               </div>
             </div>
 
-            <div className="p-2 pl-5 items-center flex px-3 gap-4">
-              <div className="flex items-center	gap-1">
-                <div>Non-Veg</div>
-                <input
-                  checked={isNonVegOnly}
-                  onChange={() => {
-                    setVegOnly(false);
-                    setNonVegOnly(!isNonVegOnly);
-                  }}
-                  type="checkbox"
-                  className="toggle toggle-lg non-veg-checkbox"
-                  style={{
-                    borderColor: `${isNonVegOnly ? `red` : "grey"}`,
-                    backgroundColor: `${isNonVegOnly ? `red` : "grey"}`,
-                  }}
-                />
-              </div>
+            {filteredData?.[0]?.type === "food" ? (
+              <div className="p-2 pl-5 items-center flex px-3 gap-4">
+                <div className="flex items-center	gap-1">
+                  <div>Non-Veg</div>
+                  <input
+                    checked={isNonVegOnly}
+                    onChange={() => {
+                      setVegOnly(false);
+                      setNonVegOnly(!isNonVegOnly);
+                    }}
+                    type="checkbox"
+                    className="toggle toggle-lg non-veg-checkbox"
+                    style={{
+                      borderColor: `${isNonVegOnly ? `red` : "grey"}`,
+                      backgroundColor: `${isNonVegOnly ? `red` : "grey"}`,
+                    }}
+                  />
+                </div>
 
-              <div className="flex items-center	gap-1">
-                <div>Veg</div>
-                <input
-                  checked={isVegOnly}
-                  onChange={() => {
-                    setNonVegOnly(false);
-                    setVegOnly(!isVegOnly);
-                  }}
-                  type="checkbox"
-                  className="toggle toggle-lg veg-checkbox"
-                  style={{
-                    borderColor: `${isVegOnly ? `green` : "grey"}`,
-                    backgroundColor: `${isVegOnly ? `green` : "grey"}`,
-                  }}
-                />
+                <div className="flex items-center	gap-1">
+                  <div>Veg</div>
+                  <input
+                    checked={isVegOnly}
+                    onChange={() => {
+                      setNonVegOnly(false);
+                      setVegOnly(!isVegOnly);
+                    }}
+                    type="checkbox"
+                    className="toggle toggle-lg veg-checkbox"
+                    style={{
+                      borderColor: `${isVegOnly ? `green` : "grey"}`,
+                      backgroundColor: `${isVegOnly ? `green` : "grey"}`,
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <div className="px-3 relative">
               {/* <IoSearch className="absolute top-5 left-7 text-2xl text-gray-500" /> */}
