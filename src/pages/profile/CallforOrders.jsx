@@ -113,7 +113,6 @@ const CallforOrders = () => {
             <div
               className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
               onClick={() => {
-              
                 setCurrentSelected(data);
               }}
             >
@@ -394,7 +393,7 @@ const CallforOrders = () => {
         <div className="flex flex-col gap-y-2 px-2">
           <p className="text-dark3a_color text-lg font-bold">Menus</p>
           {_.get(currentSelected, "orderedFood", []).map((res, index) => {
-           let instruction=currentSelected?.callForOrderInstrcution?.[0]?.[res.id]
+            let instruction = res?.instruction;
             return (
               <Card loading={loading} key={index}>
                 <Card.Meta
@@ -405,14 +404,14 @@ const CallforOrders = () => {
                     />
                   }
                   title={
-                    <div className="capitalize">{_.get(res, "foodName", "")}</div>
+                    <div className="capitalize">
+                      {_.get(res, "foodName", "")}
+                    </div>
                   }
                   description={
                     <div>
-                      {res.foodQuantity}  &times; ₹
-                      {res.foodPrice} - 
-                      {' '+ res.type}
-
+                      {res.foodQuantity} &times; ₹{res.foodPrice} -
+                      {" " + res.type}
                     </div>
                     // <div key={res._id}>
                     //   {currentSelected?.types?.map((data) => {
@@ -426,20 +425,22 @@ const CallforOrders = () => {
                   }
                 />
 
-                     {instruction? <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
-                      <p className="py-1 font-bold text-black">Instructions*</p>
+                {instruction ? (
+                  <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
+                    <p className="py-1 font-bold text-black">Instructions*</p>
 
-                          <pre key={res?.id} className="text-sm text-black">
-      {instruction.split('\n').map((line, index) => (
-        <React.Fragment key={index}>
-          - {line}
-          <br />
-        </React.Fragment>
-      ))}
-    </pre>
-
-                          </div>:null}
-
+                    <pre key={res?.id} className="text-sm text-black">
+                      {instruction.split("\n").map((line, index) => {
+                        return line ? (
+                          <React.Fragment key={index}>
+                            - {line}
+                            <br />
+                          </React.Fragment>
+                        ) : null;
+                      })}
+                    </pre>
+                  </div>
+                ) : null}
               </Card>
             );
           })}
