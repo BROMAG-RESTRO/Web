@@ -92,7 +92,7 @@ const TakeAwayChackout = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log({makeCartforOrder,cartData})
+  console.log({ makeCartforOrder, cartData });
 
   const handleCartClick = async () => {
     let path = _.get(location, "pathname", "");
@@ -312,22 +312,21 @@ const TakeAwayChackout = () => {
   console.log({ cartData });
   const getFoodDetails = () => {
     let food_data = cartData.map((res) => {
-    
       const typeRefId = _.get(res, "typeRef", "");
       const productRef = _.get(res, "productRef", "");
       const price = typeRefId.Type
-      ? typeRefId.TypeOfferPrice
         ? typeRefId.TypeOfferPrice
-        : typeRefId.TypePrice
-      : productRef.discountPrice
-      ? parseFloat(productRef.discountPrice)
-      : parseFloat(productRef.price);
-   
+          ? typeRefId.TypeOfferPrice
+          : typeRefId.TypePrice
+        : productRef.discountPrice
+        ? parseFloat(productRef.discountPrice)
+        : parseFloat(productRef.price);
+
       return {
         id: res._id,
         pic: _.get(res, "productRef.image", ""),
         foodName: _.get(res, "productRef.name", ""),
-        foodPrice:price,
+        foodPrice: price,
         originalPrice: _.get(res, "productRef.discountPrice", ""),
         foodQuantity: _.get(res, "quantity", ""),
         type: typeRefId?.Type ? typeRefId.Type : "Regular",
@@ -338,7 +337,7 @@ const TakeAwayChackout = () => {
   console.log({ productInstructions });
   const handlePlaceOrder = async () => {
     let food_data = getFoodDetails();
- let prices=getTotalAmount()
+    let prices = getTotalAmount();
 
     try {
       setLoadingPlaceOrder(true);
@@ -469,7 +468,7 @@ const TakeAwayChackout = () => {
         {/* ==================================== */}
 
         <div className="flex flex-col gap-y-4  mt-4 p-5 justify-center items-center ">
-          <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
+          <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border payment_disabled">
             <CiCreditCard1 className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
               Credit / Debit cards
@@ -477,6 +476,7 @@ const TakeAwayChackout = () => {
             <label className="flex items-center">
               <input
                 type="radio"
+                disabled
                 name="paymentMethod"
                 className="radio  ml-2"
                 checked={paymentMethod === "Credit/Debit"}
@@ -484,13 +484,14 @@ const TakeAwayChackout = () => {
               />
             </label>
           </div>
-          <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
+          <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border payment_disabled">
             <LuMonitorSmartphone className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
               UPI Payment
             </span>
             <label className="flex items-center">
               <input
+                disabled
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
