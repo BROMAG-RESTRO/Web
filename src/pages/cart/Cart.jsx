@@ -28,7 +28,7 @@ const Cart = () => {
 
   const [instructionInput, setInstructionInput] = useState(false);
   const [instructions, setInstructions] = useState([]);
-  const [openInstruction,setOpenInstruction]=useState([])
+  const [openInstruction, setOpenInstruction] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [showMoreInstructions, setShowMoreInstructions] = useState([]);
 
@@ -63,21 +63,21 @@ const Cart = () => {
   const handleShowMore = (productId) => {
     setShowAll(true);
 
-    let data= [...new Set([...showMoreInstructions,productId])]
-    setShowMoreInstructions(data)
-
+    let data = [...new Set([...showMoreInstructions, productId])];
+    setShowMoreInstructions(data);
   };
 
   const handleShowLess = (productId) => {
     setShowAll(false);
 
-    let data=[...new Set([...showMoreInstructions])]
+    let data = [...new Set([...showMoreInstructions])];
     const index = data.indexOf(productId);
-   if (index > -1) { // only splice array when item is found
-  data.splice(index, 1); // 2nd parameter means remove one item only
-}
-    
-    setShowMoreInstructions(data)
+    if (index > -1) {
+      // only splice array when item is found
+      data.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    setShowMoreInstructions(data);
   };
 
   const handleRemoveInstruction = (productId, index) => {
@@ -105,7 +105,9 @@ const Cart = () => {
   const [loadingPlaceOrder, setLoadingPlaceOrder] = useState(false);
 
   const [cartData, setCartData] = useState([]);
+  const isDining = location?.pathname === "/dining-cart";
 
+  const DININGPERCENTAGE = 30 / 100;
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -113,13 +115,13 @@ const Cart = () => {
   const handleBrowseMoreFoodClick = async () => {
     let path = _.get(location, "pathname", "");
     if (path === "/online-order-cart") {
-navigate('/online-order')
-} else if (path === "/take-away-cart") {
-  
-  navigate('/take-away')
-
+      navigate("/online-order");
+    } else if (path === "/take-away-cart") {
+      navigate("/take-away");
+    } else if (path === "/dining-cart") {
+      navigate("/dining");
     }
-  }
+  };
 
   const handleCartClick = async () => {
     let path = _.get(location, "pathname", "");
@@ -134,6 +136,7 @@ navigate('/online-order')
       try {
         setLoadingPlaceOrder(true);
         let food_data = getFoodDetails();
+
         let formData = {
           billAmount: _.get(getTotalAmount(), "total_for_dining", 0),
           gst: _.get(getTotalAmount(), "gstPrice", 0),
@@ -188,15 +191,13 @@ navigate('/online-order')
         order_ref: order_ref,
         bookingref: _.get(location, "state.table_details._id", ""),
       };
-      const result= await getCurrentUserCartProducts(
+      const result = await getCurrentUserCartProducts(
         JSON.stringify(formdatas)
       );
 
-
       // Assuming result.data.data is an array
 
-      
-      console.log(result.data.data); 
+      console.log(result.data.data);
       setCartData(_.get(result, "data.data", []));
       let initialData = _.get(result, "data.data", [])?.map((res) => {
         return {
@@ -268,10 +269,7 @@ navigate('/online-order')
   };
 
   const getTotalAmount = () => {
-    
     console.log(cartData, " ia ma cartdata");
-    
-
 
     // const itemPrice = cartData?.reduce((accumulator, res) => {
     //   const typeRefId = _.get(res, "typeRef", "");
@@ -283,42 +281,44 @@ navigate('/online-order')
     //     : (productRef.discountPrice
     //       ? parseFloat(productRef.discountPrice)
     //       : parseFloat(productRef.price)) * _.get(res, "quantity", "");
-    
+
     //   console.log("typeRefId:", typeRefId);
     //   console.log("productRef:", productRef);
     //   console.log("displayPrice:", displayPrice);
-    
+
     //   return accumulator + displayPrice;
     // }, 0);
-    
+
     // console.log("Total Amount:", itemPrice);
-    
-
-
 
     let itemPrice = _.sum(
-
       cartData?.map((res) => {
-
         const typeRefId = _.get(res, "typeRef", "");
         const productRef = _.get(res, "productRef", "");
         const selectedType = _.get(res, "productRef.types", []).find(
           (type) => type._id === typeRefId
         );
 
-
         // const price = selectedType
         //   ? selectedType.price
         //   : _.get(res, "productRef.discountPrice", "");
 
-        const price =  typeRefId.Type 
-        ? ((typeRefId.TypeOfferPrice ? typeRefId.TypeOfferPrice : typeRefId.TypePrice) )
-        : ((productRef.discountPrice?parseFloat(productRef.discountPrice) : parseFloat(productRef.price))  );
+        const price = typeRefId.Type
+          ? isDining
+            ? Number(typeRefId.TypePrice) +
+              Number(typeRefId.TypePrice) * DININGPERCENTAGE
+            : typeRefId.TypeOfferPrice
+            ? typeRefId.TypeOfferPrice
+            : typeRefId.TypePrice
+          : isDining
+          ? Number(productRef.price) +
+            Number(productRef.price) * DININGPERCENTAGE
+          : productRef.discountPrice
+          ? parseFloat(productRef.discountPrice)
+          : parseFloat(productRef.price);
 
         return Number(price) * res.quantity;
       })
-
-
     );
 
     let itemdiscountPrice = _.sum(
@@ -377,11 +377,29 @@ navigate('/online-order')
 
   const getFoodDetails = () => {
     let food_data = cartData?.map((res) => {
+      console.log("food_data", res);
+      const typeRefId = _.get(res, "typeRef", "");
+      let fprice = Number(_.get(res, "productRef.price", 0));
+      let productPrice = isDining
+        ? !typeRefId?.Type
+          ? Number(fprice) + Number(fprice) * DININGPERCENTAGE
+          : typeRefId.TypePrice + typeRefId.TypePrice * DININGPERCENTAGE
+        : Number(_.get(res, "productRef.price", 0));
+      let DiningPrice = isDining ? productPrice : productPrice;
+      console.log("food_data", {
+        isDining,
+        typeRefId,
+        fprice,
+        productPrice,
+        DiningPrice,
+      });
       return {
         pic: _.get(res, "productRef.image", ""),
         foodName: _.get(res, "productRef.name", ""),
-        foodPrice: _.get(res, "productRef.price", ""),
-        originalPrice: _.get(res, "productRef.discountPrice", ""),
+        foodPrice: isDining ? DiningPrice : _.get(res, "productRef.price", ""),
+        originalPrice: isDining
+          ? DiningPrice
+          : _.get(res, "productRef.discountPrice", ""),
         foodQuantity: _.get(res, "quantity", ""),
       };
     });
@@ -425,13 +443,18 @@ navigate('/online-order')
 
   // ========
   const [products, setProducts] = useState([]);
+
+  console.log({ cartData });
   useEffect(() => {
     // Initialize the products with the provided cartData
     const initialProducts = cartData?.map((res) => {
       return {
         id: res._id,
         quantity: res?.quantity || 1,
-        price: parseFloat(res?.productRef?.discountPrice) || 0,
+        price: isDining
+          ? Number(res?.productRef?.price) +
+            Number(res?.productRef?.price) * DININGPERCENTAGE
+          : parseFloat(res?.productRef?.discountPrice) || 0,
       };
     });
     setProducts(initialProducts);
@@ -455,11 +478,16 @@ navigate('/online-order')
     setProducts(updatedProducts);
   };
 
-  useEffect(()=>{
-    setProductInstructions(reduxProductInstructions)
-  }, [])
+  useEffect(() => {
+    setProductInstructions(reduxProductInstructions);
+  }, []);
 
-  console.log({instructionInput,showMoreInstructions,showAll,productInstructions})
+  console.log({
+    instructionInput,
+    showMoreInstructions,
+    showAll,
+    productInstructions,
+  });
 
   return loading ? (
     <LoadingScreen />
@@ -512,11 +540,25 @@ navigate('/online-order')
                 const productId = res._id;
                 const typeRefId = _.get(res, "typeRef", "");
                 const productRef = _.get(res, "productRef", "");
-                const selectedType = typeRefId.Type
-                const displayPrice = typeRefId.Type 
-  ? ((typeRefId.TypeOfferPrice ? typeRefId.TypeOfferPrice : typeRefId.TypePrice) * _.get(res, "quantity", ""))
-  : ((productRef.discountPrice?parseFloat(productRef.discountPrice) : parseFloat(productRef.price)) * _.get(res, "quantity", "")  );
-               
+                const selectedType = typeRefId.Type;
+                const displayPrice = typeRefId.Type
+                  ? isDining
+                    ? typeRefId.TypePrice +
+                      typeRefId.TypePrice *
+                        DININGPERCENTAGE *
+                        _.get(res, "quantity", "")
+                    : (typeRefId.TypeOfferPrice
+                        ? typeRefId.TypeOfferPrice
+                        : typeRefId.TypePrice) * _.get(res, "quantity", "")
+                  : isDining
+                  ? (parseFloat(productRef.price) +
+                      Number(productRef.price) * DININGPERCENTAGE) *
+                    _.get(res, "quantity", "")
+                  : (productRef.discountPrice
+                      ? parseFloat(productRef.discountPrice)
+                      : parseFloat(productRef.price)) *
+                    _.get(res, "quantity", "");
+
                 // const selectedType = _.get(res, "productRef.types", []).find(
                 //   (type) => type._id === typeRefId
                 // );
@@ -524,9 +566,7 @@ navigate('/online-order')
                 //   ? selectedType.price * _.get(res, "quantity", "")
                 //   : _.get(res, "productRef.discountPrice", "") *
                 //     _.get(res, "quantity", "");
-                const displayType = selectedType
-                  ? selectedType
-                  : null;
+                const displayType = selectedType ? selectedType : null;
                 return (
                   <div
                     key={index}
@@ -591,22 +631,19 @@ navigate('/online-order')
                         </div>
 
                         <div className="flex items-center gap-x-2 ml-[8px]">
-                              <div className="text-[#2f2e2e] text-sm ">
-                                Price
-                              </div>{" "}
-                              <div className="lg:text-xl text-sm text-[#3A3A3A] font-medium">
-                                &#8377; {displayPrice}{" "}
-                                <span className="text-[#2f2e2e] lg:text-sm text-[12px] font-bold capitalize">
-                                  ({displayType || "Regular"})
-                                </span>
-                              </div>
+                          <div className="text-[#2f2e2e] text-sm ">Price</div>{" "}
+                          <div className="lg:text-xl text-sm text-[#3A3A3A] font-medium">
+                            &#8377; {displayPrice}{" "}
+                            <span className="text-[#2f2e2e] lg:text-sm text-[12px] font-bold capitalize">
+                              ({displayType || "Regular"})
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                     {/* Instruction */}
                     <div
-
-                    style={{marginBottom:"20px"}}
+                      style={{ marginBottom: "20px" }}
                       className={`${
                         (productInstructions[productId] || []).length === 0
                           ? `w-full gap-2 px-6 bg-white h-14 border-t-2 focus:border-none rounded-b-2xl cursor-pointer`
@@ -614,7 +651,8 @@ navigate('/online-order')
                       }`}
                     >
                       <div className="w-full">
-                        {instructionInput && openInstruction.includes(productId) ? (
+                        {instructionInput &&
+                        openInstruction.includes(productId) ? (
                           <div className="w-full flex justify-center items-center text-sm gap-2 text-[#18AD00] px-6 bg-white h-12 focus:border-none rounded-b-2xl cursor-pointer">
                             <input
                               type="text"
@@ -642,15 +680,27 @@ navigate('/online-order')
                           </div>
                         ) : (
                           <div className="w-full flex justify-center items-center text-sm gap-2 text-[#18AD00] px-6 bg-white h-12 focus:border-none rounded-b-2xl cursor-pointer">
-                            <button onClick={() =>{ setInstructionInput(true)
+                            <button
+                              onClick={() => {
+                                setInstructionInput(true);
 
-                            setOpenInstruction([...openInstruction,productId])
-                            
-                            }}>
+                                setOpenInstruction([
+                                  ...openInstruction,
+                                  productId,
+                                ]);
+                              }}
+                            >
                               +
                             </button>
-                            <h1 onClick={() => {setInstructionInput(true)
-                             setOpenInstruction([...openInstruction,productId])}}>
+                            <h1
+                              onClick={() => {
+                                setInstructionInput(true);
+                                setOpenInstruction([
+                                  ...openInstruction,
+                                  productId,
+                                ]);
+                              }}
+                            >
                               Add Food Instruction
                             </h1>
                           </div>
@@ -661,7 +711,7 @@ navigate('/online-order')
                           {(productInstructions[productId] || [])
                             .slice(
                               0,
-                             showMoreInstructions?.includes(productId)
+                              showMoreInstructions?.includes(productId)
                                 ? (productInstructions[productId] || []).length
                                 : maxInstructionsToShow
                             )
@@ -687,18 +737,17 @@ navigate('/online-order')
                               </div>
                             ))}
                           {productInstructions[productId]?.length >
-                            maxInstructionsToShow &&
-                            (
-                              <button
-                                onClick={() => handleShowMore(productId)}
-                                className="text-[8px] absolute bottom-1 left-[40%] font-sans text-black font-bold bg-gray-300 rounded-lg px-4 py-2 "
-                              >
-                                Show More
-                              </button>
-                            )}
-                          { showMoreInstructions?.includes(productId) && (
+                            maxInstructionsToShow && (
                             <button
-                              onClick={()=>handleShowLess(productId)}
+                              onClick={() => handleShowMore(productId)}
+                              className="text-[8px] absolute bottom-1 left-[40%] font-sans text-black font-bold bg-gray-300 rounded-lg px-4 py-2 "
+                            >
+                              Show More
+                            </button>
+                          )}
+                          {showMoreInstructions?.includes(productId) && (
+                            <button
+                              onClick={() => handleShowLess(productId)}
                               className="text-[8px] absolute bottom-1 left-[40%] font-sans text-black font-bold bg-gray-300 rounded-lg px-4 py-2 "
                             >
                               Show Less
@@ -710,95 +759,94 @@ navigate('/online-order')
                   </div>
                 );
               })}
-   
+
               <Link onClick={handleBrowseMoreFoodClick}>
                 <div className="w-full flex justify-center items-center gap-2 px-6 bg-white h-20 border border-gray-300 rounded-2xl cursor-pointer ">
                   + Browse more food
                 </div>
               </Link>
             </div>
-                {/* right */}
-                
+            {/* right */}
 
+            {cartData.length > 0 && (
+              <>
+                <div className="flex flex-col items-center gap-y-4 w-full">
+                  <div className="bg-[#F2F2F2] lg:w-[500px] w-full min-h-[400px] rounded-2xl lg:p-10  p-5 relative">
+                    <h1 className="text-[#292929] lg:text-2xl font-semibold">
+                      Order summary
+                    </h1>
+                    <div className="flex flex-col gap-y-6 pb-2">
+                      {/* price */}
+                      <div className="flex  justify-between pt-4 border-b border-[#C1C1C1] lg:text-lg text-sm">
+                        <div className="flex gap-x-2">
+                          <div className="text-[#3F3F3F] font-normal">
+                            Item price
+                          </div>{" "}
+                          <div className="text-[#B6B6B6]">
+                            {" "}
+                            &times; {_.get(getTotalAmount(), "total_qty", 0)}
+                          </div>
+                        </div>
+                        <div className="lg:text-lg text-[#3A3A3A]">
+                          &#8377; {_.get(getTotalAmount(), "itemPrice", 0)}
+                        </div>
+                      </div>
+                      {/* gst */}
+                      <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                        <div className="flex gap-x-2">
+                          <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
+                        </div>
+                        <div className=" text-[#3A3A3A]">
+                          &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
+                        </div>
+                      </div>
+                      {/* delivery charge */}
+                      {_.get(location, "pathname", "") ===
+                      "/online-order-cart" ? (
+                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                          <div className="flex gap-x-2">
+                            <div className="text-[#3F3F3F] font-normal">
+                              Delivery Charge
+                            </div>{" "}
+                          </div>
+                          <div className="lg:text-lg text-[#3A3A3A]">
+                            &#8377; 50
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
 
-                {cartData.length>0 &&(
-                  <>
-          <div className="flex flex-col items-center gap-y-4 w-full">
-              <div className="bg-[#F2F2F2] lg:w-[500px] w-full min-h-[400px] rounded-2xl lg:p-10  p-5 relative">
-                <h1 className="text-[#292929] lg:text-2xl font-semibold">
-                  Order summary
-                </h1>
-                <div className="flex flex-col gap-y-6 pb-2">
-                  {/* price */}
-                  <div className="flex  justify-between pt-4 border-b border-[#C1C1C1] lg:text-lg text-sm">
-                    <div className="flex gap-x-2">
-                      <div className="text-[#3F3F3F] font-normal">
-                        Item price
-                      </div>{" "}
-                      <div className="text-[#B6B6B6]">
-                        {" "}
-                        &times; {_.get(getTotalAmount(), "total_qty", 0)}
-                      </div>
-                    </div>
-                    <div className="lg:text-lg text-[#3A3A3A]">
-                      &#8377; {_.get(getTotalAmount(), "itemPrice", 0)}
-                    </div>
-                  </div>
-                  {/* gst */}
-                  <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                    <div className="flex gap-x-2">
-                      <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
-                    </div>
-                    <div className=" text-[#3A3A3A]">
-                      &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
-                    </div>
-                  </div>
-                  {/* delivery charge */}
-                  {_.get(location, "pathname", "") === "/online-order-cart" ? (
-                    <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                      <div className="flex gap-x-2">
-                        <div className="text-[#3F3F3F] font-normal">
-                          Delivery Charge
-                        </div>{" "}
-                      </div>
-                      <div className="lg:text-lg text-[#3A3A3A]">
-                        &#8377; 50
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  {/* otehr charges */}
-                  {_.get(location, "pathname", "") !== "/dining-cart" && (
-                    <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                      <div className="flex gap-x-2">
-                        <div className="text-[#3F3F3F] font-normal">
-                          Packing Charges
-                        </div>{" "}
-                      </div>
-                      <div className=" text-[#3A3A3A]">
-                        &#8377;
-                        {_.get(getTotalAmount(), "packingPrice", 0)}
-                      </div>
-                    </div>
-                  )}
-                  {/* Transaction charges */}
-                  {_.get(location, "pathname", "") !== "/dining-cart" && (
-                    <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                      <div className="flex gap-x-2">
-                        <div className="text-[#3F3F3F] font-normal overflow-hidden text-ellipsis ">
-                          Transaction Charges
-                        </div>{" "}
-                      </div>
-                      <div className="text-[#3A3A3A] text-sm">
-                        &#8377;
-                        {_.get(getTotalAmount(), "transactionPrice", 0)}
-                      </div>
-                    </div>
-                  )}
-                  {/* Coupon discount */}
-                  {/* {_.get(location, "pathname", "") !==
+                      {/* otehr charges */}
+                      {_.get(location, "pathname", "") !== "/dining-cart" && (
+                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                          <div className="flex gap-x-2">
+                            <div className="text-[#3F3F3F] font-normal">
+                              Packing Charges
+                            </div>{" "}
+                          </div>
+                          <div className=" text-[#3A3A3A]">
+                            &#8377;
+                            {_.get(getTotalAmount(), "packingPrice", 0)}
+                          </div>
+                        </div>
+                      )}
+                      {/* Transaction charges */}
+                      {_.get(location, "pathname", "") !== "/dining-cart" && (
+                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                          <div className="flex gap-x-2">
+                            <div className="text-[#3F3F3F] font-normal overflow-hidden text-ellipsis ">
+                              Transaction Charges
+                            </div>{" "}
+                          </div>
+                          <div className="text-[#3A3A3A] text-sm">
+                            &#8377;
+                            {_.get(getTotalAmount(), "transactionPrice", 0)}
+                          </div>
+                        </div>
+                      )}
+                      {/* Coupon discount */}
+                      {/* {_.get(location, "pathname", "") !==
                                         "/dining-cart" && (
                                         <div className="flex  justify-between border-b border-[#C1C1C1]  text-sm lg:text-lg">
                                             <div className="flex gap-x-2">
@@ -811,16 +859,16 @@ navigate('/online-order')
                                             </div>
                                         </div>
                                     )} */}
-                  {/* total amount */}
-                  <div className="flex  justify-between pt-6">
-                    <div className="flex gap-x-2">
-                      <div className="text-[#3F3F3F] font-normal">
-                        Total Amount
-                      </div>{" "}
-                    </div>
+                      {/* total amount */}
+                      <div className="flex  justify-between pt-6">
+                        <div className="flex gap-x-2">
+                          <div className="text-[#3F3F3F] font-normal">
+                            Total Amount
+                          </div>{" "}
+                        </div>
 
-                    <div className="text-lg text-[#3A3A3A] font-medium flex items-center gap-x-1">
-                      {/* <div className="text-[rgb(87,87,87)] relative text-red-500">
+                        <div className="text-lg text-[#3A3A3A] font-medium flex items-center gap-x-1">
+                          {/* <div className="text-[rgb(87,87,87)] relative text-red-500">
                                                 &#8377;{" "}
                                                 {_.get(
                                                     getTotalAmount(),
@@ -833,50 +881,50 @@ navigate('/online-order')
                                                     className="absolute top-1"
                                                 />
                                             </div> */}
-                      <div className="text-green-500">
-                        &nbsp; &#8377;
-                        {_.get(location, "pathname", "") !== "/dining-cart"
-                          ? _.get(getTotalAmount(), `Total_amount`, 0)
-                          : _.get(getTotalAmount(), `total_for_dining`, 0)}
+                          <div className="text-green-500">
+                            &nbsp; &#8377;
+                            {_.get(location, "pathname", "") !== "/dining-cart"
+                              ? _.get(getTotalAmount(), `Total_amount`, 0)
+                              : _.get(getTotalAmount(), `total_for_dining`, 0)}
+                          </div>
+                        </div>
                       </div>
+                    </div>
+                    {/* confirm button */}
+                    <div
+                      onClick={handleCartClick}
+                      className="lg:w-[inhrit] w-full pt-10 "
+                    >
+                      {_.get(location, "pathname", "") ===
+                      "/take-away-cart" ? null : (
+                        <Button
+                          block
+                          loading={loadingPlaceOrder}
+                          className=" lg:h-[80px] h-[50px] bg-[#292929]   rounded-2xl cursor-pointer hover:bg-[#292929]"
+                        >
+                          <div className="center_div font-semibold lg:text-xl text-white hover:text-yellow-500">
+                            {_.get(location, "pathname", "") === "/dining-cart"
+                              ? "Place Order"
+                              : "  Confirm and continue"}
+                          </div>
+                        </Button>
+                      )}
+
+                      {_.get(location, "pathname", "") === "/take-away-cart" ? (
+                        <div
+                          onClick={() => navigate(`/takeaway-checkout`)}
+                          className="lg:w-[450px] h-[80px] center_div bg-black cursor-pointer rounded-2xl text-[#EFEFEF] lg:text-xl font-semibold justify-center items-center py-7"
+                        >
+                          <h1 className="text-center">
+                            Proceed & Continue to pay
+                          </h1>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>
-                {/* confirm button */}
-                <div
-                  onClick={handleCartClick}
-                  className="lg:w-[inhrit] w-full pt-10 "
-                >
-                  {_.get(location, "pathname", "") ===
-                  "/take-away-cart" ? null : (
-                    <Button
-                      block
-                      loading={loadingPlaceOrder}
-                      className=" lg:h-[80px] h-[50px] bg-[#292929]   rounded-2xl cursor-pointer hover:bg-[#292929]"
-                    >
-                      <div className="center_div font-semibold lg:text-xl text-white hover:text-yellow-500">
-                        {_.get(location, "pathname", "") === "/dining-cart"
-                          ? "Place Order"
-                          : "  Confirm and continue"}
-                      </div>
-                    </Button>
-                  )}
-
-                  {_.get(location, "pathname", "") === "/take-away-cart" ? (
-                    <div
-                      onClick={() => navigate(`/takeaway-checkout`)}
-                      className="lg:w-[450px] h-[80px] center_div bg-black cursor-pointer rounded-2xl text-[#EFEFEF] lg:text-xl font-semibold justify-center items-center py-7"
-                    >
-                      <h1 className="text-center">Proceed & Continue to pay</h1>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-                </div>
-                </>
-                )}
-                
-                
+              </>
+            )}
           </div>
 
           <Modal
