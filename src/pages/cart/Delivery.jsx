@@ -394,7 +394,7 @@ const Delivery = () => {
                 </div>
                 {/* new address */}
                 {/* <div
-                  onClick={handleGetCurrentLocation}
+                  onClick={() => {}}
                   className="lg:w-[450px] w-full min-h-[100px] cursor-pointer bg-white border shadow-2xl shadow-[#00000040] rounded-2xl gap-x-5 center_div justify-start px-10"
                 >
                   <div className="lg:w-[80px] lg:h-[80px] rounded-full center_div">
