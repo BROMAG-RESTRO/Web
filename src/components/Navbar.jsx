@@ -405,7 +405,7 @@ function Navbar() {
         </div>
       </Drawer>
 
-      {/* <Modal
+      <Modal
         open={checkStatus}
         footer={false}
         closable={false}
@@ -422,7 +422,7 @@ function Navbar() {
             Temporarily Closed Today
           </h1>
         </div>
-      </Modal> */}
+      </Modal>
 
       <Modal
         open={status}

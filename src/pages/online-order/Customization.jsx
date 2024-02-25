@@ -18,7 +18,7 @@ import {
 import { CiDiscount1 } from "react-icons/ci";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const Customization = ({ product_data, id }) => {
+const Customization = ({ product_data, id, isDining, OnClose }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentSubCategory, setCurrentSubCategory] = useState("");
@@ -36,7 +36,7 @@ const Customization = ({ product_data, id }) => {
   const [quantity, setQuantity] = useState(1);
   const [typeOfferPercentage, setTypeOfferPer] = useState(0);
   const [typeRef, setTypeRef] = useState("");
-
+  console.log({ price, productPrice });
   useEffect(() => {
     let maxPrice = 0;
     let correspondingOfferPercentage = 0;
@@ -49,10 +49,15 @@ const Customization = ({ product_data, id }) => {
     ) {
       for (const type of product_data?.types) {
         if (type?.TypeOfferPrice && type?.TypeOfferPrice > maxPrice) {
-          maxPrice = type.TypeOfferPrice;
-          correspondingOfferPercentage = type.TypeOfferPercentage;
+          maxPrice = isDining
+            ? Number(type.TypePrice) + (Number(type?.TypePrice) * 30) / 100
+            : type.TypeOfferPrice;
+          correspondingOfferPercentage = isDining
+            ? type.TypeOfferPercentage
+            : 0;
         } else if (type.TypePrice && type.TypePrice > maxPrice) {
-          maxPrice = type.TypePrice;
+          maxPrice =
+            Number(type.TypePrice) + (Number(type?.TypePrice) * 30) / 100;
           correspondingOfferPercentage = 0;
         }
       }
@@ -67,7 +72,9 @@ const Customization = ({ product_data, id }) => {
       // const initialPrice =
       //   maxPrice !== 0 ? maxPrice : product_data?.discountPrice || 0;
     } else {
-      const price = product_data?.discountPrice
+      const price = isDining
+        ? Number(product_data?.price) + (Number(product_data?.price) * 30) / 100
+        : product_data?.discountPrice
         ? product_data?.discountPrice
         : product_data?.price;
       setPrice(price);
@@ -405,9 +412,8 @@ const Customization = ({ product_data, id }) => {
               <div className="sticky top-0 z-50 flex justify-end ">
                 <button
                   onClick={() => {
-                    document
-                    ?.getElementById("customization")
-                    .hideModal();
+                    OnClose();
+                    // document?.getElementById("customization")?.hideModal();
                   }}
                   className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-50 text-black bg-white/50 hover:bg-white/50 hover:text-black"
                 >
@@ -421,7 +427,9 @@ const Customization = ({ product_data, id }) => {
                   className="rounded-xl h-[300px] object-cover w-full"
                 />
                 <div className="flex mt-5 justify-between px-3 items-center border-b-2 border-black/25 py-5 relative  price__wrapper">
-                  {Number(product_data?.offer) && !isMultipleTypeMenu ? (
+                  {!isDining &&
+                  Number(product_data?.offer) &&
+                  !isMultipleTypeMenu ? (
                     <Tag
                       color="green"
                       className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
@@ -429,9 +437,10 @@ const Customization = ({ product_data, id }) => {
                       <CiDiscount1 className="text-white text-sm font-bold" />
                       {product_data?.offer}% Discount
                     </Tag>
-                  ):null}
+                  ) : null}
 
-                  {product_data?.types.length > 0 &&
+                  {!isDining &&
+                    product_data?.types.length > 0 &&
                     isMultipleTypeMenu &&
                     typeOfferPercentage > 0 && (
                       <Tag
@@ -480,11 +489,14 @@ const Customization = ({ product_data, id }) => {
                                   onChange={() =>
                                     handleTypeChange(
                                       data?.Type,
-                                      data?.TypeOfferPrice
+                                      isDining
+                                        ? Number(data?.TypePrice) +
+                                            (Number(data?.TypePrice) * 30) / 100
+                                        : data?.TypeOfferPrice
                                         ? data?.TypeOfferPrice
                                         : data?.TypePrice,
                                       data?._id,
-                                      data?.TypeOfferPercentage
+                                      isDining ? 0 : data?.TypeOfferPercentage
                                     )
                                   }
                                 />
@@ -495,7 +507,10 @@ const Customization = ({ product_data, id }) => {
                               </div>
                               <span className="item__type--price">
                                 ₹{" "}
-                                {data?.TypeOfferPrice
+                                {isDining
+                                  ? Number(data?.TypePrice) +
+                                    (Number(data?.TypePrice) * 30) / 100
+                                  : data?.TypeOfferPrice
                                   ? data?.TypeOfferPrice
                                   : data?.TypePrice}
                                 .00

@@ -56,6 +56,8 @@ const Cusinedetails = () => {
   const [showVgn, setShowVgn] = useState(false);
 
   const location = useLocation();
+
+  const pageName = location?.pathname;
   const navigate = useNavigate();
   const currentLocation = useHref();
 
@@ -179,6 +181,7 @@ const Cusinedetails = () => {
     try {
       setLoading(true);
       let orderStatus = getOrderReferance();
+      console.log("orderrs", { orderStatus });
       let current_carts = await getCurrentUserCarts(orderStatus);
       let cardsref = "";
       if (_.get(location, "pathname", "") === "/dining-cusines") {
@@ -614,6 +617,7 @@ const Cusinedetails = () => {
           {/* ====================== food list*/}
           <div className="flex flex-col lg:gap-y-24 gap-y-4">
             {productData.map((res, index) => {
+              let isDining = pageName === "/dining-cusines";
               const available = res?.status;
               const isMultityped = res?.types?.length;
               const largeItem = isMultityped
@@ -623,17 +627,29 @@ const Cusinedetails = () => {
               const actualPrice = isMultityped
                 ? largeItem?.TypePrice || 0
                 : Number(res?.price || 0);
-              const offerPercentage = isMultityped
+              const offerPercentage = isDining
+                ? 0
+                : isMultityped
                 ? largeItem?.TypeOfferPercentage || 0
                 : Number(res?.offer || 0);
               const offerPrice = isMultityped
-                ? offerPercentage
+                ? isDining
+                  ? Number(actualPrice) + (Number(actualPrice) * 30) / 100
+                  : offerPercentage
                   ? actualPrice - actualPrice * (offerPercentage / 100)
                   : actualPrice
+                : isDining
+                ? Number(res?.price) + (Number(res?.price) * 30) / 100
                 : Number(res?.discountPrice || 0);
 
               const isAddedtoCart = currentCartsData?.includes(res?._id);
-              console.log({ foodName, actualPrice, offerPercentage });
+              console.log({
+                currentCartsData,
+                foodName,
+                actualPrice,
+                offerPercentage,
+                res,
+              });
               return (
                 <>
                   <div className="food-container">
@@ -748,7 +764,16 @@ const Cusinedetails = () => {
               );
             })}
           </div>
-          <Customization id={"customization"} product_data={customizeProduct} />
+          <Customization
+            id={"customization"}
+            product_data={customizeProduct}
+            isDining={pageName === "/dining-cusines"}
+            OnClose={() => {
+              fetchData();
+              fetchCurrentUserCarts();
+              document?.getElementById("customization")?.hideModal();
+            }}
+          />
         </>
       )}
     </div>
