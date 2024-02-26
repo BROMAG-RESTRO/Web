@@ -54,7 +54,7 @@ const Cusinedetails = () => {
   const [customizeProduct, setCustomizeProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const [showVgn, setShowVgn] = useState(false);
-
+  const [editMultiType, setEditMulti] = useState(false);
   const location = useLocation();
 
   const pageName = location?.pathname;
@@ -729,7 +729,15 @@ const Cusinedetails = () => {
                           </div>
                           <div
                             onClick={() => {
-                              handleIncrement(res._id);
+                              if (isMultityped) {
+                                document
+                                  .getElementById("customization")
+                                  .showModal();
+                                setCustomizeProduct(res);
+                                setEditMulti(true);
+                              } else {
+                                handleIncrement(res._id);
+                              }
                             }}
                             className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div"
                           >
@@ -766,6 +774,7 @@ const Cusinedetails = () => {
           </div>
           <Customization
             id={"customization"}
+            edit={editMultiType}
             product_data={customizeProduct}
             isDining={pageName === "/dining-cusines"}
             OnClose={() => {

@@ -18,13 +18,7 @@ import {
 import { CiDiscount1 } from "react-icons/ci";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const Customization = ({
-  product_data,
-  id,
-  isDining,
-  OnClose,
-  edit = false,
-}) => {
+const Customization = ({ product_data, id, isDining, OnClose }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentSubCategory, setCurrentSubCategory] = useState("");
@@ -43,9 +37,6 @@ const Customization = ({
   const [quantity, setQuantity] = useState(1);
   const [typeOfferPercentage, setTypeOfferPer] = useState(0);
   const [typeRef, setTypeRef] = useState("");
-  const [historyCart, setNewhistoryCart] = useState({});
-  const [customizeCart, setCustomizeCart] = useState({});
-  const [cartID, setCartId] = useState([]);
   console.log({ price, productPrice });
   useEffect(() => {
     let maxPrice = 0;
@@ -79,8 +70,6 @@ const Customization = ({
         setProductPrice(maxPrice);
         setMultipleTypesMenu(true);
       }
-
-      setCartId(productData?._id);
       // const initialPrice =
       //   maxPrice !== 0 ? maxPrice : product_data?.discountPrice || 0;
     } else {
@@ -100,7 +89,6 @@ const Customization = ({
     id,
     offerPercentage
   ) => {
-    setQuantity(historyCart?.[id] || 0);
     setPrice(
       typeof selectedPrice === "number"
         ? selectedPrice
@@ -111,7 +99,6 @@ const Customization = ({
         ? selectedPrice
         : parseInt(selectedPrice)
     );
-
     setTypeRef(id);
     setTypeOfferPer(offerPercentage);
   };
@@ -242,21 +229,11 @@ const Customization = ({
           return res.productRef;
         });
       }
-
-      let data = current_carts?.data?.data;
-      let tmp = {};
-      let tmparr = [];
-      let tmpData = data?.map((td) => {
-        tmp[td?.typeRef?._id] = td?.quantity;
-      });
-      setNewhistoryCart(tmp);
-      console.log({ tmp });
       setOverallCartsData(current_carts?.data?.data);
       setAllCartsData(_.get(current_carts, "data.data", []));
       setCurrentCartsData(cardsref);
       setLoading(false);
     } catch (err) {
-      console.log({ err });
       setLoading(false);
       return notification.error({ message: "Something went wrong" });
     }
@@ -268,9 +245,9 @@ const Customization = ({
     ) {
       fetchCurrentUserCarts();
     }
-  }, [typeRef, quantity]);
+  }, [typeRef]);
 
-  console.log({ allCartsData, currentCartsData, productData });
+  console.log({ allCartsData, currentCartsData });
 
   const getOrderReferance = () => {
     let orderRef = "";
@@ -318,8 +295,6 @@ const Customization = ({
         }
         const result = await addToCart(formData);
         message.success(_.get(result, "data.message", ""));
-
-        setCartId(productData?._id);
         fetchCurrentUserCarts();
         setLoading(false);
       } catch (err) {
@@ -381,7 +356,7 @@ const Customization = ({
   const handleDecrement = async (id) => {
     try {
       let _id = getCardId(id);
-      if (historyCart[typeRef] > 1) {
+      if (getQuantity(id) > 1) {
         await decrementCartQuantity(_.get(_id, "[0]._id", ""));
         message.success("quantity updated");
       } else {
@@ -433,8 +408,6 @@ const Customization = ({
     product_data,
     typeRef,
     check: product_data?.types?.length && typeRef,
-    edit,
-    historyCart,
   });
   return (
     <>
@@ -560,14 +533,12 @@ const Customization = ({
 
             <div className="mt-5">
               <div className="flex gap-3">
-                {Object.keys(historyCart)?.includes(typeRef) &&
-                currentCartsData?.includes(product_data?._id) ? (
+                {currentCartsData.includes(product_data?._id) ? (
                   <div
                     className={` text-white bg-gray-300  font-medium center_div rounded-2xl w-1/2 cursor-pointer flex justify-between items-center `}
                   >
                     <div
                       onClick={() => {
-                        setQuantity(historyCart?.typeRef || 0);
                         handleDecrement(product_data?._id);
                         HandleDecrement();
                       }}
@@ -576,11 +547,10 @@ const Customization = ({
                       -
                     </div>
                     <div className=" font-bold text-black">
-                      {historyCart?.[typeRef] || 0}
+                      {getQuantity(product_data?._id)}
                     </div>
                     <div
                       onClick={() => {
-                        setQuantity(historyCart?.typeRef || 0);
                         handleIncrement(product_data?._id);
                         HandleIncrement();
                       }}
@@ -599,9 +569,7 @@ const Customization = ({
                       }}
                       className="w-[30%]  py-2  rounded-l-2xl center_div text-black"
                     ></div>
-                    <div className=" font-bold text-black">
-                      {historyCart[typeRef]}
-                    </div>
+                    <div className=" font-bold text-black"></div>
                     <div
                       onClick={() => {
                         handleIncrement(product_data?._id);
@@ -611,8 +579,7 @@ const Customization = ({
                   </div>
                 )}
 
-                {Object.keys(historyCart)?.includes(typeRef) &&
-                currentCartsData.includes(product_data?._id) ? (
+                {currentCartsData.includes(product_data?._id) ? (
                   <button
                     className="btn w-1/2 h-16 hover:bg-black bg-black/90 text-lg text-white"
                     onClick={handlegotocart}
