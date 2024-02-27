@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import {
@@ -45,7 +45,7 @@ const DiningPayment = () => {
       title: "This is a confirmation message",
       content: `If you proceed to checkout, you won't be able to place more orders.`,
       style: { background: "white", borderRadius: "10px" },
-      cancelText : "Cancel",
+      cancelText: "Cancel",
       onOk: () => {
         setViewModal(true);
       },
@@ -107,10 +107,11 @@ const DiningPayment = () => {
       <Divider />
       <div className="pt-10 flex flex-col gap-y-10">
         {allOrders.map((res, index) => {
+          console.log("dining", res);
           return (
             <div key={index}>
               <h1 className="font-bold lg:text-lg text-sm">
-                order: {index + 1}
+                Order: {index + 1}
               </h1>
               <div className="flex justify-between lg:pt-10 pt-4 lg:flex-row w-full flex-col gap-y-4">
                 <div className="w-full">
@@ -127,7 +128,12 @@ const DiningPayment = () => {
                                 />
                               }
                               title={res.foodName}
-                              description={<div>&times;{res.foodQuantity}</div>}
+                              description={
+                                <div>
+                                  &#x20b9; {res?.foodPrice} &times;
+                                  {res.foodQuantity}
+                                </div>
+                              }
                             />
                           </Card>
                         </div>
@@ -214,10 +220,22 @@ const DiningPayment = () => {
           <Radio value={1} checked={true} className="!text-white !pt-10">
             Cash
           </Radio>
-          <Radio disabled className="!text-white">
+          <Radio
+            disabled
+            className="!text-white"
+            style={{
+              opacity: 0.5,
+            }}
+          >
             Credit / Debit / ATM Card
           </Radio>
-          <Radio disabled className="!text-white">
+          <Radio
+            disabled
+            className="!text-white"
+            style={{
+              opacity: 0.5,
+            }}
+          >
             Net Banking
           </Radio>
           <Button
