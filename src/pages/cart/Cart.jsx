@@ -183,10 +183,10 @@ const Cart = () => {
     return orderRef;
   };
 
-  const fetchData = async () => {
+  const fetchData = async (load = true) => {
     try {
       let order_ref = getOrderReferance();
-      setLoading(true);
+      setLoading(load);
       let formdatas = {
         order_ref: order_ref,
         bookingref: _.get(location, "state.table_details._id", ""),
@@ -233,7 +233,7 @@ const Cart = () => {
     try {
       await incrementCartQuantity(id);
       message.success("quantity updated");
-      fetchData();
+      fetchData(false);
     } catch (err) {
       console.log(err);
     }
@@ -262,7 +262,7 @@ const Cart = () => {
         await removeSoloFromCart(id);
         message.success("Food removed from cart");
       }
-      fetchData();
+      fetchData(false);
     } catch (err) {
       console.log(err);
     }

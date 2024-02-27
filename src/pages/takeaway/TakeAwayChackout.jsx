@@ -428,7 +428,7 @@ const TakeAwayChackout = () => {
 
         {/* ==================================== */}
 
-        <div>
+        {/* <div>
           <Swiper
             modules={[Autoplay]}
             className=""
@@ -464,7 +464,7 @@ const TakeAwayChackout = () => {
               );
             })}
           </Swiper>
-        </div>
+        </div> */}
         {/* ==================================== */}
 
         <div className="flex flex-col gap-y-4  mt-4 p-5 justify-center items-center ">

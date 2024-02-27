@@ -300,7 +300,7 @@ const CheckoutPage = () => {
 
         {/* ==================================== */}
 
-        <div>
+        {/* <div>
           <Swiper
             modules={[Autoplay]}
             className=""
@@ -336,7 +336,7 @@ const CheckoutPage = () => {
               );
             })}
           </Swiper>
-        </div>
+        </div> */}
         {/* ==================================== */}
 
         <div className="flex flex-col gap-y-4  mt-4 p-5 justify-center items-center ">

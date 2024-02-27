@@ -18,13 +18,7 @@ import {
 import { CiDiscount1 } from "react-icons/ci";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const Customization = ({
-  product_data,
-  id,
-  isDining,
-  OnClose,
-  edit = false,
-}) => {
+const Customization = ({ product_data, id, isDining, OnClose }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentSubCategory, setCurrentSubCategory] = useState("");
@@ -43,11 +37,7 @@ const Customization = ({
   const [quantity, setQuantity] = useState(1);
   const [typeOfferPercentage, setTypeOfferPer] = useState(0);
   const [typeRef, setTypeRef] = useState("");
-  const [historyCart, setNewhistoryCart] = useState({});
-  const [historyCartId, setNewhistoryCartID] = useState({});
-  const [customizeCart, setCustomizeCart] = useState({});
-  const [cartID, setCartId] = useState([]);
-  console.log({ price, productPrice, historyCartId });
+  console.log({ price, productPrice });
   useEffect(() => {
     let maxPrice = 0;
     let correspondingOfferPercentage = 0;
@@ -80,8 +70,6 @@ const Customization = ({
         setProductPrice(maxPrice);
         setMultipleTypesMenu(true);
       }
-
-      setCartId(productData?._id);
       // const initialPrice =
       //   maxPrice !== 0 ? maxPrice : product_data?.discountPrice || 0;
     } else {
@@ -101,7 +89,6 @@ const Customization = ({
     id,
     offerPercentage
   ) => {
-    setQuantity(historyCart?.[id] || 1);
     setPrice(
       typeof selectedPrice === "number"
         ? selectedPrice
@@ -112,7 +99,6 @@ const Customization = ({
         ? selectedPrice
         : parseInt(selectedPrice)
     );
-
     setTypeRef(id);
     setTypeOfferPer(offerPercentage);
   };
@@ -243,23 +229,11 @@ const Customization = ({
           return res.productRef;
         });
       }
-
-      let data = current_carts?.data?.data;
-      let tmp = {};
-      let tmpCart = {};
-      let tmpData = data?.map((td) => {
-        tmp[td?.typeRef?._id] = td?.quantity;
-        tmpCart[td?.typeRef?._id] = td?._id;
-      });
-      setNewhistoryCart(tmp);
-      setNewhistoryCartID(tmpCart);
-      console.log({ tmp, tmpCart });
       setOverallCartsData(current_carts?.data?.data);
       setAllCartsData(_.get(current_carts, "data.data", []));
       setCurrentCartsData(cardsref);
       setLoading(false);
     } catch (err) {
-      console.log({ err });
       setLoading(false);
       return notification.error({ message: "Something went wrong" });
     }
@@ -271,16 +245,9 @@ const Customization = ({
     ) {
       fetchCurrentUserCarts();
     }
-  }, [typeRef, quantity, product_data]);
+  }, [typeRef]);
 
-  console.log({
-    quantity,
-    price,
-    typeRef,
-    allCartsData,
-    currentCartsData,
-    productData,
-  });
+  console.log({ allCartsData, currentCartsData });
 
   const getOrderReferance = () => {
     let orderRef = "";
@@ -328,8 +295,6 @@ const Customization = ({
         }
         const result = await addToCart(formData);
         message.success(_.get(result, "data.message", ""));
-
-        setCartId(productData?._id);
         fetchCurrentUserCarts();
         setLoading(false);
       } catch (err) {
@@ -378,11 +343,8 @@ const Customization = ({
 
   const handleIncrement = async (id) => {
     try {
-      console.log({ historyCartId, historyCart, typeRef });
-      // let _id = getCardId(id);
-      let cart_id = typeRef ? historyCartId[typeRef] : getCardId(id)?.[0]?._id;
-
-      await incrementCartQuantity(cart_id);
+      let _id = getCardId(id);
+      await incrementCartQuantity(_.get(_id, "[0]._id", ""));
       message.success("quantity updated");
       fetchData();
       fetchCurrentUserCarts();
@@ -393,14 +355,12 @@ const Customization = ({
 
   const handleDecrement = async (id) => {
     try {
-      //let _id = getCardId(id);
-      let cart_id = typeRef ? historyCartId[typeRef] : getCardId(id)?.[0]?._id;
-      let qty = typeRef ? historyCart[typeRef] : getQuantity(id);
-      if (qty > 1) {
-        await decrementCartQuantity(cart_id);
+      let _id = getCardId(id);
+      if (getQuantity(id) > 1) {
+        await decrementCartQuantity(_.get(_id, "[0]._id", ""));
         message.success("quantity updated");
       } else {
-        await removeSoloFromCart(cart_id);
+        await removeSoloFromCart(_.get(_id, "[0]._id", ""));
         message.success("Food removed from cart");
       }
       fetchData();
@@ -448,8 +408,6 @@ const Customization = ({
     product_data,
     typeRef,
     check: product_data?.types?.length && typeRef,
-    edit,
-    historyCart,
   });
   return (
     <>
@@ -460,10 +418,6 @@ const Customization = ({
               <div className="sticky top-0 z-50 flex justify-end ">
                 <button
                   onClick={() => {
-                    setPrice(0);
-                    setQuantity(1);
-                    historyCart({});
-                    setNewhistoryCartID({});
                     OnClose();
                     // document?.getElementById("customization")?.hideModal();
                   }}
@@ -578,75 +532,54 @@ const Customization = ({
             </form>
 
             <div className="mt-5">
-              <div className="flex gap-3 justify-end">
-                {
-                  (isMultipleTypeMenu &&
-                    Object.keys(historyCart)?.includes(typeRef)) ||
-                  (!isMultipleTypeMenu &&
-                    currentCartsData?.includes(product_data?._id)) ? (
+              <div className="flex gap-3">
+                {currentCartsData.includes(product_data?._id) ? (
+                  <div
+                    className={` text-white bg-gray-300  font-medium center_div rounded-2xl w-1/2 cursor-pointer flex justify-between items-center `}
+                  >
                     <div
-                      className={` text-white bg-gray-300  font-medium center_div rounded-2xl w-1/2 cursor-pointer flex justify-between items-center `}
+                      onClick={() => {
+                        handleDecrement(product_data?._id);
+                        HandleDecrement();
+                      }}
+                      className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div text-black"
                     >
-                      <div
-                        onClick={() => {
-                          if (typeRef) {
-                            setQuantity(historyCart?.typeRef || 1);
-                          }
-                          handleDecrement(product_data?._id);
-                          HandleDecrement();
-                        }}
-                        className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div text-black"
-                      >
-                        -
-                      </div>
-                      <div className=" font-bold text-black">
-                        {typeRef
-                          ? historyCart?.[typeRef] || 0
-                          : getQuantity(product_data?._id)}
-                      </div>
-                      <div
-                        onClick={() => {
-                          if (isMultipleTypeMenu) {
-                            setQuantity(historyCart?.typeRef || 1);
-                          }
-                          handleIncrement(product_data?._id);
-                          HandleIncrement();
-                        }}
-                        className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div text-black"
-                      >
-                        +
-                      </div>
+                      -
                     </div>
-                  ) : null
-                  // <div
-                  //   className={` text-white  font-medium center_div rounded-2xl w-1/2 flex justify-between items-center `}
-                  // >
-                  //   <div
-                  //     onClick={() => {
-                  //       handleDecrement(product_data?._id);
-                  //       HandleDecrement();
-                  //     }}
-                  //     className="w-[30%]  py-2  rounded-l-2xl center_div text-black"
-                  //   ></div>
-                  //   <div className=" font-bold text-black">
-                  //     {!isMultipleTypeMenu
-                  //       ? getQuantity(product_data?._id)
-                  //       : historyCart[typeRef]}
-                  //   </div>
-                  //   <div
-                  //     onClick={() => {
-                  //       handleIncrement(product_data?._id);
-                  //       HandleIncrement();
-                  //     }}
-                  //     className="w-[30%]  py-2 rounded-r-2xl center_div text-black"
-                  //   ></div>
-                  // </div>
-                }
+                    <div className=" font-bold text-black">
+                      {getQuantity(product_data?._id)}
+                    </div>
+                    <div
+                      onClick={() => {
+                        handleIncrement(product_data?._id);
+                        HandleIncrement();
+                      }}
+                      className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div text-black"
+                    >
+                      +
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className={` text-white  font-medium center_div rounded-2xl w-1/2 flex justify-between items-center `}
+                  >
+                    <div
+                      onClick={() => {
+                        handleDecrement(product_data?._id);
+                      }}
+                      className="w-[30%]  py-2  rounded-l-2xl center_div text-black"
+                    ></div>
+                    <div className=" font-bold text-black"></div>
+                    <div
+                      onClick={() => {
+                        handleIncrement(product_data?._id);
+                      }}
+                      className="w-[30%]  py-2 rounded-r-2xl center_div text-black"
+                    ></div>
+                  </div>
+                )}
 
-                {(isMultipleTypeMenu &&
-                  Object.keys(historyCart)?.includes(typeRef)) ||
-                (!isMultipleTypeMenu &&
-                  currentCartsData?.includes(product_data?._id)) ? (
+                {currentCartsData.includes(product_data?._id) ? (
                   <button
                     className="btn w-1/2 h-16 hover:bg-black bg-black/90 text-lg text-white"
                     onClick={handlegotocart}

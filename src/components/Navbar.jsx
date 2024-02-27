@@ -12,7 +12,7 @@ import axios from "axios";
 import { MdOutlineMenu } from "react-icons/md";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import { useSelector } from "react-redux";
-
+import offline from "../assets/Poor_connection.png";
 import { getMessaging, getToken } from "firebase/messaging";
 import { app, messaging } from "../helper/firebase/index";
 // import { initializeSocket } from "../helper/socket/socketService";
@@ -207,10 +207,12 @@ function Navbar() {
       </Link>
       <div className=" gap-x-20 lg:block hidden">
         {alertSlider && isOnline ? (
-          <div className="w-full h-5 bg-green-600 flex items-center justify-center absolute top-0 left-0 z-50">
+          <div className="w-full h-20 bg-green-600 flex items-center justify-center absolute top-0 left-0 z-50">
             <p className="text-lg font-semibold">You are online</p>
           </div>
         ) : null}
+
+        <img src={offline} alt="" srcset="" style={{ display: "none" }} />
 
         <div className="center_div gap-x-20">
           {/* menus */}
@@ -413,11 +415,7 @@ function Navbar() {
         className="!bg-white !rounded-2xl py-8 px-4"
       >
         <div className="center_div gap-x-2 font-bold text-black">
-          <img
-            src="/assets/icons/Restuarant_Closed.png"
-            alt=""
-            className="p-2 w-60"
-          />
+          <img src={offline} alt="" className="p-2 w-60" />
           <h1 className="bg-gray-300 py-4 px-4 rounded-xl mt-2 text-center  w-full">
             Temporarily Closed Today
           </h1>
@@ -432,11 +430,7 @@ function Navbar() {
         className="!bg-white !rounded-2xl py-8 px-4"
       >
         <div className="center_div gap-x-2 font-bold text-black">
-          <img
-            src="/assets/icons/Poor_connection.png"
-            alt=""
-            className="p-2 w-60"
-          />
+          <img src={offline} alt="offline" className="p-2 w-60" />
           <h1 className="bg-gray-300 py-4 px-4 rounded-xl mt-2 text-center  w-full">
             Check your internet connection
           </h1>
