@@ -367,6 +367,9 @@ const Delivery = () => {
                     <div className="font-semibold text-dark3a_color text-sm">
                       Delivery to this address
                     </div>
+                    <div className="font-semibold text-dark3a_color text-sm">
+                      {selectedDeliveryAddress?.addressType}
+                    </div>
                   </div>
                   <address className="text-[#494949] capitalize font-normal pl-4 line-clamp-3 lg:text-lg text-sm lg:w-[90%]">
                     {_.get(selectedDeliveryAddress, "name", "")}
@@ -669,16 +672,21 @@ const Delivery = () => {
                       setSelectedDeliveryAddress(res);
                       setOpen(false);
                     }}
-                    className={`break-words min-h-[100px] capitalize center_div justify-start pl-4 lg:text-lg   rounded-lg cursor-pointer ${
+                    className={`flex-col  break-words p-4 capitalize  justify-start pl-4 lg:text-lg   rounded-lg cursor-pointer ${
                       _.get(selectedDeliveryAddress, "_id", false) === res._id
                         ? "!bg-black/90 text-white"
                         : "bg-slate-100"
                     }`}
                   >
-                    {_.get(res, "name", "")},&nbsp;
-                    {_.get(res, "streetName", "")},&nbsp;
-                    {_.get(res, "landMark", "")},&nbsp;
-                    {_.get(res, "city", "")}-{_.get(res, "picCode", "")}
+                    <div className="font-bold">
+                      {_.get(res, "addressType", "")}
+                    </div>
+                    <div>
+                      {_.get(res, "name", "")},&nbsp;
+                      {_.get(res, "streetName", "")},&nbsp;
+                      {_.get(res, "landMark", "")},&nbsp;
+                      {_.get(res, "city", "")}-{_.get(res, "picCode", "")}
+                    </div>
                   </div>
                 );
               })}
