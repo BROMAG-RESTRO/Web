@@ -88,9 +88,9 @@ const Cusinedetails = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (loading = true) => {
     try {
-      setLoading(true);
+      setLoading(loading);
       const result = await getAllCusinessFilter(
         localStorage.getItem("search") ||
           _.get(location, "state.currentCatid", "")
@@ -177,9 +177,9 @@ const Cusinedetails = () => {
     isVegOnly,
   ]);
 
-  const fetchCurrentUserCarts = async () => {
+  const fetchCurrentUserCarts = async (loading = true) => {
     try {
-      setLoading(true);
+      setLoading(loading);
       let orderStatus = getOrderReferance();
       console.log("orderrs", { orderStatus });
       let current_carts = await getCurrentUserCarts(orderStatus);
@@ -362,8 +362,8 @@ const Cusinedetails = () => {
       let _id = getCardId(id);
       await incrementCartQuantity(_.get(_id, "[0]._id", ""));
       message.success("quantity updated");
-      fetchData();
-      fetchCurrentUserCarts();
+      fetchData(false);
+      fetchCurrentUserCarts(false);
     } catch (err) {
       console.log(err);
     }
@@ -379,8 +379,8 @@ const Cusinedetails = () => {
         await removeSoloFromCart(_.get(_id, "[0]._id", ""));
         message.success("Food removed from cart");
       }
-      fetchData();
-      fetchCurrentUserCarts();
+      fetchData(false);
+      fetchCurrentUserCarts(false);
     } catch (err) {
       console.log(err);
     }
@@ -778,8 +778,8 @@ const Cusinedetails = () => {
             product_data={customizeProduct}
             isDining={pageName === "/dining-cusines"}
             OnClose={() => {
-              fetchData();
-              fetchCurrentUserCarts();
+              fetchData(false);
+              fetchCurrentUserCarts(false);
               document?.getElementById("customization")?.hideModal();
             }}
           />

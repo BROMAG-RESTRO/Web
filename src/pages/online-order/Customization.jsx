@@ -44,9 +44,10 @@ const Customization = ({
   const [typeOfferPercentage, setTypeOfferPer] = useState(0);
   const [typeRef, setTypeRef] = useState("");
   const [historyCart, setNewhistoryCart] = useState({});
+  const [historyCartId, setNewhistoryCartID] = useState({});
   const [customizeCart, setCustomizeCart] = useState({});
   const [cartID, setCartId] = useState([]);
-  console.log({ price, productPrice });
+  console.log({ price, productPrice, historyCartId });
   useEffect(() => {
     let maxPrice = 0;
     let correspondingOfferPercentage = 0;
@@ -100,7 +101,7 @@ const Customization = ({
     id,
     offerPercentage
   ) => {
-    setQuantity(historyCart?.[id] || 0);
+    setQuantity(historyCart?.[id] || 1);
     setPrice(
       typeof selectedPrice === "number"
         ? selectedPrice
@@ -245,12 +246,14 @@ const Customization = ({
 
       let data = current_carts?.data?.data;
       let tmp = {};
-      let tmparr = [];
+      let tmpCart = {};
       let tmpData = data?.map((td) => {
         tmp[td?.typeRef?._id] = td?.quantity;
+        tmpCart[td?.typeRef?._id] = td?._id;
       });
       setNewhistoryCart(tmp);
-      console.log({ tmp });
+      setNewhistoryCartID(tmpCart);
+      console.log({ tmp, tmpCart });
       setOverallCartsData(current_carts?.data?.data);
       setAllCartsData(_.get(current_carts, "data.data", []));
       setCurrentCartsData(cardsref);
@@ -268,9 +271,16 @@ const Customization = ({
     ) {
       fetchCurrentUserCarts();
     }
-  }, [typeRef, quantity]);
+  }, [typeRef, quantity, product_data]);
 
-  console.log({ allCartsData, currentCartsData, productData });
+  console.log({
+    quantity,
+    price,
+    typeRef,
+    allCartsData,
+    currentCartsData,
+    productData,
+  });
 
   const getOrderReferance = () => {
     let orderRef = "";
@@ -368,8 +378,11 @@ const Customization = ({
 
   const handleIncrement = async (id) => {
     try {
-      let _id = getCardId(id);
-      await incrementCartQuantity(_.get(_id, "[0]._id", ""));
+      console.log({ historyCartId, historyCart, typeRef });
+      // let _id = getCardId(id);
+      let cart_id = typeRef ? historyCartId[typeRef] : getCardId(id)?.[0]?._id;
+
+      await incrementCartQuantity(cart_id);
       message.success("quantity updated");
       fetchData();
       fetchCurrentUserCarts();
@@ -380,12 +393,14 @@ const Customization = ({
 
   const handleDecrement = async (id) => {
     try {
-      let _id = getCardId(id);
-      if (historyCart[typeRef] > 1) {
-        await decrementCartQuantity(_.get(_id, "[0]._id", ""));
+      //let _id = getCardId(id);
+      let cart_id = typeRef ? historyCartId[typeRef] : getCardId(id)?.[0]?._id;
+      let qty = typeRef ? historyCart[typeRef] : getQuantity(id);
+      if (qty > 1) {
+        await decrementCartQuantity(cart_id);
         message.success("quantity updated");
       } else {
-        await removeSoloFromCart(_.get(_id, "[0]._id", ""));
+        await removeSoloFromCart(cart_id);
         message.success("Food removed from cart");
       }
       fetchData();
@@ -445,6 +460,10 @@ const Customization = ({
               <div className="sticky top-0 z-50 flex justify-end ">
                 <button
                   onClick={() => {
+                    setPrice(0);
+                    setQuantity(1);
+                    historyCart({});
+                    setNewhistoryCartID({});
                     OnClose();
                     // document?.getElementById("customization")?.hideModal();
                   }}
@@ -559,60 +578,75 @@ const Customization = ({
             </form>
 
             <div className="mt-5">
-              <div className="flex gap-3">
-                {Object.keys(historyCart)?.includes(typeRef) &&
-                currentCartsData?.includes(product_data?._id) ? (
-                  <div
-                    className={` text-white bg-gray-300  font-medium center_div rounded-2xl w-1/2 cursor-pointer flex justify-between items-center `}
-                  >
+              <div className="flex gap-3 justify-end">
+                {
+                  (isMultipleTypeMenu &&
+                    Object.keys(historyCart)?.includes(typeRef)) ||
+                  (!isMultipleTypeMenu &&
+                    currentCartsData?.includes(product_data?._id)) ? (
                     <div
-                      onClick={() => {
-                        setQuantity(historyCart?.typeRef || 0);
-                        handleDecrement(product_data?._id);
-                        HandleDecrement();
-                      }}
-                      className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div text-black"
+                      className={` text-white bg-gray-300  font-medium center_div rounded-2xl w-1/2 cursor-pointer flex justify-between items-center `}
                     >
-                      -
+                      <div
+                        onClick={() => {
+                          if (typeRef) {
+                            setQuantity(historyCart?.typeRef || 1);
+                          }
+                          handleDecrement(product_data?._id);
+                          HandleDecrement();
+                        }}
+                        className="w-[30%] hover:bg-primary_color py-2  rounded-l-2xl center_div text-black"
+                      >
+                        -
+                      </div>
+                      <div className=" font-bold text-black">
+                        {typeRef
+                          ? historyCart?.[typeRef] || 0
+                          : getQuantity(product_data?._id)}
+                      </div>
+                      <div
+                        onClick={() => {
+                          if (isMultipleTypeMenu) {
+                            setQuantity(historyCart?.typeRef || 1);
+                          }
+                          handleIncrement(product_data?._id);
+                          HandleIncrement();
+                        }}
+                        className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div text-black"
+                      >
+                        +
+                      </div>
                     </div>
-                    <div className=" font-bold text-black">
-                      {historyCart?.[typeRef] || 0}
-                    </div>
-                    <div
-                      onClick={() => {
-                        setQuantity(historyCart?.typeRef || 0);
-                        handleIncrement(product_data?._id);
-                        HandleIncrement();
-                      }}
-                      className="w-[30%] hover:bg-primary_color py-2 rounded-r-2xl center_div text-black"
-                    >
-                      +
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={` text-white  font-medium center_div rounded-2xl w-1/2 flex justify-between items-center `}
-                  >
-                    <div
-                      onClick={() => {
-                        handleDecrement(product_data?._id);
-                      }}
-                      className="w-[30%]  py-2  rounded-l-2xl center_div text-black"
-                    ></div>
-                    <div className=" font-bold text-black">
-                      {historyCart[typeRef]}
-                    </div>
-                    <div
-                      onClick={() => {
-                        handleIncrement(product_data?._id);
-                      }}
-                      className="w-[30%]  py-2 rounded-r-2xl center_div text-black"
-                    ></div>
-                  </div>
-                )}
+                  ) : null
+                  // <div
+                  //   className={` text-white  font-medium center_div rounded-2xl w-1/2 flex justify-between items-center `}
+                  // >
+                  //   <div
+                  //     onClick={() => {
+                  //       handleDecrement(product_data?._id);
+                  //       HandleDecrement();
+                  //     }}
+                  //     className="w-[30%]  py-2  rounded-l-2xl center_div text-black"
+                  //   ></div>
+                  //   <div className=" font-bold text-black">
+                  //     {!isMultipleTypeMenu
+                  //       ? getQuantity(product_data?._id)
+                  //       : historyCart[typeRef]}
+                  //   </div>
+                  //   <div
+                  //     onClick={() => {
+                  //       handleIncrement(product_data?._id);
+                  //       HandleIncrement();
+                  //     }}
+                  //     className="w-[30%]  py-2 rounded-r-2xl center_div text-black"
+                  //   ></div>
+                  // </div>
+                }
 
-                {Object.keys(historyCart)?.includes(typeRef) &&
-                currentCartsData.includes(product_data?._id) ? (
+                {(isMultipleTypeMenu &&
+                  Object.keys(historyCart)?.includes(typeRef)) ||
+                (!isMultipleTypeMenu &&
+                  currentCartsData?.includes(product_data?._id)) ? (
                   <button
                     className="btn w-1/2 h-16 hover:bg-black bg-black/90 text-lg text-white"
                     onClick={handlegotocart}
