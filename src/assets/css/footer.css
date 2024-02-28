@@ -15,8 +15,13 @@
 
 .ant-picker-ok button{
   background-color: orange;
+  
 }
 
+
+.error_text{
+  border:2px solid red !important;
+}
 
 .textareat{
   background-color: rgb(233,233,233) !important; 
