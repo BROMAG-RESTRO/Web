@@ -13,6 +13,10 @@
   padding-top: 30px;
 }
 
+.ant-picker-ok button{
+  background-color: orange;
+}
+
 
 .textareat{
   background-color: rgb(233,233,233) !important; 

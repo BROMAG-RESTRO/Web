@@ -156,21 +156,41 @@ const BookingForm = ({ tableDatas }) => {
   };
 
   const disabledPastTime = () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    const currentSecond = now.getSeconds();
+    // const now = new Date();
+    // const currentHour = now.getHours();
+    // const currentMinute = now.getMinutes();
+    // const currentSecond = now.getSeconds();
+    const now = moment();
 
+    // Get the current hour in 24-hour format
+    const currentHour24 = now.format("H");
+
+    const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    if (currentHour24 > 10) {
+      for (let i = 10; i < currentHour24; i++) {
+        hours.push(i);
+      }
+    }
     return {
-      disabledHours: () => Array.from({ length: currentHour }, (_, i) => i),
-      disabledMinutes: (hour) =>
-        hour === currentHour
-          ? Array.from({ length: currentMinute }, (_, i) => i)
-          : [],
-      disabledSeconds: (hour, minute) =>
-        hour === currentHour && minute === currentMinute
-          ? Array.from({ length: currentSecond }, (_, i) => i)
-          : [],
+      //   disabledHours: () => Array.from({ length: currentHour }, (_, i) => i),
+
+      //   disabledHours: () =>
+      //     Array.from({ length: currentHour }).concat(
+      //       Array.from(
+      //         { length: 24 - currentHour - 1 },
+      //         (_, i) => i + currentHour + 1
+      //       )
+      //     ),
+      disabledHours: () => hours,
+      //   disabledMinutes: (hour) =>
+      //     hour === currentHour
+      //       ? Array.from({ length: currentMinute }, (_, i) => i)
+      //       : [],
+      //       disabledMinutes:()=>[]
+      //   disabledSeconds: (hour, minute) =>
+      //     hour === currentHour && minute === currentMinute
+      //       ? Array.from({ length: currentSecond }, (_, i) => i)
+      //       : [],
     };
   };
 
@@ -384,15 +404,21 @@ const BookingForm = ({ tableDatas }) => {
             <TimePicker
               placement="topRight"
               size="small"
+              showNow={false}
+              minuteStep={10}
+              hideDisabledOptions
+              defaultOpenValue={moment("11:00", "HH:mm")}
               suffixIcon={<FieldTimeOutlined className="booking_input_pic" />}
               {...disabledPastTime()}
-              onChange={(times) => {
+              onChange={(times, time) => {
+                console.log({ times, time });
                 form.setFieldsValue({
                   diningTime: times,
+                  time: time,
                 });
               }}
               placeholder="Select time slot"
-              format={"hh:mm A"}
+              format={"HH:mm"}
               className="antd_input w-full bg-transparent"
             />
           </Form.Item>
@@ -411,14 +437,21 @@ const BookingForm = ({ tableDatas }) => {
             <TimePicker
               placement="topRight"
               size="small"
+              minuteStep={10}
+              showNow={false}
+              hideDisabledOptions
+              defaultOpenValue={moment("11:00", "HH:mm")}
               suffixIcon={<FieldTimeOutlined className="booking_input_pic" />}
-              onChange={(times) => {
+              {...disabledPastTime()}
+              onChange={(times, time) => {
+                console.log({ times, time });
                 form.setFieldsValue({
                   diningTime: times,
+                  time: time,
                 });
               }}
               placeholder="Select time slot"
-              format={"hh:mm A"}
+              format={"HH:mm"}
               className="antd_input w-full bg-transparent"
             />
           </Form.Item>
