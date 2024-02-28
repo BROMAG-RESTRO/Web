@@ -444,7 +444,7 @@ const Cart = () => {
   // ========
   const [products, setProducts] = useState([]);
 
-  console.log({ cartData });
+  console.log({ cartData, isDining });
   useEffect(() => {
     // Initialize the products with the provided cartData
     const initialProducts = cartData?.map((res) => {
@@ -541,15 +541,24 @@ const Cart = () => {
                 const typeRefId = _.get(res, "typeRef", "");
                 const productRef = _.get(res, "productRef", "");
                 const selectedType = typeRefId.Type;
-                const displayPrice = typeRefId.Type
+                let qty = Number(_.get(res, "quantity", ""));
+                console.log({
+                  typeRefId,
+                  selectedType,
+                  qty,
+                  isDining,
+                  DININGPERCENTAGE,
+                  price: typeRefId.TypePrice,
+                  amount: typeRefId.TypePrice * DININGPERCENTAGE,
+                });
+                const displayPrice = typeRefId?.Type
                   ? isDining
-                    ? typeRefId.TypePrice +
-                      typeRefId.TypePrice *
-                        DININGPERCENTAGE *
-                        _.get(res, "quantity", "")
+                    ? (typeRefId.TypePrice +
+                        typeRefId.TypePrice * DININGPERCENTAGE) *
+                      qty
                     : (typeRefId.TypeOfferPrice
                         ? typeRefId.TypeOfferPrice
-                        : typeRefId.TypePrice) * _.get(res, "quantity", "")
+                        : typeRefId.TypePrice) * qty
                   : isDining
                   ? (parseFloat(productRef.price) +
                       Number(productRef.price) * DININGPERCENTAGE) *
@@ -558,7 +567,7 @@ const Cart = () => {
                       ? parseFloat(productRef.discountPrice)
                       : parseFloat(productRef.price)) *
                     _.get(res, "quantity", "");
-
+                console.log({ displayPrice });
                 // const selectedType = _.get(res, "productRef.types", []).find(
                 //   (type) => type._id === typeRefId
                 // );
