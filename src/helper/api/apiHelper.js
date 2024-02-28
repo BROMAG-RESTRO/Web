@@ -245,6 +245,12 @@ export const addToCartFromProductDetails = async (formData) => {
     formData
   );
 };
+export const addMultiCartFromProductDetails = async (formData) => {
+  return await axios.post(
+    `${base_url}/addmulticart_fromproduct_deatils`,
+    formData
+  );
+};
 
 // cancel order
 export const cancelMyOrder = async (id, formData) => {
