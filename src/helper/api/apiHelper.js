@@ -195,6 +195,9 @@ export const updateMyPic = async (formData) => {
 export const addMyfeedback = async (formData) => {
   return await axios.post(`${base_url}/add_my_feedback`, formData);
 };
+export const addHomefeedback = async (formData) => {
+  return await axios.post(`${base_url}/add_home_feedback`, formData);
+};
 
 export const getMyfeedback = async () => {
   return await axios.post(`${base_url}/get_my_feedback`);

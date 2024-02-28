@@ -147,7 +147,9 @@ const AddNewAddress = ({
   };
 
   useEffect(() => {
-    handleGetCurrentLocation();
+    if (!updateId) {
+      handleGetCurrentLocation();
+    }
     fetchUserData();
   }, []);
 
