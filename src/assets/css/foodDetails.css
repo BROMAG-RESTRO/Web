@@ -1,0 +1,61 @@
+.food_details_container{
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border: 0px dashed #000;
+border-bottom: 1px  dashed #bbb ;
+padding-bottom: 2px;
+margin-bottom: 20px;
+
+
+}
+
+.food_details_info{
+   display: flex;
+   flex-direction: column;
+   gap: 10px; 
+   width: 68%;
+   padding: 10px;
+}
+
+.food_data{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.food_details_action .cart__btn {
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    padding: 11px 13px;
+    /* max-width: 200px; */
+    text-align: center;
+}
+
+.food_details_info .item__type--price {
+    display: flex;
+    width: 50%;
+}
+.discount__tag{
+    display: flex;
+    align-items: center;
+    background-color: orange;
+    padding: 1px 5px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #fff;
+    
+}
+
+
+.food_details_action{
+   
+        display: flex;
+        flex-direction: column;
+        gap: 10px; 
+        width: 30%;
+     
+}
