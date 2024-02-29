@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menus } from "../helper/datas/menu";
-import { getFooterData } from "../helper/api/apiHelper";
+import { addHomefeedback, getFooterData } from "../helper/api/apiHelper";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { colorTheme } from "../redux/authSlice";
@@ -10,6 +10,11 @@ import { MdLocationPin } from "react-icons/md";
 import { IoMailOutline } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import "../assets/css/footer.css";
+import { Link } from "react-router-dom";
+import { Formik } from "formik";
+
+import * as yup from "yup";
+import { notification } from "antd";
 function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,7 +22,7 @@ function Footer() {
 
   const [footerData, setFooterData] = useState(null);
   const [color, setColor] = useState("");
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -122,24 +127,51 @@ function Footer() {
               <div className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm footer-link-wrapper">
                 <div className="flex gap-2 items-center">
                   <FaPhoneAlt className="text-[10] lg:text-sm hidden" />
-                  <span className="text-[10px] footer-link ">Who we are</span>
+                  <Link
+                    to={"/whoweare"}
+                    title="Who we are"
+                    // className="text-[10px] footer-link "
+                  >
+                    <span className="text-[10px] footer-link ">Who we are</span>
+                  </Link>
                 </div>
 
                 <div className="flex items-center">
                   <IoMailOutline className="text-sm hidden" />
-                  <span className="text-[9px] footer-link">Privacy Policy</span>
+                  <Link
+                    to={"/privacy"}
+                    title="Privacy Policy"
+                    // className="text-[10px] footer-link "
+                  >
+                    <span className="text-[9px] footer-link">
+                      Privacy Policy
+                    </span>
+                  </Link>
                 </div>
                 <div className="flex lg:items-center">
                   <MdLocationPin className="text-2xl lg:text-lg  hidden" />
-                  <span className="text-[10px] footer-link">
-                    Refund and Cancellation
-                  </span>
+                  <Link
+                    to={"/cancellation"}
+                    title="Refund and Cancellation"
+                    // className="text-[10px] footer-link "
+                  >
+                    <span className="text-[10px] footer-link">
+                      Refund and Cancellation
+                    </span>
+                  </Link>
                 </div>
                 <div className="flex lg:items-center">
                   <MdLocationPin className="text-2xl lg:text-lg  hidden" />
-                  <span className="text-[10px] footer-link">
-                    Refund and Cancellation
-                  </span>
+                  <Link
+                    to={"/termsandcondition"}
+                    title="Terms and Condition"
+                    // className="text-[10px] footer-link "
+                  >
+                    {" "}
+                    <span className="text-[10px] footer-link">
+                      Terms and Condition
+                    </span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -193,39 +225,124 @@ function Footer() {
               <h1 className="text-2xl font-sans  text-[#5e5e5e] font-extrabold mb-1">
                 GIVE YOUR FEEDBACK
               </h1>
-              <div className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm pr-3">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Enter your name"
-                    className="input input-bordered w-full bg-transparent border "
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Enter your e-mail"
-                    className="input input-bordered w-full bg-transparent border "
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Enter your phone number"
-                    className="input input-bordered w-full bg-transparent border "
-                  />
-                </div>
+              <Formik
+                initialValues={{
+                  name: "",
+                  email: "",
+                  mobile: "",
+                  feedback: "",
+                }}
+                validateOnBlur={false}
+                validationSchema={yup.object({
+                  name: yup.string().required("Enter Email"),
+                  email: yup
+                    .string()
+                    .email("Invalid Email")
+                    .required("Enter email"),
+                  mobile: yup
+                    .string()
+                    .required("Enter Mobile")
+                    .required("Enter mobile number"),
+                  feedback: yup.string().required("Enter some Feedback "),
+                })}
+                onSubmit={async (values, formik) => {
+                  try {
+                    setLoading(true);
+                    await addHomefeedback(values);
+                    notification.success({
+                      message: "Thanks for your feedback",
+                    });
 
-                <div className="w-full flex items-center py-1 gap-2">
-                  <textarea
-                    className="textarea textarea-bordered w-[60%] h-16 resize-none bg-white"
-                    placeholder="Write something..."
-                  ></textarea>
-                  <button className="btn w-[40%] h-16 bg-primary_color border-none text-lg text-white">
-                    Submit
-                  </button>
-                </div>
-              </div>
+                    formik.resetForm({});
+                    setLoading(false);
+                  } catch (err) {
+                    setLoading(false);
+                    notification.error({ message: "Something went wrong" });
+                  }
+                }}
+              >
+                {(formik) => {
+                  console.log(formik.errors, formik.values);
+                  return (
+                    <>
+                      <form
+                        className="flex flex-col lg:gap-y-2 gap-y-5 lg:text-2xl text-sm pr-3 mt-1"
+                        onSubmit={formik.handleSubmit}
+                      >
+                        <div>
+                          <input
+                            type="text"
+                            name={"name"}
+                            value={formik.values.name}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter your name"
+                            className={
+                              formik.touched?.name && formik.errors.name
+                                ? "error_text input input-bordered w-full bg-white text-red"
+                                : "input input-bordered w-full bg-white text-black border "
+                            }
+                          />
+                        </div>
+                        <div>
+                          <input
+                            type="email"
+                            name={"email"}
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter your e-mail"
+                            className={
+                              formik.touched?.email && formik.errors.email
+                                ? "error_text input input-bordered w-full bg-white text-red"
+                                : "input input-bordered w-full bg-white text-black border "
+                            }
+                          />
+                        </div>
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="Enter your phone number"
+                            className={
+                              formik.touched?.email && formik.errors.email
+                                ? "error_text input input-bordered w-full bg-white text-red"
+                                : "input input-bordered w-full bg-white text-black border "
+                            }
+                            maxLength={10}
+                            minLength={10}
+                            name={"mobile"}
+                            value={formik.values.mobile}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                          />
+                        </div>
+
+                        <div className="w-full flex items-center py-1 gap-2">
+                          <textarea
+                            className={
+                              formik.touched?.email && formik.errors.email
+                                ? "error_text textarea textarea-bordered w-[70%] h-16  bg-white text-black text-red"
+                                : "textarea textarea-bordered w-[70%] h-16  bg-white text-black "
+                            }
+                            placeholder="Write something..."
+                            name={"feedback"}
+                            value={formik.values.feedback}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                          ></textarea>
+                          <button
+                            className="btn w-[30%] h-16 bg-primary_color border-none text-lg text-white"
+                            type="submit"
+                            disabled={loading}
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </>
+                  );
+                }}
+              </Formik>
             </div>
           </div>
           {/* Social Links */}

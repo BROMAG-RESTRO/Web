@@ -29,60 +29,78 @@ const AddNewAddress = ({
 
   const getLocation = async (lat, long) => {
     try {
-      let url = "https://maps.googleapis.com/maps/api/geocode/json";
-      let params = {
-        key: "AIzaSyBTKE5U_KnZAbWR4qUhsHLsj4titj2uIWg",
-        latlng: `${lat},${long}`,
+      const requestOptions = {
+        method: "GET",
+        redirect: "follow",
       };
 
-      const result = await axios.get(url, {
-        params,
-      });
+      fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyBTKE5U_KnZAbWR4qUhsHLsj4titj2uIWg`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log({ result });
+          if (result?.status === "OK") {
+            const allAddress = result?.results;
+            const userAddress = allAddress?.[0]?.address_components;
+            console.log({ userAddress });
+            let doorno = "",
+              street = "",
+              area = "",
+              city = "",
+              country = "",
+              state = "",
+              pincode = "";
+            userAddress?.forEach((component) => {
+              if (component?.types.includes("administrative_area_level_1")) {
+                state = component.long_name;
+              } else if (component?.types.includes("locality")) {
+                city = component.long_name;
+              } else if (component?.types.includes("street_number")) {
+                doorno = component.long_name;
+              } else if (component?.types.includes("route")) {
+                street = component.long_name;
+              } else if (component?.types.includes("sublocality_level_1")) {
+                area = component.long_name;
+              } else if (component?.types.includes("postal_code")) {
+                pincode = component.long_name;
+              }
+            });
 
-      if (result?.status === 200 && result?.data?.status === "OK") {
-        const allAddress = result?.data?.results;
-        const userAddress = allAddress?.[0]?.address_components;
-        console.log({ userAddress });
-        let doorno = "",
-          street = "",
-          area = "",
-          city = "",
-          country = "",
-          pincode = "";
-        userAddress?.forEach((component) => {
-          if (component?.types.includes("administrative_area_level_1")) {
-            state = component.long_name;
-          } else if (component?.types.includes("locality")) {
-            city = component.long_name;
-          } else if (component?.types.includes("street_number")) {
-            doorno = component.long_name;
-          } else if (component?.types.includes("route")) {
-            street = component.long_name;
-          } else if (component?.types.includes("sublocality_level_1")) {
-            area = component.long_name;
-          } else if (component?.types.includes("postal_code")) {
-            pincode = component.long_name;
+            setGoogleAddressLocation({
+              doorno,
+              street,
+              area,
+              city,
+              country,
+              pincode,
+              state,
+            });
+
+            form.setFieldsValue({
+              streetName: `${doorno || ""}  ${street}`,
+              landMark: area,
+              city: city,
+              picCode: pincode,
+              customerState: state,
+            });
+
+            return {
+              doorno,
+              street,
+              area,
+              city,
+              country,
+              pincode,
+              state,
+            };
           }
+        })
+        .catch((error) => {
+          console.error(error);
+          return null;
         });
-
-        setGoogleAddressLocation({
-          doorno,
-          street,
-          area,
-          city,
-          country,
-          pincode,
-        });
-
-        return {
-          doorno,
-          street,
-          area,
-          city,
-          country,
-          pincode,
-        };
-      }
 
       return null;
     } catch (error) {
@@ -93,25 +111,22 @@ const AddNewAddress = ({
   };
   const handleGetCurrentLocation = async () => {
     if (navigator.geolocation) {
-      const confirmation = window.confirm("Share your current location?");
-      if (confirmation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            getLocation(latitude, longitude);
-            setLocation({
-              latitude: latitude,
-              longitude: longitude,
-            });
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-          }
-        );
-      }
-    } else {
-      console.error("Geolocation is not supported by this browser.");
+      //  const confirmation = window.confirm("Share your current location?");
+      // if (confirmation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          getLocation(latitude, longitude);
+          setLocation({
+            latitude: latitude,
+            longitude: longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
     }
   };
 
@@ -132,7 +147,9 @@ const AddNewAddress = ({
   };
 
   useEffect(() => {
-    handleGetCurrentLocation();
+    if (!updateId) {
+      handleGetCurrentLocation();
+    }
     fetchUserData();
   }, []);
 
