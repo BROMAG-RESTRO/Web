@@ -257,16 +257,20 @@ const OnlineOrders = () => {
                       </Tag>
                       {_.get(res, "status", "") ===
                         "Order ready to preparing" && (
-                        <div className="absolute bottom-12 left-6 bg-white">
-                          {res.timePicked === "600" && (
-                            <CountdownTimer
-                              setDummy={setDummy}
-                              dummy={dummy}
-                              endDate={tenMinDisabledDates(res.updatedAt)}
-                              title={"Your food is preparing... "}
-                            />
-                          )}
-                          {res.timePicked === "1200" && (
+                        <div className="absolute bottom-11 left-6 bg-white">
+                          {/* {res.timePicked === "600" && ( */}
+                          <CountdownTimer
+                            startDate={res?.preparingStart}
+                            setDummy={setDummy}
+                            dummy={dummy}
+                            endDate={
+                              res?.preparingEnd
+                              // tenMinDisabledDates(res.updatedAt)
+                            }
+                            title={"Your food is preparing... "}
+                          />
+
+                          {/* {res.timePicked === "1200" && (
                             <CountdownTimer
                               setDummy={setDummy}
                               dummy={dummy}
@@ -281,10 +285,10 @@ const OnlineOrders = () => {
                               endDate={thirtyMinDisabledDates(res.updatedAt)}
                               title={"Your food is preparing... "}
                             />
-                          )}
+                          )} */}
                         </div>
                       )}
-                      {new Date(disabledDate(res.updatedAt)) > new Date() &&
+                      {/* {new Date(disabledDate(res.updatedAt)) > new Date() &&
                         _.get(res, "status", "") === "Order moved to KDS" && (
                           <div className="absolute bottom-12  left-6">
                             <CountdownTimer
@@ -294,7 +298,7 @@ const OnlineOrders = () => {
                               title={"Time remaining to cancel the order"}
                             />
                           </div>
-                        )}
+                        )} */}
                     </Card>
                   </Badge.Ribbon>
                 </div>
@@ -386,14 +390,16 @@ const OnlineOrders = () => {
                     </div>
                   }
                 />
-              {foodInstruction?.length ? <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
-                  <p className="py-1 font-bold">Instructions*</p>
-                  {foodInstruction?.map((instruction, idx) => (
-                    <p key={idx} className="text-sm">
-                      - {instruction}
-                    </p>
-                  ))}
-                </div>:null}
+                {foodInstruction?.length ? (
+                  <div className="mt-3 rounded-md bg-slate-100 px-2 h-[100px] overflow-y-auto">
+                    <p className="py-1 font-bold">Instructions*</p>
+                    {foodInstruction?.map((instruction, idx) => (
+                      <p key={idx} className="text-sm">
+                        - {instruction}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
               </Card>
             );
           })}
