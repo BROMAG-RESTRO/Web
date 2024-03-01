@@ -107,7 +107,8 @@ const BookingForm = ({ tableDatas }) => {
         },
         (error) => {
           console.error("Error getting location:", error);
-        }
+        },
+        { enableHighAccuracy: true }
       );
     }
   };
