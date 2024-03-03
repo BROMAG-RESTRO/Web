@@ -288,7 +288,7 @@ const OnlineOrders = () => {
                           )} */}
                         </div>
                       )}
-                      {/* {new Date(disabledDate(res.updatedAt)) > new Date() &&
+                      {new Date(disabledDate(res.updatedAt)) > new Date() &&
                         _.get(res, "status", "") === "Order moved to KDS" && (
                           <div className="absolute bottom-12  left-6">
                             <CountdownTimer
@@ -298,7 +298,7 @@ const OnlineOrders = () => {
                               title={"Time remaining to cancel the order"}
                             />
                           </div>
-                        )} */}
+                        )}
                     </Card>
                   </Badge.Ribbon>
                 </div>
