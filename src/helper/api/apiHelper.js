@@ -30,6 +30,10 @@ export const makeUserToken = async (formData) => {
   return await axios.post(`${base_url}/make_user_auth`, formData);
 };
 
+export const addNotifyToken = async (token) => {
+  return await axios.post(`${base_url}/addtoken`, { token });
+};
+
 // check token
 export const tokenVerification = async () => {
   return await axios.get(`${base_url}/check_header_status`);
