@@ -7,6 +7,7 @@ import { notification } from "antd";
 import sound from "./assets/notify.mp3";
 const App = () => {
   useEffect(() => {
+    window.scrollTo(0, 0);
     requestPermission();
 
     console.log("liseners");
@@ -24,8 +25,6 @@ const App = () => {
     return () => {
       unsubscribe.catch((err) => console.log("failed: ", err));
     };
-
-    window.scrollTo(0, 0);
   }, []);
 
   return (

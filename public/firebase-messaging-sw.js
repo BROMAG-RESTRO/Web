@@ -3,8 +3,6 @@ importScripts(
   "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"
 );
 
-import Sound from "./assets/notify.mp3";
-import Logo from "./assets/logo.png";
 const firebaseConfig = {
   apiKey: "AIzaSyDg1__Y23xsWzmIbfQRiV2WD8s2nMxvHSU",
   authDomain: "bromag-web.firebaseapp.com",
@@ -23,8 +21,8 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload?.data?.title;
   const notificationOptions = {
     body: payload?.data?.body,
-    icon: Logo,
-    sound: Sound,
+    // icon: Logo,
+    // sound: Sound,
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
