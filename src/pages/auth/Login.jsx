@@ -13,10 +13,10 @@ import {
 } from "../../helper/api/apiHelper";
 import axios from "axios";
 import { MdKey } from "react-icons/md";
+import { getFireToken, requestPermission } from "../../helper/firebase";
 
 const Login = () => {
-
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState();
   const [timer, setTimer] = useState(60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -27,27 +27,25 @@ const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-
     if (
       localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq")
     ) {
       navigate("/");
     }
-
-  },[]);
+  }, []);
 
   useEffect(() => {
     let countdown;
 
     if (isTimerRunning && timer > 0) {
       countdown = setInterval(() => {
-        setTimer(prevTimer => (prevTimer > 0 ? prevTimer - 1 : 0));
+        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
       }, 1000);
     } else {
       // If timer is not running or has reached 0, stop the interval
       clearInterval(countdown);
       setIsTimerRunning(false);
-      setTimer(60)// Set isTimerRunning to false
+      setTimer(60); // Set isTimerRunning to false
     }
 
     return () => clearInterval(countdown);
@@ -55,57 +53,44 @@ const Login = () => {
 
   const handleGenerateOTP = async () => {
     try {
-
       if (phoneNumber.length < 8) {
-        setLoading((pre) => ({ ...pre,  ["gotp"]: false }));
+        setLoading((pre) => ({ ...pre, ["gotp"]: false }));
         return notification.error({ message: "Enter A Valid Number" });
       }
 
       setLoading((items) => ({ ...items, ["gotp"]: true }));
-    
-      
+
       let number = `${phoneNumber}`;
 
       const verify = await sendOTP(number);
 
       console.log(verify, "verify");
-      
+
       if (!verify.data.success) {
-        
-        setLoading((pre) => ({ ...pre,  ["gotp"]: false }));
-        
+        setLoading((pre) => ({ ...pre, ["gotp"]: false }));
+
         return notification.error({
-          
-          message: verify.data.message
-          
+          message: verify.data.message,
         });
-        
       } else if (verify.data.success) {
-        setIsTimerRunning(true)
-        setLoading((pre) => ({ ...pre,  ["gotp"]: false }));
-        
+        setIsTimerRunning(true);
+        setLoading((pre) => ({ ...pre, ["gotp"]: false }));
 
-
-
-        return notification.success({ message: verify.data.message })
-        
+        return notification.success({ message: verify.data.message });
       }
-      
-      
     } catch (err) {
-      
-      setLoading((pre) => ({ ...pre,  ["gotp"]: false }));
+      setLoading((pre) => ({ ...pre, ["gotp"]: false }));
 
       notification.error({ message: "Something went wrong" });
-
     }
   };
 
   const validateLogin = async (result) => {
-    console.log("result",result);
+    console.log("result", result);
     if (_.get(result, "data.success", false)) {
       let formData = { number: `${phoneNumber}` };
       const result = await makeUserToken(formData);
+
       localStorage.setItem(
         "chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq",
         _.get(result, "data.data", "")
@@ -113,9 +98,13 @@ const Login = () => {
 
       axios.defaults.headers.common["aizasycoxsewxv2t64dxca-wl8n8qfq0gzux1as"] =
         localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq");
-      
-      notification.success({ message: "Delicious success! Explore our menu and indulge in delights" });
+
+      notification.success({
+        message: "Delicious success! Explore our menu and indulge in delights",
+      });
       // navigation routes start
+
+      await getFireToken();
 
       if (_.get(location, "state.backLocation", null) === null) {
         navigate("/");
@@ -143,22 +132,20 @@ const Login = () => {
       setLoading((pre) => ({ ...pre, votp: true }));
 
       if (!otp) {
-
         setLoading((pre) => ({ ...pre, votp: false }));
 
-        return notification.error({ message: "Enter the verification code for authentication" });
-        
+        return notification.error({
+          message: "Enter the verification code for authentication",
+        });
       }
-      const result = await verifyOTP(phoneNumber,otp);
+      const result = await verifyOTP(phoneNumber, otp);
       if (result.data.success) {
         validateLogin(result);
-        
       } else {
-        notification.error({message:result.data.message})
-}
+        notification.error({ message: result.data.message });
+      }
 
       setLoading((pre) => ({ ...pre, votp: false }));
-      
     } catch (err) {
       setLoading((pre) => ({ ...pre, votp: false }));
       notification.error({ message: "Something went wrong" });
@@ -178,7 +165,6 @@ const Login = () => {
           onChange={(e) => {
             setPhoneNumber(e);
           }}
-
           id="contact_phone"
           defaultCountry={"in"}
           className="md:w-[400px] h-[50px] w-[100%] !bg-white placeholder:text-label_color rounded-lg"
@@ -191,15 +177,13 @@ const Login = () => {
         onClick={handleGenerateOTP}
         className="hover:!text-white min-w-[200px] center_div border-none min-h-[50px] text-md bg-black rounded-full !text-white"
       >
+        {isTimerRunning ? (
+          <span className="!text-white">Secure in {timer} seconds</span>
+        ) : (
+          <span className="!text-white">Generate OTP</span>
+        )}
 
-{isTimerRunning ? (
-        <span className="!text-white">Secure in {timer} seconds</span>
-      ) : (
-        <span className="!text-white">Generate OTP</span>
-      )}
-       
         {/* <span className="!text-white"> Generate OTP</span> */}
-
       </Button>
 
       <div className="rounded-[10px] center_div lg:w-[400px]  md:w-[400px] w-[98%] bg-white">
