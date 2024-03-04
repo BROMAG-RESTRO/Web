@@ -25,6 +25,7 @@ import {
 } from "../../helper/validation";
 import { IoFastFoodOutline } from "react-icons/io5";
 import CountdownTimer from "../../components/CountdownTimer";
+import { useSelector } from "react-redux";
 
 const OnlineOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -33,9 +34,10 @@ const OnlineOrders = () => {
   console.log(currentSelected);
   const [dummy, setDummy] = useState(false);
   const [instructions, setInstructions] = useState({});
-  const fetchData = async () => {
+  const messages = useSelector((state) => state.auth.message);
+  const fetchData = async (load = true) => {
     try {
-      setLoading(true);
+      setLoading(load);
       const result = await getMyOnlineOrder();
       setOrders(_.get(result, "data.data", []));
     } catch (err) {
@@ -47,6 +49,10 @@ const OnlineOrders = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData(false);
+  }, [messages]);
 
   const handleCancelOrder = async (value) => {
     try {
