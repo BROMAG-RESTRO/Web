@@ -65,13 +65,20 @@ export function requestPermission() {
     });
 }
 
-export const onMessageListener = () =>
-  new Promise((resolve) => {
-    onMessage(messaging, (payload) => {
-      console.log("foreground messsage", payload);
-      resolve(payload);
-    });
-  });
+// export const onMessageListener = async() =>{
+
+//   try {
+//     onMessage
+//   } catch (error) {
+
+//   }
+// }
+//   new Promise((resolve) => {
+//     onMessage(messaging, (payload) => {
+//       console.log("foreground messsage", payload);
+//       resolve(payload);
+//     });
+//   });
 
 // export const sendOTP = async (number) => {
 //   try {
