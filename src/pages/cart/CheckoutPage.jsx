@@ -29,11 +29,12 @@ import { useParams } from "react-router-dom";
 import { CiCreditCard1 } from "react-icons/ci";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuMonitorSmartphone } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
+import { addCoupon } from "../../redux/authSlice";
 
 const CheckoutPage = () => {
   const [changeRight, setChangeRight] = useState(false);
@@ -47,11 +48,13 @@ const CheckoutPage = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [cartData, setCartData] = useState([]);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [bannersData, setbannersData] = useState([1, 2, 3, 4, 5]);
   const ProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
+  const coupon = useSelector((state) => state.auth.coupon);
   const [paymentMethod, setPaymentMethod] = useState("COD");
   console.log({ address });
   useEffect(() => {
@@ -147,6 +150,7 @@ const CheckoutPage = () => {
         packingCharge: _.get(getTotalAmount(), "packingPrice", 0),
         transactionCharge: _.get(getTotalAmount(), "transactionPrice", 0),
         couponAmount: _.get(getTotalAmount(), "couponDiscount", 0),
+        coupon,
         itemPrice: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
         payment_mode: paymentMethod,
@@ -159,9 +163,11 @@ const CheckoutPage = () => {
           moment(new Date()).format("DMy"),
       };
       await addOnlineOrder(formData);
+
       notification.success({
         message: "Your order has been successfully placed.",
       });
+      dispatch(addCoupon(null));
       navigate("/profile-online-order");
     } catch (err) {
       notification.error({ message: "Something went wrong" });
@@ -248,7 +254,8 @@ const CheckoutPage = () => {
     let deliverCharagePrice = 50;
     let packingPrice = (itemPrice * 10) / 100;
     let transactionPrice = (itemPrice * 5) / 100;
-    let couponDiscount = 0;
+    let couponDiscount =
+      (itemPrice * Number(coupon?.discountPercentage || 0)) / 100;
 
     let total_amount =
       itemPrice +
