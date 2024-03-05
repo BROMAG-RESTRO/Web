@@ -172,9 +172,13 @@ const Contest = () => {
             ]}
           >
             <Input
-              type="number"
-              className="antd_input  w-full"
+              type="text"
+              className="antd_input w-full"
               placeholder="Enter your phone number"
+              maxLength={10}
+              name="contact_number"
+              id="contact_number"
+              max={10}
             />
           </Form.Item>
           <Form.Item
@@ -203,6 +207,16 @@ const Contest = () => {
             </Button>
           </Form.Item>
         </Form>
+        <Link
+          to={"/"}
+          className="text-center mb-1 text-lg font-medium"
+          style={{
+            display: "block",
+            cursor: "pointer",
+          }}
+        >
+          Back
+        </Link>
       </div>
       <Modal
         open={openCard}
