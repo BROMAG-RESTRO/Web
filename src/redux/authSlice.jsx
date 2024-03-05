@@ -9,6 +9,7 @@ const authSlice = createSlice({
     thirdColor: "",
     fourthColor: "",
     foodInstructions: {},
+    message: null,
   },
   reducers: {
     triger: (state, action) => {
@@ -24,9 +25,13 @@ const authSlice = createSlice({
       const { foodId, instructions } = action.payload;
       state.foodInstructions[foodId] = instructions;
     },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
   },
 });
 
-export const { triger, colorTheme, updateFoodInstructions } = authSlice.actions;
+export const { triger, colorTheme, updateFoodInstructions, setMessage } =
+  authSlice.actions;
 
 export default authSlice.reducer;
