@@ -343,6 +343,9 @@ const OnlineOrders = () => {
               <div className="flex items-center justify-between border-b-2">
                 <p>Items Price</p> &#8377; {currentSelected?.itemPrice}
               </div>
+              <div className="flex items-center justify-between border-b-2 text-[red]">
+                <p>Coupon</p> - &#8377; {currentSelected?.couponAmount}
+              </div>
               <div className="flex items-center justify-between border-b-2">
                 <p>Total GST</p> &#8377; {currentSelected?.gst}
               </div>

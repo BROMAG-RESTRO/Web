@@ -1,13 +1,14 @@
 /* eslint-disable no-empty */
 import { Button, Modal, Radio, Result, message, notification } from "antd";
 import _ from "lodash";
-import { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   addDiningOrder,
   addTakeAwayOrder,
   decrementCartQuantity,
   getCurrentUserCartProducts,
+  getUserCoupons,
   incrementCartQuantity,
   removeSoloFromCart,
 } from "../../helper/api/apiHelper";
@@ -18,8 +19,9 @@ import { GoArrowLeft } from "react-icons/go";
 import { IoIosArrowBack } from "react-icons/io";
 import CheckoutPage from "./CheckoutPage";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFoodInstructions } from "../../redux/authSlice";
-
+import { addCoupon, updateFoodInstructions } from "../../redux/authSlice";
+import "../../assets/css/cart.css";
+import { TbDiscount2 } from "react-icons/tb";
 const Cart = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -102,9 +104,11 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const [dummy, setDummy] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [couponModal, setCouponModal] = useState(false);
   const [loadingPlaceOrder, setLoadingPlaceOrder] = useState(false);
-
+  const [coupons, setCoupons] = useState([]);
   const [cartData, setCartData] = useState([]);
+  const [coupon, setCoupon] = useState(null);
   const isDining = location?.pathname === "/dining-cart";
 
   const DININGPERCENTAGE = 30 / 100;
@@ -214,8 +218,23 @@ const Cart = () => {
     }
   };
 
+  const fetchCoupons = async (load = true) => {
+    try {
+      const result = await getUserCoupons();
+
+      // Assuming result.data.data is an array
+
+      console.log("coupons", result.data.data);
+      setCoupons(_.get(result, "data", []));
+    } catch (err) {
+      console.log(err);
+
+      return notification.error({ message: "Something went wrong" });
+    }
+  };
   useEffect(() => {
     fetchData();
+    fetchCoupons();
   }, []);
 
   const handleExploreFoodsScreen = () => {
@@ -320,6 +339,13 @@ const Cart = () => {
         return Number(price) * res.quantity;
       })
     );
+    let couponPrice = 0;
+
+    let discountCoupon = Number(coupon?.discountPercentage || 0);
+
+    if (discountCoupon > 0) {
+      couponPrice = (Number(itemPrice) * Number(discountCoupon)) / 100;
+    }
 
     let itemdiscountPrice = _.sum(
       cartData?.map((res) => {
@@ -345,7 +371,7 @@ const Cart = () => {
       deliverCharagePrice +
       packingPrice +
       transactionPrice -
-      couponDiscount;
+      couponPrice;
 
     let total_for_dining = itemPrice + gstPrice;
     let total_dc_price =
@@ -360,7 +386,7 @@ const Cart = () => {
       deliverCharagePrice: deliverCharagePrice,
       packingPrice: packingPrice,
       transactionPrice: transactionPrice,
-      couponDiscount: couponDiscount,
+      couponDiscount: couponPrice,
       Total_amount:
         _.get(location, "pathname", "") === "/online-order-cart"
           ? total_amount.toFixed(2)
@@ -488,7 +514,7 @@ const Cart = () => {
     showAll,
     productInstructions,
   });
-
+  console.log({ coupons });
   return loading ? (
     <LoadingScreen />
   ) : (
@@ -796,10 +822,28 @@ const Cart = () => {
                             &times; {_.get(getTotalAmount(), "total_qty", 0)}
                           </div>
                         </div>
+
                         <div className="lg:text-lg text-[#3A3A3A]">
                           &#8377; {_.get(getTotalAmount(), "itemPrice", 0)}
                         </div>
                       </div>
+                      {coupon ? (
+                        <div className="flex  justify-between pt-4 border-b border-[#C1C1C1] lg:text-lg text-sm">
+                          <div className="flex gap-x-2">
+                            <div className="text-[#3F3F3F] font-normal">
+                              Coupon Discount
+                            </div>
+                          </div>
+
+                          <div className="lg:text-lg text-[red]">
+                            - &#8377;{" "}
+                            {/* {_.get(getTotalAmount(), "itemPrice", 0) *
+                            Number(coupon?.discountPercentage)} */}
+                            {Number(_.get(getTotalAmount(), "itemPrice", 0)) *
+                              (Number(coupon?.discountPercentage) / 100)}
+                          </div>
+                        </div>
+                      ) : null}
                       {/* gst */}
                       <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
                         <div className="flex gap-x-2">
@@ -899,6 +943,21 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
+
+                    <Button
+                      block
+                      type="text"
+                      onClick={() => setCouponModal(true)}
+                      className=" lg:h-[40px] h-[40px] text-xl   rounded-2xl cursor-pointer font-bold text-[orange]"
+                    >
+                      Apply Coupon
+                    </Button>
+                    {coupon?.code ? (
+                      <p className="bg-white m-2 text-center p-2 rounded-xl text-[green]">
+                        {coupon?.code}
+                      </p>
+                    ) : null}
+
                     {/* confirm button */}
                     <div
                       onClick={handleCartClick}
@@ -935,6 +994,47 @@ const Cart = () => {
               </>
             )}
           </div>
+
+          <Modal
+            open={couponModal}
+            title="Coupons"
+            className="bg-white rounded-2xl"
+            closable={true}
+            footer={false}
+            onCancel={() => {
+              setCouponModal(false);
+            }}
+          >
+            <div className="coupon_container">
+              {coupons?.length ? (
+                coupons?.map((cd, i) => {
+                  return (
+                    <React.Fragment key={i}>
+                      <div
+                        className="coupon_wrapper"
+                        onClick={() => {
+                          setCoupon(cd);
+                          setCouponModal(false);
+                          dispatch(addCoupon(cd));
+                        }}
+                      >
+                        <div className="code_title">
+                          <TbDiscount2 size={15} color="green" /> {cd?.code}
+                        </div>
+                        <h3 className="code_percentage">
+                          {cd?.discountPercentage}% off
+                        </h3>
+                      </div>
+                    </React.Fragment>
+                  );
+                })
+              ) : (
+                <div>
+                  <p className="font-lg text-2xl">No Coupons Available</p>
+                </div>
+              )}
+            </div>
+          </Modal>
 
           <Modal
             open={modalOpen}
