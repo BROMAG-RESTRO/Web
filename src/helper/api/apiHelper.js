@@ -110,6 +110,9 @@ export const decrementCartQuantity = async (id) => {
 export const removeSoloFromCart = async (id) => {
   return await axios.delete(`${base_url}/remove_solo_from_cart/${id}`);
 };
+export const getUserCoupons = async (id) => {
+  return await axios.get(`${base_url}/getusercoupons`);
+};
 
 // Tables
 export const getAllTables = async () => {

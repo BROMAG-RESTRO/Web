@@ -36,6 +36,7 @@ const Delivery = () => {
   const ProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
+  const coupon = useSelector((state) => state.auth.coupon);
   const location = useLocation();
   const [allDeliveryAddress, setAllDeliveryAddress] = useState([]);
   const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState([]);
@@ -259,7 +260,8 @@ const Delivery = () => {
     let deliverCharagePrice = 50;
     let packingPrice = (itemPrice * 10) / 100;
     let transactionPrice = (itemPrice * 5) / 100;
-    let couponDiscount = 0;
+    let couponDiscount =
+      itemPrice * (Number(coupon?.discountPercentage || 0) / 100);
 
     let total_amount =
       itemPrice +
@@ -559,6 +561,19 @@ const Delivery = () => {
                     &#8377; {_.get(getTotalAmount(), "itemPrice", 0)}
                   </div>
                 </div>
+                {coupon ? (
+                  <div className="flex  justify-between pt-4 border-b border-[#C1C1C1] lg:text-lg text-sm">
+                    <div className="flex gap-x-2">
+                      <div className="text-[#3F3F3F] font-normal">
+                        Coupon Discount
+                      </div>
+                    </div>
+
+                    <div className="lg:text-lg text-[red]">
+                      - &#8377; {_.get(getTotalAmount(), "couponDiscount", 0)}
+                    </div>
+                  </div>
+                ) : null}
                 {/* gst */}
                 <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
                   <div className="flex gap-x-2">
@@ -597,10 +612,12 @@ const Delivery = () => {
                       Transaction Charges
                     </div>{" "}
                   </div>
+
                   <div className=" text-[#3A3A3A]">
                     &#8377; {_.get(getTotalAmount(), "transactionPrice", 0)}
                   </div>
                 </div>
+
                 {/* Coupon discount */}
                 {/* <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
                                     <div className="flex gap-x-2">
