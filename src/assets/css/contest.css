@@ -1,0 +1,103 @@
+.contest_container{
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+padding: 40px 20px;
+padding-top: 100px;
+position: relative;
+}
+
+.title_card{
+    padding-top: 30px;
+    font-size: 50px;
+    line-height: 1.2;
+    width: 40%;
+    padding-left: 30px;
+    text-align: center;
+    overflow-wrap: break-word;
+    padding-bottom: 20px;
+}
+
+
+.contest_form{
+    width: 45%;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+}
+
+
+.contest_wrapper {
+    position: absolute;
+    left: -78px;
+    top: -159px;
+}
+
+.contest_avatar{
+    width: 220px;
+    height: 220px;
+}
+
+.word_wrapper {
+    width: 300px;
+    padding-bottom: 10px;
+}
+
+
+/* .contest_form::before {
+    content: '';
+    display: block;
+    background-image: url('/src/assets/contest.png');
+    background-size: cover;
+    width: 220px;
+    height: 220px;
+    position: absolute;
+    top: 83px;
+    left: 25%;
+    z-index: 100;
+} */
+
+@media screen and (max-width:768px) {
+    .contest_form{
+        width: 90%;
+        padding: 10px;
+        border-radius: 10px;
+        position: relative;
+    }
+    .title_card{
+        padding-top: 30px;
+        font-size: 50px;
+        line-height: 1.2;
+        width: 60%;
+        padding-left: 30px;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+    
+}
+
+@media screen and (max-width:556px) {
+ 
+    .title_card{
+        padding-top: 30px;
+        padding-bottom: 150px;
+        font-size: 40px;
+        line-height: 1.2;
+        width: 90%;
+        padding-left: 0px;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+    .contest_wrapper {
+        position: absolute;
+        left: 20%;
+        top: -159px;
+    }
+    .contest_form{
+      
+        padding-top: 40px;
+       
+    }
+    
+}
