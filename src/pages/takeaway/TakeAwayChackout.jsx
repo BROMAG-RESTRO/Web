@@ -30,18 +30,20 @@ import { useParams } from "react-router-dom";
 import { CiCreditCard1 } from "react-icons/ci";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuMonitorSmartphone } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
+import { addCoupon } from "../../redux/authSlice";
 
 //=======================================================
 
 const TakeAwayChackout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const coupon = useSelector((state) => state.auth.coupon);
   // ================= Instructions
 
   const [instructionInput, setInstructionInput] = useState(false);
@@ -130,6 +132,7 @@ const TakeAwayChackout = () => {
         notification.success({
           message: "Your Order Successfully Placed",
         });
+
         navigate("/profile-table-booking");
       } catch (err) {
         console.log(err);
@@ -272,7 +275,8 @@ const TakeAwayChackout = () => {
     let deliverCharagePrice = 50;
     let packingPrice = (itemPrice * 10) / 100;
     let transactionPrice = (itemPrice * 5) / 100;
-    let couponDiscount = 0;
+    let couponDiscount =
+      (itemPrice * Number(coupon?.discountPercentage || 0)) / 100;
 
     let total_amount =
       itemPrice +
@@ -350,6 +354,7 @@ const TakeAwayChackout = () => {
         coupon_amount: _.get(getTotalAmount(), "couponDiscount", 0),
         item_price: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
+        coupon,
         instructionsTakeaway: ProductInstructions,
         payment_mode: paymentMethod,
         orderId:
@@ -362,7 +367,10 @@ const TakeAwayChackout = () => {
       notification.success({
         message: "Your order has been successfully placed.",
       });
-      navigate("/profile-take-away-order");
+      dispatch(addCoupon(null));
+      navigate("/profile-take-away-order", {
+        replace: true,
+      });
     } catch (err) {
       console.error(err.message);
       notification.error({ message: "Something went wrong" });

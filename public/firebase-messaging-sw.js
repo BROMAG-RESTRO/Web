@@ -17,13 +17,20 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log("message recieved", payload?.data?.title);
+  console.log("message recieved", payload?.data);
   const notificationTitle = payload?.data?.title;
   const notificationOptions = {
     body: payload?.data?.body,
-    // icon: Logo,
+    icon: payload?.data?.logo,
     // sound: Sound,
   };
+
+  // self.addEventListener("notificationclick", (event) => {
+  //   console.log(event);
+  //   event.waitUntil(
+  //     clients.openWindow("https://dev.iftar.bromag.in/") // Replace with your desired URL
+  //   );
+  // });
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
