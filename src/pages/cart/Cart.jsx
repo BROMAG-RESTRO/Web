@@ -40,6 +40,7 @@ const Cart = () => {
   const reduxProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
+  const selectedCoupon = useSelector((state) => state.auth.coupon);
 
   const handleAddInstruction = (productId, newInstruction) => {
     if (newInstruction.trim() !== "") {
@@ -108,7 +109,7 @@ const Cart = () => {
   const [loadingPlaceOrder, setLoadingPlaceOrder] = useState(false);
   const [coupons, setCoupons] = useState([]);
   const [cartData, setCartData] = useState([]);
-  const [coupon, setCoupon] = useState(null);
+  const [coupon, setCoupon] = useState(selectedCoupon);
   const isDining = location?.pathname === "/dining-cart";
 
   const DININGPERCENTAGE = 30 / 100;
@@ -344,7 +345,10 @@ const Cart = () => {
     let discountCoupon = Number(coupon?.discountPercentage || 0);
 
     if (discountCoupon > 0) {
-      couponPrice = (Number(itemPrice) * Number(discountCoupon)) / 100;
+      couponPrice = (
+        (Number(itemPrice) * Number(discountCoupon)) /
+        100
+      )?.toFixed(0);
     }
 
     let itemdiscountPrice = _.sum(
@@ -363,7 +367,7 @@ const Cart = () => {
     let deliverCharagePrice = 50;
     let packingPrice = (itemPrice * 10) / 100;
     let transactionPrice = (itemPrice * 5) / 100;
-    let couponDiscount = 0;
+    let couponDiscount = couponPrice;
 
     let total_amount =
       itemPrice +
@@ -443,7 +447,7 @@ const Cart = () => {
         delivery_charge: _.get(getTotalAmount(), "deliverCharagePrice", 0),
         packing_charge: _.get(getTotalAmount(), "packingPrice", 0),
         transaction_charge: _.get(getTotalAmount(), "transactionPrice", 0),
-        coupon_amount: _.get(getTotalAmount(), "couponDiscount", 0),
+        coupon_amount: _.get(getTotalAmount(), "couponDiscount", 0)?.toFixed(0),
         item_price: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
         orderId:
@@ -839,8 +843,9 @@ const Cart = () => {
                             - &#8377;{" "}
                             {/* {_.get(getTotalAmount(), "itemPrice", 0) *
                             Number(coupon?.discountPercentage)} */}
-                            {Number(_.get(getTotalAmount(), "itemPrice", 0)) *
-                              (Number(coupon?.discountPercentage) / 100)}
+                            {Number(
+                              _.get(getTotalAmount(), "couponDiscount", 0)
+                            )}
                           </div>
                         </div>
                       ) : null}
@@ -953,9 +958,20 @@ const Cart = () => {
                       Apply Coupon
                     </Button>
                     {coupon?.code ? (
-                      <p className="bg-white m-2 text-center p-2 rounded-xl text-[green]">
-                        {coupon?.code}
-                      </p>
+                      <div className="flex flex-row items-center center-div justify-center">
+                        <p className="bg-white m-2 text-center p-2 rounded-xl text-[green] shadow">
+                          {coupon?.code}
+                        </p>
+                        <span
+                          className="cursor-pointer font-medium"
+                          onClick={() => {
+                            setCoupon(null);
+                            dispatch(addCoupon(null));
+                          }}
+                        >
+                          X
+                        </span>
+                      </div>
                     ) : null}
 
                     {/* confirm button */}
