@@ -217,22 +217,23 @@ const Dining = () => {
                               {_.get(res, "noOfGuest", "")} members
                             </p>
                             <div className="text-[#4D4D4D] ">
-                              <p className=" text-[#494949] text-sm">
-                                Timing:&nbsp;
-                                {_.isDate(_.get(res, "timeSlot", ""))
-                                  ? moment(_.get(res, "timeSlot", "")).format(
-                                      "hh:mma, MMM Do"
-                                    )
-                                  : _.get(res, "timeSlot", "")}
+                              <p className=" text-[#494949] text-sm mb-1">
+                                Dining Date :&nbsp;
+                                {moment(_.get(res, "bookingDate", "")).format(
+                                  "DD-MM-YYYY"
+                                )}
+                              </p>
+                              <p className=" text-[#494949] text-sm mb-1">
+                                Timing :&nbsp;{_.get(res, "diningTime", "")}
                               </p>
                               <div className="flex text-[#494949] text-sm">
-                                Booking ID: {_.get(res, "_id", "")}
+                                Dining ID : {_.get(res, "diningID", "")}
                               </div>
                               <br />
                               <div className="flex flex-col-reverse gap-y-4 gap-x-2">
-                                <div className=" text-[10px] rounded-md  cursor-pointer w-fit px-2 py-1 bg-[#00000099] text-[#E5E5E5]">
+                                {/* <div className=" text-[10px] rounded-md  cursor-pointer w-fit px-2 py-1 bg-[#00000099] text-[#E5E5E5]">
                                   View Location
-                                </div>
+                                </div> */}
 
                                 <div
                                   className={`${

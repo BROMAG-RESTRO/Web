@@ -14,7 +14,11 @@ import {
   phoneNumberValidation,
 } from "../../helper/validation";
 import _ from "lodash";
-import { bookMyTables, tokenVerification } from "../../helper/api/apiHelper";
+import {
+  bookMyTables,
+  getSlots,
+  tokenVerification,
+} from "../../helper/api/apiHelper";
 import { useNavigate } from "react-router-dom";
 import { PhoneInput } from "react-international-phone";
 import moment from "moment";
@@ -22,6 +26,9 @@ import moment from "moment";
 import { CalendarOutlined, FieldTimeOutlined } from "@ant-design/icons";
 
 const BookingForm = ({ tableDatas }) => {
+  console.log({ tableDatas });
+
+  const [timeSlotsOptions, setTimeSlots] = useState([]);
   const [form] = Form.useForm();
 
   const { TextArea } = Input;
@@ -29,8 +36,9 @@ const BookingForm = ({ tableDatas }) => {
   const navigate = useNavigate();
   const [location, setLocation] = useState(null);
   const [googleAddress, setGoogleAddressLocation] = useState(null);
-
+  const [choosenSlot, setChoosenSlot] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [slotloading, setSlotLoading] = useState(false);
   const [dummy, setDummy] = useState(false);
 
   const fetchData = async () => {
@@ -48,6 +56,19 @@ const BookingForm = ({ tableDatas }) => {
       notification.error({ message: "Something went wrong" });
     } finally {
       setLoading(false);
+    }
+  };
+  const fetchSlots = async (data) => {
+    try {
+      console.log({ data });
+      setSlotLoading(true);
+      const results = await getSlots(data);
+      setTimeSlots(results?.data?.data || []);
+    } catch (err) {
+      console.log(err);
+      notification.error({ message: "Something went wrong" });
+    } finally {
+      setSlotLoading(false);
     }
   };
 
@@ -126,16 +147,17 @@ const BookingForm = ({ tableDatas }) => {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
+      console.log({ values });
 
-      values.timeSlot = `${moment(new Date(values.diningDate)).format(
-        "LL"
-      )} ${moment(new Date(values.diningTime)).format("hh:mm A")}`;
-
+      values.timeSlot = choosenSlot?._id;
+      values.diningTime = choosenSlot?.time;
+      values.bookingDate = moment(values?.bookingDate).format("YYYY-MM-DD");
       values.booking = "Booked";
       values.tableNo = _.get(tableDatas, "tableNo", "");
       values.tableId = _.get(tableDatas, "_id", "");
       values.tablePic = _.get(tableDatas, "image", "");
-      await bookMyTables(values);
+
+      await bookMyTables({ ...values, diningTime: choosenSlot?.time });
       notification.success({
         message: "Your table reservation has been successfully confirmed.",
       });
@@ -351,6 +373,8 @@ const BookingForm = ({ tableDatas }) => {
           ]}
         >
           <Input
+            name="noOfGuest"
+            id="noOfGuest"
             type="number"
             prefix={
               <img
@@ -358,13 +382,15 @@ const BookingForm = ({ tableDatas }) => {
                 className="booking_input_pic h-[8px]"
               ></img>
             }
+            min={1}
+            max={Number(tableDatas?.seatsAvailable)}
             className="antd_input w-full "
             placeholder="Enter number of guest"
           />
         </Form.Item>
         <Form.Item
           className="w-full"
-          name="diningDate"
+          name="bookingDate"
           rules={[
             {
               required: true,
@@ -377,20 +403,67 @@ const BookingForm = ({ tableDatas }) => {
             placement="topRight"
             size="small"
             disabledDate={disabledDate}
-            onChange={(dates) => {
-              setDummy(!dummy);
-              form.setFieldsValue({
-                diningDate: dates,
-                diningTime: null,
-              });
+            onChange={(date) => {
+              console.log({ date });
+              if (date) {
+                form.setFieldsValue({
+                  bookingDate: date,
+                  diningTime: null,
+                });
+                const momentObject = moment({
+                  year: date.$y,
+                  month: date.$M,
+                  day: date.$D,
+                });
+
+                // Format the date
+                const formattedDate = momentObject.format("YYYY-MM-DD");
+                fetchSlots({
+                  tableId: tableDatas?._id,
+                  bookingDate: formattedDate,
+                });
+              }
             }}
             suffixIcon={<CalendarOutlined className="booking_input_pic" />}
             placeholder="Select date"
-            format={"MMMM DD, YYYY"}
+            format={"DD-MM-YYYY"}
             className="antd_input w-full bg-transparent"
           />
         </Form.Item>
-        {getStatus() ? (
+        <Form.Item
+          name="timeSlot"
+          label={<p className="text-white">Choose Timeslot </p>}
+          rules={[
+            {
+              required: true,
+              message: "Choose TimeSlot",
+            },
+          ]}
+        >
+          <Select
+            className="!antd_input w-full !rounded-lg !bg-[#DFDFDF]"
+            placeholder="Choose TimeSlot"
+            loading={slotloading}
+            disabled={slotloading}
+            onSelect={(val, option) => {
+              console.log(val, option?.data);
+              setChoosenSlot(option?.data);
+            }}
+          >
+            {timeSlotsOptions?.map((td, i) => {
+              return (
+                <Select.Option value={td?.time} key={td?._id} data={td}>
+                  {td?.time}
+                </Select.Option>
+              );
+            })}
+
+            {/* Add more Option components for additional interests */}
+          </Select>
+          {/* </div> */}
+        </Form.Item>
+
+        {/* {getStatus() ? (
           <Form.Item
             className="w-full"
             name="diningTime"
@@ -456,7 +529,7 @@ const BookingForm = ({ tableDatas }) => {
               className="antd_input w-full bg-transparent"
             />
           </Form.Item>
-        )}
+        )} */}
         <Form.Item className="pt-5 w-full">
           <Button
             loading={loading}
