@@ -34,6 +34,10 @@ export const addNotifyToken = async (token) => {
   return await axios.post(`${base_url}/addtoken`, { token });
 };
 
+export const getSlots = async (data) => {
+  return await axios.post(`${base_url}/gettableSlots`, data);
+};
+
 // check token
 export const tokenVerification = async () => {
   return await axios.get(`${base_url}/check_header_status`);
@@ -120,6 +124,8 @@ export const getAllTables = async () => {
 };
 
 export const bookMyTables = async (formData) => {
+  console.log({ formData });
+
   return await axios.post(`${base_url}/book_my_table`, formData);
 };
 
