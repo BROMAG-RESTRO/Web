@@ -22,6 +22,12 @@ messaging.onBackgroundMessage((payload) => {
   const notificationOptions = {
     body: payload?.data?.body,
     icon: payload?.data?.logo,
+    data: {
+      url: payload?.data?.url,
+    },
+    vibrate: [200, 100, 200],
+
+    requireInteraction: true,
     // sound: Sound,
   };
 
@@ -33,4 +39,24 @@ messaging.onBackgroundMessage((payload) => {
   // });
 
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+self.addEventListener("notificationclick", (event) => {
+  console.log("On notification click: ", event, event.notification.tag);
+  event.notification.close();
+
+  // This looks to see if the current is already open and
+  // focuses if it is
+  event.waitUntil(
+    clients
+      .matchAll({
+        type: "window",
+      })
+      .then((clientList) => {
+        for (const client of clientList) {
+          if (client.url === "/" && "focus" in client) return client.focus();
+        }
+        if (clients.openWindow) return clients.openWindow("/");
+      })
+  );
 });

@@ -28,7 +28,7 @@ function Footer() {
       try {
         const response = await getFooterData();
         setFooterData(response?.data);
-        setColor(response?.data[0]?.colors);
+        setColor(response?.data?.[0]?.colors);
         dispatch(
           colorTheme({
             primaryColor: response?.data[0]?.colors?.primaryColor,
@@ -49,8 +49,8 @@ function Footer() {
     return null;
   }
 
-  const firstFooterData = footerData[0];
-  const socialMediaLinks = firstFooterData.socialMediaLinks || [];
+  const firstFooterData = footerData?.[0];
+  const socialMediaLinks = firstFooterData?.socialMediaLinks || [];
 
   const social = [
     {
@@ -348,7 +348,7 @@ function Footer() {
           {/* Social Links */}
         </div>
         <div className="flex gap-x-5 justify-center items-center mt-6">
-          {social.map((res, index) => (
+          {social?.map((res, index) => (
             <a key={index} href={res.link} target="_blank" rel="noreferrer">
               <img
                 src={`/assets/icons/${res.name}.png`}
