@@ -350,13 +350,15 @@ const TakeAwayOrders = () => {
                 <p>Items Price</p> &#8377;{" "}
                 {_.get(currentSelected, "item_price", [])}
               </div>
-              <div className="flex items-center justify-between border-b-2">
-                <p>Discount</p>{" "}
-                <span className="text-[red]">
-                  - &#8377;{" "}
-                  {_.get(currentSelected, "coupon_amount", 0)?.toFixed(0)}
-                </span>
-              </div>
+              {_.get(currentSelected, "coupon_amount", 0) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Coupon</p>{" "}
+                  <span className="text-[red]">
+                    - &#8377;{" "}
+                    {_.get(currentSelected, "coupon_amount", 0)?.toFixed(0)}
+                  </span>
+                </div>
+              ) : null}
               <div className="flex items-center justify-between border-b-2">
                 <p>Total GST</p> &#8377; {_.get(currentSelected, "gst", [])}
               </div>
