@@ -12,7 +12,8 @@ import axios from "axios";
 import { MdOutlineMenu } from "react-icons/md";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import { useSelector } from "react-redux";
-import offline from "../assets/Poor_connection.png";
+import closed from "../assets/closed.png";
+import offline from "../assets/nointernet.png";
 import { getMessaging, getToken } from "firebase/messaging";
 import { app, messaging } from "../helper/firebase/index";
 // import { initializeSocket } from "../helper/socket/socketService";
@@ -415,10 +416,10 @@ function Navbar() {
         className="!bg-white !rounded-2xl py-8 px-4"
       >
         <div className="center_div gap-x-2 font-bold text-black">
-          <img src={offline} alt="" className="p-2 w-60" />
-          <h1 className="bg-gray-300 py-4 px-4 rounded-xl mt-2 text-center  w-full">
+          <img src={closed} alt="" className="p-2 w-60" />
+          {/* <h1 className="bg-gray-300 py-4 px-4 rounded-xl mt-2 text-center  w-full">
             Temporarily Closed Today
-          </h1>
+          </h1> */}
         </div>
       </Modal>
 
@@ -431,9 +432,9 @@ function Navbar() {
       >
         <div className="center_div gap-x-2 font-bold text-black">
           <img src={offline} alt="offline" className="p-2 w-60" />
-          <h1 className="bg-gray-300 py-4 px-4 rounded-xl mt-2 text-center  w-full">
+          {/* <h1 className="bg-gray-300 py-4 px-4 rounded-xl mt-2 text-center  w-full">
             Check your internet connection
-          </h1>
+          </h1> */}
         </div>
       </Modal>
     </div>

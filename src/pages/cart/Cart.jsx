@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCoupon, updateFoodInstructions } from "../../redux/authSlice";
 import "../../assets/css/cart.css";
 import { TbDiscount2 } from "react-icons/tb";
+import explore from "../../assets/explore_food.png";
 const Cart = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -526,10 +527,11 @@ const Cart = () => {
       {_.isEmpty(cartData) ? (
         <div className="lg:w-screen h-screen !center_div w-[98%]">
           <Result
+            icon={<></>}
             title={
               <div className="flex justify-center items-center ">
                 <img
-                  src="/assets/icons/Explore_Food.png"
+                  src={explore}
                   alt="no items in the cart"
                   className="w-[250px]"
                 />
@@ -948,15 +950,16 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-
-                    <Button
-                      block
-                      type="text"
-                      onClick={() => setCouponModal(true)}
-                      className=" lg:h-[40px] h-[40px] text-xl   rounded-2xl cursor-pointer font-bold text-[orange]"
-                    >
-                      Apply Coupon
-                    </Button>
+                    {!isDining && coupons?.length ? (
+                      <Button
+                        block
+                        type="text"
+                        onClick={() => setCouponModal(true)}
+                        className=" lg:h-[40px] h-[40px] text-xl   rounded-2xl cursor-pointer font-bold text-[orange]"
+                      >
+                        Apply Coupon
+                      </Button>
+                    ) : null}
                     {coupon?.code ? (
                       <div className="flex flex-row items-center center-div justify-center">
                         <p className="bg-white m-2 text-center p-2 rounded-xl text-[green] shadow">

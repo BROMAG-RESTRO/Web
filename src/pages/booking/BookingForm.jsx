@@ -403,12 +403,13 @@ const BookingForm = ({ tableDatas }) => {
             placement="topRight"
             size="small"
             disabledDate={disabledDate}
+            allowClear={false}
             onChange={(date) => {
               console.log({ date });
               if (date) {
                 form.setFieldsValue({
                   bookingDate: date,
-                  diningTime: null,
+                  timeSlot: null,
                 });
                 const momentObject = moment({
                   year: date.$y,
@@ -418,10 +419,12 @@ const BookingForm = ({ tableDatas }) => {
 
                 // Format the date
                 const formattedDate = momentObject.format("YYYY-MM-DD");
+                setTimeSlots([]);
                 fetchSlots({
                   tableId: tableDatas?._id,
                   bookingDate: formattedDate,
                 });
+                setChoosenSlot(null);
               }
             }}
             suffixIcon={<CalendarOutlined className="booking_input_pic" />}
