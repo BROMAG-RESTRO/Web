@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useLocation, useNavigate, useHref } from "react-router-dom";
 import {
   createFCMT,
@@ -16,6 +16,7 @@ import closed from "../assets/closed.png";
 import offline from "../assets/nointernet.png";
 import { getMessaging, getToken } from "firebase/messaging";
 import { app, messaging } from "../helper/firebase/index";
+import { socket } from "../helper/socket/socketService";
 // import { initializeSocket } from "../helper/socket/socketService";
 
 function Navbar() {
@@ -60,6 +61,7 @@ function Navbar() {
   const [footerData, setFooterData] = useState(null);
   const [color, setColor] = useState(null);
   const [currentUser, setCurrentUser] = useState([]);
+  const [connected, setConnected] = useState(null);
   const [checkStatus, setCheckStatus] = useState(false);
 
   const fetchData = async () => {
@@ -98,7 +100,7 @@ function Navbar() {
   const getStatusData = async () => {
     try {
       const { data } = await getStatus();
-      setCheckStatus(data[0].status ? false : true);
+      setCheckStatus(data[0].status);
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +108,8 @@ function Navbar() {
 
   useEffect(() => {
     fetchFooterData();
+  }, [checkStatus]);
+  useEffect(() => {
     getStatusData();
   }, [checkStatus]);
 
@@ -186,12 +190,41 @@ function Navbar() {
     });
   }, []);
 
+  const initializeSocket = useCallback(() => {
+    // console.log("Initializing socket", socket);
+
+    socket.on("connect", (data) => {
+      console.log("=== Socket connected ===", data);
+      setConnected(data);
+    });
+  }, [connected]);
+  useEffect(() => {
+    initializeSocket();
+
+    socket.on("status", async (data) => {
+      console.log("=== Socket setWebsocketData ===");
+      console.log("=== Socket message ===", data);
+
+      setCheckStatus(data?.status);
+    });
+
+    socket.on("error", (data) => {
+      console.log("Socket error", data);
+    });
+    socket.on("disconnect", (data) => {
+      console.log("=== Socket disconnected ===");
+      // setConnected(false);
+    });
+  }, []);
+
   // User Side: Reacting to Status Change Event
   // useEffect(() => {
   //   socket.on("statusChanged", (data) => {
   //     notification.info({ message: `Order status updated: ${data.newStatus}` });
   //   });
   // });
+
+  console.log({ checkStatus });
 
   return (
     <div
@@ -409,7 +442,7 @@ function Navbar() {
       </Drawer>
 
       <Modal
-        open={checkStatus}
+        open={!checkStatus}
         footer={false}
         closable={false}
         centered
