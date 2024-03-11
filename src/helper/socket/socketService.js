@@ -1,9 +1,14 @@
-// import io from "socket.io-client";
+import { io } from "socket.io-client";
+let base_url = import.meta.env.VITE_base_url;
+// "undefined" means the URL will be computed from the `window.location` object
+const URL = base_url || "http://localhost:8000";
 
-// const initializeSocket = () => {
-//   const socket = io.connect("https://dev.backend.iftar.bromag.in");
-// //   const socket = io.connect("http://localhost:5000");
-//   return socket;
-// };
+// export const BASEURL = "https://backendapi.qello.io";
 
-// export { initializeSocket };
+export const socket = io(URL, {
+  transports: ["websocket"],
+  extraHeaders: {
+    "Access-Control-Allow-Origin": "*",
+    // Add any other necessary headers here
+  },
+});

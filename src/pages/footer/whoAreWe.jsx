@@ -1,5 +1,5 @@
-import  { useEffect, useState } from "react";
-import {getFooterData} from '../../helper/api/apiHelper'
+import { useEffect, useState } from "react";
+import { getFooterData } from "../../helper/api/apiHelper";
 
 function WhoAreWe() {
   const [footerData, setFooterData] = useState(null);
@@ -8,7 +8,10 @@ function WhoAreWe() {
     const fetchData = async () => {
       try {
         const response = await getFooterData();
-        setFooterData(response.data);
+        const firstFooterData = response?.policies?.filter(
+          (td) => td?.type === "whoweare"
+        )?.[0];
+        setFooterData(firstFooterData);
       } catch (error) {
         console.error("Error fetching footer data:", error);
       }
@@ -18,18 +21,16 @@ function WhoAreWe() {
     window.scrollTo(0, 0);
   }, []);
 
-  if (footerData === null) {
-    return null;
-  }
-
-  const firstFooterData = footerData[0];
+  console.log({ footerData });
 
   return (
     <div className="w-screen lg:py-20 lg:px-20 px-4 py-4 flex flex-col gap-y-4 min-h-screen">
-      <h1 className="font-bold text-center lg:pb-4 text-xl lg:text-4xl">Who are we</h1>
+      <h1 className="font-bold text-center lg:pb-4 text-xl lg:text-4xl">
+        Who are we
+      </h1>
       <div
         className="text-justify indent-10 leading-loose"
-        dangerouslySetInnerHTML={{ __html: firstFooterData?.content }}
+        dangerouslySetInnerHTML={{ __html: footerData?.content }}
       />
     </div>
   );
