@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   addDiningOrder,
   addTakeAwayOrder,
+  checkCouponCode,
   decrementCartQuantity,
   getCurrentUserCartProducts,
   getUserCoupons,
@@ -23,6 +24,9 @@ import { addCoupon, updateFoodInstructions } from "../../redux/authSlice";
 import "../../assets/css/cart.css";
 import { TbDiscount2 } from "react-icons/tb";
 import explore from "../../assets/explore_food.png";
+import { Formik } from "formik";
+
+import * as yup from "yup";
 const Cart = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -234,6 +238,7 @@ const Cart = () => {
       return notification.error({ message: "Something went wrong" });
     }
   };
+
   useEffect(() => {
     fetchData();
     fetchCoupons();
@@ -950,7 +955,7 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    {!isDining && coupons?.length ? (
+                    {!isDining ? (
                       <Button
                         block
                         type="text"
@@ -1024,6 +1029,63 @@ const Cart = () => {
               setCouponModal(false);
             }}
           >
+            <div>
+              <div>
+                <Formik
+                  enableReinitialize
+                  onSubmit={async (values, formik) => {
+                    try {
+                      const result = await checkCouponCode({
+                        code: values?.code,
+                      });
+                      if (result?.status == 200 && result?.data) {
+                        setCoupon(result?.data);
+                        setCouponModal(false);
+                        dispatch(addCoupon(result?.data));
+                      } else {
+                        formik.setFieldError("code", "Invalid Code");
+                      }
+                      console.log({ result });
+                    } catch (error) {}
+                  }}
+                  initialValues={{
+                    code: "",
+                  }}
+                  validationSchema={yup.object({
+                    code: yup.string().required("code is required"),
+                  })}
+                >
+                  {(formik) => {
+                    return (
+                      <>
+                        <div class="flex items-center w-100 gap-2">
+                          <input
+                            value={formik.values.code}
+                            type="text"
+                            className="w-8/12 shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Coupon code"
+                            onChange={formik.handleChange("code")}
+                          />
+
+                          <button
+                            class="w-4/12 shadow bg-orange-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded"
+                            type="button"
+                            onClick={formik.handleSubmit}
+                          >
+                            Apply
+                          </button>
+                        </div>
+                        {formik.errors.code ? (
+                          <p className="ms-1 text-medium text-[red]">
+                            {formik.errors.code}
+                          </p>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                </Formik>
+              </div>
+            </div>
             <div className="coupon_container">
               {coupons?.length ? (
                 coupons?.map((cd, i) => {

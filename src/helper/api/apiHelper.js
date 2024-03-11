@@ -117,6 +117,9 @@ export const removeSoloFromCart = async (id) => {
 export const getUserCoupons = async (id) => {
   return await axios.get(`${base_url}/getusercoupons`);
 };
+export const checkCouponCode = async (data) => {
+  return await axios.post(`${base_url}/getusercode`, data);
+};
 
 // Tables
 export const getAllTables = async () => {
