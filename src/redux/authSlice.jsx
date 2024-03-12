@@ -11,6 +11,7 @@ const authSlice = createSlice({
     foodInstructions: {},
     message: null,
     coupon: null,
+    footer: null,
   },
   reducers: {
     triger: (state, action) => {
@@ -32,6 +33,9 @@ const authSlice = createSlice({
     addCoupon: (state, action) => {
       state.coupon = action.payload;
     },
+    addFooter: (state, action) => {
+      state.footer = action.payload;
+    },
   },
 });
 
@@ -41,6 +45,7 @@ export const {
   addCoupon,
   updateFoodInstructions,
   setMessage,
+  addFooter,
 } = authSlice.actions;
 
 export default authSlice.reducer;

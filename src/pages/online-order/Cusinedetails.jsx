@@ -445,7 +445,7 @@ const Cusinedetails = () => {
                   loading={loading}
                   className="!text-[#3A3A3A] !font-semibold lg:!text-5xl flex gap-x-2 !capitalize mx-3  "
                 >
-                  <span className="line-clamp-1 overflow-hidden text-ellipsis py-2 text-[12px] lg:text-5xl font-extrabold ">
+                  <span className="line-clamp-1 overflow-hidden text-ellipsis py-2 uppercase text-[12px] lg:text-5xl font-extrabold ">
                     {_.get(filteredData, "[0].name", "")} Cusines
                   </span>
                 </div>

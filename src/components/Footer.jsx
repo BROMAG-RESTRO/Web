@@ -5,7 +5,7 @@ import { Menus } from "../helper/datas/menu";
 import { addHomefeedback, getFooterData } from "../helper/api/apiHelper";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { colorTheme } from "../redux/authSlice";
+import { addFooter, colorTheme } from "../redux/authSlice";
 import { MdLocationPin } from "react-icons/md";
 import { IoMailOutline } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -23,12 +23,15 @@ function Footer() {
   const [footerData, setFooterData] = useState(null);
   const [color, setColor] = useState("");
   const [loading, setLoading] = useState(false);
+  const [socialmedia, setsocialMedia] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getFooterData();
         setFooterData(response?.data);
+        setsocialMedia(response?.social);
         setColor(response?.data?.[0]?.colors);
+        dispatch(addFooter(response));
         dispatch(
           colorTheme({
             primaryColor: response?.data[0]?.colors?.primaryColor,
@@ -48,9 +51,6 @@ function Footer() {
   if (footerData === null) {
     return null;
   }
-
-  const firstFooterData = footerData?.[0];
-  const socialMediaLinks = firstFooterData?.socialMediaLinks || [];
 
   const social = [
     {
@@ -86,6 +86,9 @@ function Footer() {
     { id: 3, name: "Refund and Cancellation", link: "/cancellation" },
     { id: 4, name: " Terms and Condition", link: "/termsandcondition" },
   ];
+
+  const firstFooterData = footerData?.[0];
+  console.log({ socialmedia });
   return (
     <div
       className={` py-4 lg:min-h-[53vh] text-white z-50 pb-10 ${
@@ -348,12 +351,9 @@ function Footer() {
           {/* Social Links */}
         </div>
         <div className="flex gap-x-5 justify-center items-center mt-6">
-          {social?.map((res, index) => (
-            <a key={index} href={res.link} target="_blank" rel="noreferrer">
-              <img
-                src={`/assets/icons/${res.name}.png`}
-                className="footer_icons"
-              />
+          {socialmedia?.map((res, index) => (
+            <a key={index} href={res.link} target="_blank">
+              <img src={res?.image} className="footer_icons" />
             </a>
           ))}
         </div>

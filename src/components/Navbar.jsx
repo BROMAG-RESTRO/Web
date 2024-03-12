@@ -62,7 +62,7 @@ function Navbar() {
   const [color, setColor] = useState(null);
   const [currentUser, setCurrentUser] = useState([]);
   const [connected, setConnected] = useState(null);
-  const [checkStatus, setCheckStatus] = useState(false);
+  const [checkStatus, setCheckStatus] = useState(true);
 
   const fetchData = async () => {
     try {
