@@ -363,11 +363,11 @@ const TakeAwayOrders = () => {
                 <p>Total GST</p> &#8377; {_.get(currentSelected, "gst", [])}
               </div>
               <div className="flex items-center justify-between border-b-2">
-                <p>Packing Charage</p> &#8377;{" "}
+                <p>Packing Charges</p> &#8377;{" "}
                 {_.get(currentSelected, "packing_charge", [])}
               </div>
               <div className="flex items-center justify-between border-b-2">
-                <p>Transaction Charage</p> &#8377;{" "}
+                <p>Transaction Charges</p> &#8377;{" "}
                 {_.get(currentSelected, "transaction_charge", [])}
               </div>
               <div className="flex items-center justify-end gap-x-2">
