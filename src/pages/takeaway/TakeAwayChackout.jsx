@@ -45,6 +45,7 @@ const TakeAwayChackout = () => {
   const dispatch = useDispatch();
   const coupon = useSelector((state) => state.auth.coupon);
   // ================= Instructions
+  const charges = useSelector((state) => state.auth.charges);
 
   const [instructionInput, setInstructionInput] = useState(false);
   const [instructions, setInstructions] = useState([]);
@@ -240,6 +241,16 @@ const TakeAwayChackout = () => {
   };
 
   const getTotalAmount = () => {
+    let cgst = charges?.gst?.value;
+    let gstMode = charges?.gst?.mode;
+    let delivery = charges?.delivery?.value;
+    let deliveryMode = charges?.delivery?.mode;
+    let packing = charges?.packing?.value;
+    let packingMode = charges?.packing?.mode;
+    let transaction = charges?.transaction?.value;
+    let transactionMode = charges?.transaction?.mode;
+    let dining = charges?.dining?.value;
+    let diningMode = charges?.dining?.mode;
     let itemPrice = _.sum(
       cartData.map((res) => {
         const typeRefId = _.get(res, "typeRef", "");
@@ -271,10 +282,19 @@ const TakeAwayChackout = () => {
       })
     );
 
-    let gstPrice = (itemPrice * 5) / 100;
-    let deliverCharagePrice = 50;
-    let packingPrice = (itemPrice * 10) / 100;
-    let transactionPrice = (itemPrice * 5) / 100;
+    let gstPrice = gstMode === "percentage" ? itemPrice * (cgst / 100) : cgst;
+    let deliverCharagePrice =
+      _.get(location, "pathname", "") !== "/takeaway-checkout"
+        ? deliveryMode === "percentage"
+          ? itemPrice * (delivery / 100)
+          : delivery
+        : 0;
+    let packingPrice =
+      packingMode === "percentage" ? itemPrice * (packing / 100) : packing;
+    let transactionPrice =
+      transactionMode === "percentage"
+        ? itemPrice * (transaction / 100)
+        : transaction;
     let couponDiscount =
       (itemPrice * Number(coupon?.discountPercentage || 0)) / 100;
 
@@ -303,7 +323,7 @@ const TakeAwayChackout = () => {
       Total_amount:
         _.get(location, "pathname", "") === "/online-order-cart"
           ? total_amount.toFixed(2)
-          : (total_amount - 50).toFixed(2),
+          : total_amount.toFixed(2),
       total_for_dining: total_for_dining,
       total_qty: total_qty,
       itemdiscountPrice: total_dc_price,

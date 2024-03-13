@@ -5,7 +5,7 @@ import { Menus } from "../helper/datas/menu";
 import { addHomefeedback, getFooterData } from "../helper/api/apiHelper";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addFooter, colorTheme } from "../redux/authSlice";
+import { addFooter, colorTheme, setCharges } from "../redux/authSlice";
 import { MdLocationPin } from "react-icons/md";
 import { IoMailOutline } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -30,6 +30,7 @@ function Footer() {
         const response = await getFooterData();
         setFooterData(response?.data);
         setsocialMedia(response?.social);
+
         setColor(response?.data?.[0]?.colors);
         dispatch(addFooter(response));
         dispatch(
