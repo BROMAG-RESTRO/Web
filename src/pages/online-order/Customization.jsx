@@ -24,6 +24,8 @@ const Customization = ({
   isDining,
   OnClose,
   edit = false,
+  DININGMODE,
+  DININGPERCENTAGE,
 }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -61,14 +63,20 @@ const Customization = ({
       for (const type of product_data?.types) {
         if (type?.TypeOfferPrice && type?.TypeOfferPrice > maxPrice) {
           maxPrice = isDining
-            ? Number(type.TypePrice) + (Number(type?.TypePrice) * 30) / 100
+            ? DININGMODE === "percentage"
+              ? Number(type.TypePrice) +
+                Number(type?.TypePrice) * DININGPERCENTAGE
+              : Number(type.TypePrice) + DININGPERCENTAGE
             : type.TypeOfferPrice;
           correspondingOfferPercentage = isDining
             ? type.TypeOfferPercentage
             : 0;
         } else if (type.TypePrice && type.TypePrice > maxPrice) {
           maxPrice =
-            Number(type.TypePrice) + (Number(type?.TypePrice) * 30) / 100;
+            DININGMODE === "percentage"
+              ? Number(type.TypePrice) +
+                Number(type?.TypePrice) * DININGPERCENTAGE
+              : Number(type.TypePrice) + DININGPERCENTAGE;
           correspondingOfferPercentage = 0;
         }
       }
@@ -86,7 +94,10 @@ const Customization = ({
       //   maxPrice !== 0 ? maxPrice : product_data?.discountPrice || 0;
     } else {
       const price = isDining
-        ? Number(product_data?.price) + (Number(product_data?.price) * 30) / 100
+        ? DININGMODE === "percentage"
+          ? Number(product_data?.price) +
+            Number(product_data?.price) * DININGPERCENTAGE
+          : Number(product_data?.price) + DININGPERCENTAGE
         : product_data?.discountPrice
         ? product_data?.discountPrice
         : product_data?.price;
@@ -542,8 +553,12 @@ const Customization = ({
                                     handleTypeChange(
                                       data?.Type,
                                       isDining
-                                        ? Number(data?.TypePrice) +
-                                            (Number(data?.TypePrice) * 30) / 100
+                                        ? DININGMODE === "percentage"
+                                          ? Number(data?.TypePrice) +
+                                            Number(data?.TypePrice) *
+                                              DININGPERCENTAGE
+                                          : Number(data?.TypePrice) +
+                                            DININGPERCENTAGE
                                         : data?.TypeOfferPrice
                                         ? data?.TypeOfferPrice
                                         : data?.TypePrice,
@@ -560,8 +575,10 @@ const Customization = ({
                               <span className="item__type--price">
                                 ₹{" "}
                                 {isDining
-                                  ? Number(data?.TypePrice) +
-                                    (Number(data?.TypePrice) * 30) / 100
+                                  ? DININGMODE === "percentage"
+                                    ? Number(data?.TypePrice) +
+                                      Number(data?.TypePrice) * DININGPERCENTAGE
+                                    : Number(data?.TypePrice) + DININGPERCENTAGE
                                   : data?.TypeOfferPrice
                                   ? data?.TypeOfferPrice
                                   : data?.TypePrice}

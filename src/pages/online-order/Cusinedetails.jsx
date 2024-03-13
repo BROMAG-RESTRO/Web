@@ -35,6 +35,7 @@ import axios from "axios";
 import "../../assets/css/cusines-details.css";
 let base_url = import.meta.env.VITE_base_url;
 import { useMediaQuery } from "react-responsive";
+import { useSelector } from "react-redux";
 
 const Cusinedetails = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -56,13 +57,18 @@ const Cusinedetails = () => {
   const [showVgn, setShowVgn] = useState(false);
   const [editMultiType, setEditMulti] = useState(false);
   const location = useLocation();
+  const charges = useSelector((state) => state.auth.charges);
 
   const pageName = location?.pathname;
   const navigate = useNavigate();
   const currentLocation = useHref();
 
   console.log(filteredData, "filteredData");
-
+  const DININGMODE = charges?.dining?.mode;
+  const DININGPERCENTAGE =
+    DININGMODE === "percentage"
+      ? charges?.dining?.value / 100
+      : charges?.dining?.value;
   const fetchSearchData = async () => {
     try {
       if (search.length > 0) {
@@ -634,12 +640,17 @@ const Cusinedetails = () => {
                 : Number(res?.offer || 0);
               const offerPrice = isMultityped
                 ? isDining
-                  ? Number(actualPrice) + (Number(actualPrice) * 30) / 100
+                  ? DININGMODE === "percentage"
+                    ? Number(actualPrice) +
+                      Number(actualPrice) * DININGPERCENTAGE
+                    : Number(actualPrice) + DININGPERCENTAGE
                   : offerPercentage
                   ? actualPrice - actualPrice * (offerPercentage / 100)
                   : actualPrice
                 : isDining
-                ? Number(res?.price) + (Number(res?.price) * 30) / 100
+                ? DININGMODE === "percentage"
+                  ? Number(res?.price) + Number(res?.price) * DININGPERCENTAGE
+                  : Number(res?.price) + DININGPERCENTAGE
                 : Number(res?.discountPrice || 0);
 
               const isAddedtoCart = currentCartsData?.includes(res?._id);
@@ -777,6 +788,8 @@ const Cusinedetails = () => {
             edit={editMultiType}
             product_data={customizeProduct}
             isDining={pageName === "/dining-cusines"}
+            DININGMODE={DININGMODE}
+            DININGPERCENTAGE={DININGPERCENTAGE}
             OnClose={() => {
               fetchData(false);
               fetchCurrentUserCarts(false);

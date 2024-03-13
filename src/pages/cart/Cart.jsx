@@ -45,6 +45,7 @@ const Cart = () => {
   const reduxProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
+  const charges = useSelector((state) => state.auth.charges);
   const selectedCoupon = useSelector((state) => state.auth.coupon);
 
   const handleAddInstruction = (productId, newInstruction) => {
@@ -117,7 +118,11 @@ const Cart = () => {
   const [coupon, setCoupon] = useState(selectedCoupon);
   const isDining = location?.pathname === "/dining-cart";
 
-  const DININGPERCENTAGE = 30 / 100;
+  const DININGMODE = charges?.dining?.mode;
+  const DININGPERCENTAGE =
+    DININGMODE === "percentage"
+      ? charges?.dining?.value / 100
+      : charges?.dining?.value;
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -296,7 +301,16 @@ const Cart = () => {
 
   const getTotalAmount = () => {
     console.log(cartData, " ia ma cartdata");
-
+    let cgst = charges?.gst?.value;
+    let gstMode = charges?.gst?.mode;
+    let delivery = charges?.delivery?.value;
+    let deliveryMode = charges?.delivery?.mode;
+    let packing = charges?.packing?.value;
+    let packingMode = charges?.packing?.mode;
+    let transaction = charges?.transaction?.value;
+    let transactionMode = charges?.transaction?.mode;
+    let dining = charges?.dining?.value;
+    let diningMode = charges?.dining?.mode;
     // const itemPrice = cartData?.reduce((accumulator, res) => {
     //   const typeRefId = _.get(res, "typeRef", "");
     //   const productRef = _.get(res, "productRef", "");
@@ -329,21 +343,29 @@ const Cart = () => {
         //   ? selectedType.price
         //   : _.get(res, "productRef.discountPrice", "");
 
-        const price = typeRefId.Type
+        const price = typeRefId?.Type
           ? isDining
-            ? Number(typeRefId.TypePrice) +
-              Number(typeRefId.TypePrice) * DININGPERCENTAGE
-            : typeRefId.TypeOfferPrice
-            ? typeRefId.TypeOfferPrice
+            ? DININGMODE === "percentage"
+              ? Number(typeRefId?.TypePrice) +
+                Number(typeRefId?.TypePrice) * DININGPERCENTAGE
+              : Number(typeRefId?.TypePrice) +
+                Number(typeRefId?.TypePrice) +
+                DININGPERCENTAGE
+            : typeRefId?.TypeOfferPrice
+            ? typeRefId?.TypeOfferPrice
             : typeRefId.TypePrice
           : isDining
-          ? Number(productRef.price) +
-            Number(productRef.price) * DININGPERCENTAGE
-          : productRef.discountPrice
-          ? parseFloat(productRef.discountPrice)
-          : parseFloat(productRef.price);
+          ? DININGMODE === "percentage"
+            ? Number(productRef?.price) +
+              Number(productRef?.price) * DININGPERCENTAGE
+            : Number(productRef?.price) +
+              Number(productRef?.price) +
+              DININGPERCENTAGE
+          : productRef?.discountPrice
+          ? parseFloat(productRef?.discountPrice)
+          : parseFloat(productRef?.price);
 
-        return Number(price) * res.quantity;
+        return Number(price) * res?.quantity;
       })
     );
     let couponPrice = 0;
@@ -359,7 +381,7 @@ const Cart = () => {
 
     let itemdiscountPrice = _.sum(
       cartData?.map((res) => {
-        return Number(_.get(res, "productRef.price", "")) * res.quantity;
+        return Number(_.get(res, "productRef.price", 0)) * res.quantity;
       })
     );
 
@@ -369,10 +391,19 @@ const Cart = () => {
       })
     );
 
-    let gstPrice = (itemPrice * 5) / 100;
-    let deliverCharagePrice = 50;
-    let packingPrice = (itemPrice * 10) / 100;
-    let transactionPrice = (itemPrice * 5) / 100;
+    let gstPrice = gstMode === "percentage" ? itemPrice * (cgst / 100) : cgst;
+    let deliverCharagePrice =
+      _.get(location, "pathname", "") !== "/take-away-cart"
+        ? deliveryMode === "percentage"
+          ? itemPrice * (delivery / 100)
+          : delivery
+        : 0;
+    let packingPrice =
+      packingMode === "percentage" ? itemPrice * (packing / 100) : packing;
+    let transactionPrice =
+      transactionMode === "percentage"
+        ? itemPrice * (transaction / 100)
+        : transaction;
     let couponDiscount = couponPrice;
 
     let total_amount =
@@ -400,7 +431,7 @@ const Cart = () => {
       Total_amount:
         _.get(location, "pathname", "") === "/online-order-cart"
           ? total_amount.toFixed(2)
-          : (total_amount - 50).toFixed(2),
+          : total_amount.toFixed(2),
       total_for_dining: total_for_dining,
       total_qty: total_qty,
       itemdiscountPrice: total_dc_price,
@@ -419,7 +450,7 @@ const Cart = () => {
       let productPrice = isDining
         ? !typeRefId?.Type
           ? Number(fprice) + Number(fprice) * DININGPERCENTAGE
-          : typeRefId.TypePrice + typeRefId.TypePrice * DININGPERCENTAGE
+          : typeRefId?.TypePrice + typeRefId?.TypePrice * DININGPERCENTAGE
         : Number(_.get(res, "productRef.price", 0));
       let DiningPrice = isDining ? productPrice : productPrice;
       console.log("food_data", {
@@ -432,11 +463,11 @@ const Cart = () => {
       return {
         pic: _.get(res, "productRef.image", ""),
         foodName: _.get(res, "productRef.name", ""),
-        foodPrice: isDining ? DiningPrice : _.get(res, "productRef.price", ""),
+        foodPrice: isDining ? DiningPrice : _.get(res, "productRef.price", 0),
         originalPrice: isDining
           ? DiningPrice
-          : _.get(res, "productRef.discountPrice", ""),
-        foodQuantity: _.get(res, "quantity", ""),
+          : _.get(res, "productRef.discountPrice", 0),
+        foodQuantity: _.get(res, "quantity", 0),
       };
     });
     return food_data;
@@ -488,8 +519,12 @@ const Cart = () => {
         id: res._id,
         quantity: res?.quantity || 1,
         price: isDining
-          ? Number(res?.productRef?.price) +
-            Number(res?.productRef?.price) * DININGPERCENTAGE
+          ? DININGMODE === "percentage"
+            ? Number(res?.productRef?.price) +
+              Number(res?.productRef?.price) * DININGPERCENTAGE
+            : Number(res?.productRef?.price) +
+              Number(res?.productRef?.price) +
+              DININGPERCENTAGE
           : parseFloat(res?.productRef?.discountPrice) || 0,
       };
     });
@@ -525,6 +560,8 @@ const Cart = () => {
     productInstructions,
   });
   console.log({ coupons });
+
+  console.log("getamount", getTotalAmount());
   return loading ? (
     <LoadingScreen />
   ) : (
@@ -590,20 +627,30 @@ const Cart = () => {
                 });
                 const displayPrice = typeRefId?.Type
                   ? isDining
-                    ? (typeRefId.TypePrice +
-                        typeRefId.TypePrice * DININGPERCENTAGE) *
-                      qty
+                    ? DININGMODE === "percentage"
+                      ? (typeRefId.TypePrice +
+                          typeRefId.TypePrice * DININGPERCENTAGE) *
+                        qty
+                      : (typeRefId.TypePrice +
+                          typeRefId.TypePrice +
+                          DININGPERCENTAGE) *
+                        qty
                     : (typeRefId.TypeOfferPrice
                         ? typeRefId.TypeOfferPrice
                         : typeRefId.TypePrice) * qty
                   : isDining
-                  ? (parseFloat(productRef.price) +
-                      Number(productRef.price) * DININGPERCENTAGE) *
-                    _.get(res, "quantity", "")
-                  : (productRef.discountPrice
-                      ? parseFloat(productRef.discountPrice)
-                      : parseFloat(productRef.price)) *
-                    _.get(res, "quantity", "");
+                  ? DININGMODE === "percentage"
+                    ? (parseFloat(productRef?.price) +
+                        Number(productRef?.price) * DININGPERCENTAGE) *
+                      _.get(res, "quantity", 0)
+                    : (parseFloat(productRef?.price) +
+                        Number(productRef?.price) +
+                        DININGPERCENTAGE) *
+                      _.get(res, "quantity", 0)
+                  : (productRef?.discountPrice
+                      ? parseFloat(productRef?.discountPrice)
+                      : parseFloat(productRef?.price)) *
+                    _.get(res, "quantity", 0);
                 console.log({ displayPrice });
                 // const selectedType = _.get(res, "productRef.types", []).find(
                 //   (type) => type._id === typeRefId
@@ -662,7 +709,7 @@ const Cart = () => {
                               >
                                 -
                               </div>
-                              <div>{_.get(res, "quantity", "")}</div>
+                              <div>{_.get(res, "quantity", 0)}</div>
                               <div
                                 onClick={() => {
                                   handleIncement(res._id);
@@ -875,7 +922,8 @@ const Cart = () => {
                             </div>{" "}
                           </div>
                           <div className="lg:text-lg text-[#3A3A3A]">
-                            &#8377; 50
+                            &#8377;{" "}
+                            {_.get(getTotalAmount(), "deliverCharagePrice", 0)}
                           </div>
                         </div>
                       ) : (
