@@ -348,9 +348,7 @@ const Cart = () => {
             ? DININGMODE === "percentage"
               ? Number(typeRefId?.TypePrice) +
                 Number(typeRefId?.TypePrice) * DININGPERCENTAGE
-              : Number(typeRefId?.TypePrice) +
-                Number(typeRefId?.TypePrice) +
-                DININGPERCENTAGE
+              : Number(typeRefId?.TypePrice) + DININGPERCENTAGE
             : typeRefId?.TypeOfferPrice
             ? typeRefId?.TypeOfferPrice
             : typeRefId.TypePrice
@@ -358,9 +356,7 @@ const Cart = () => {
           ? DININGMODE === "percentage"
             ? Number(productRef?.price) +
               Number(productRef?.price) * DININGPERCENTAGE
-            : Number(productRef?.price) +
-              Number(productRef?.price) +
-              DININGPERCENTAGE
+            : Number(productRef?.price) + DININGPERCENTAGE
           : productRef?.discountPrice
           ? parseFloat(productRef?.discountPrice)
           : parseFloat(productRef?.price);
@@ -449,7 +445,9 @@ const Cart = () => {
       let fprice = Number(_.get(res, "productRef.price", 0));
       let productPrice = isDining
         ? !typeRefId?.Type
-          ? Number(fprice) + Number(fprice) * DININGPERCENTAGE
+          ? DININGMODE === "percentage"
+            ? Number(fprice) + Number(fprice) * DININGPERCENTAGE
+            : Number(fprice) + DININGPERCENTAGE
           : typeRefId?.TypePrice + typeRefId?.TypePrice * DININGPERCENTAGE
         : Number(_.get(res, "productRef.price", 0));
       let DiningPrice = isDining ? productPrice : productPrice;
@@ -522,9 +520,7 @@ const Cart = () => {
           ? DININGMODE === "percentage"
             ? Number(res?.productRef?.price) +
               Number(res?.productRef?.price) * DININGPERCENTAGE
-            : Number(res?.productRef?.price) +
-              Number(res?.productRef?.price) +
-              DININGPERCENTAGE
+            : Number(res?.productRef?.price) + DININGPERCENTAGE
           : parseFloat(res?.productRef?.discountPrice) || 0,
       };
     });
@@ -631,10 +627,7 @@ const Cart = () => {
                       ? (typeRefId.TypePrice +
                           typeRefId.TypePrice * DININGPERCENTAGE) *
                         qty
-                      : (typeRefId.TypePrice +
-                          typeRefId.TypePrice +
-                          DININGPERCENTAGE) *
-                        qty
+                      : (typeRefId.TypePrice + DININGPERCENTAGE) * qty
                     : (typeRefId.TypeOfferPrice
                         ? typeRefId.TypeOfferPrice
                         : typeRefId.TypePrice) * qty
@@ -643,9 +636,7 @@ const Cart = () => {
                     ? (parseFloat(productRef?.price) +
                         Number(productRef?.price) * DININGPERCENTAGE) *
                       _.get(res, "quantity", 0)
-                    : (parseFloat(productRef?.price) +
-                        Number(productRef?.price) +
-                        DININGPERCENTAGE) *
+                    : (parseFloat(productRef?.price) + DININGPERCENTAGE) *
                       _.get(res, "quantity", 0)
                   : (productRef?.discountPrice
                       ? parseFloat(productRef?.discountPrice)
