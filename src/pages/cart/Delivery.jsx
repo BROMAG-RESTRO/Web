@@ -332,17 +332,17 @@ const Delivery = () => {
     }
 
     return {
-      total_amount: total_amount.toFixed(2),
-      itemPrice: itemPrice.toFixed(2),
-      gstPrice: gstPrice.toFixed(2),
-      deliverCharagePrice: deliverCharagePrice.toFixed(2),
-      packingPrice: packingPrice.toFixed(2),
-      transactionPrice: transactionPrice.toFixed(2),
-      couponDiscount: couponPrice?.toFixed(0),
-      Total_amount: total_amount.toFixed(2),
-      total_for_dining: total_for_dining.toFixed(2),
+      total_amount: total_amount?.toFixed(2),
+      itemPrice: itemPrice?.toFixed(2),
+      gstPrice: gstPrice?.toFixed(2),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(2),
+      packingPrice: packingPrice?.toFixed(2),
+      transactionPrice: transactionPrice?.toFixed(2),
+      couponDiscount: couponPrice??.toFixed(0),
+      Total_amount: total_amount?.toFixed(2),
+      total_for_dining: total_for_dining?.toFixed(2),
       total_qty: total_qty,
-      itemdiscountPrice: total_dc_price.toFixed(2),
+      itemdiscountPrice: total_dc_price?.toFixed(2),
       isDeliveryFree,
     };
   };
