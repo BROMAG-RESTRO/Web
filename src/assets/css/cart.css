@@ -11,20 +11,20 @@
 }
 
 .coupon_wrapper{
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     gap: 10px;
     border: 1.5px solid orange;
     padding: 10px 20px;
   
-    border-radius: 10px;
+    border-radius: 10px; */
     cursor: pointer;
-    width: 45%;
+    width: 48%;
    
 
 }
 .coupon_wrapper:hover{
-    border: 2px dashed green; 
+    /* border: 2px dashed green;  */
 }
 
 .coupon_container .code_title{

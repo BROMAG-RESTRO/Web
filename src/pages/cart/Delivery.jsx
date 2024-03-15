@@ -51,7 +51,7 @@ const Delivery = () => {
   const [openModal, setOpenModal] = useState(false);
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
-
+  let routepath = _.get(location, "pathname", "");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -282,9 +282,8 @@ const Delivery = () => {
       transactionMode === "percentage"
         ? (itemPrice * transaction) / 100
         : transaction;
-    let couponDiscount =
-      itemPrice * (Number(coupon?.discountPercentage || 0) / 100);
-    console.log({ couponDiscount });
+    let couponDiscount = 0;
+
     let total_amount =
       itemPrice +
       gstPrice +
@@ -298,6 +297,39 @@ const Delivery = () => {
       _.get(location, "pathname", "") !== "/dining-cart"
         ? total_for_dining - itemPrice + itemdiscountPrice
         : total_amount - itemPrice + itemdiscountPrice;
+    let couponPrice = 0;
+    let isDeliveryFree = false;
+    const orderType = routepath?.includes("online")
+      ? "online"
+      : routepath?.includes("takeaway")
+      ? "takeaway"
+      : "null";
+
+    if (coupon) {
+      const validPurchase = coupon.min_purchase
+        ? itemPrice >= coupon.min_purchase
+        : true;
+
+      if (validPurchase) {
+        let discount =
+          coupon?.discount_type === "percentage"
+            ? (itemPrice * coupon?.discount) / 100
+            : coupon?.discount;
+        couponPrice =
+          discount <= coupon?.max_discount ? discount : coupon?.max_discount;
+
+        isDeliveryFree = coupon?.deliveryFree;
+        total_amount = total_amount - couponPrice;
+        if (isDeliveryFree) {
+          total_amount = total_amount - deliverCharagePrice;
+          deliverCharagePrice = 0;
+        }
+      } else {
+        couponPrice = 0;
+      }
+    } else {
+      couponPrice = 0;
+    }
 
     return {
       total_amount: total_amount.toFixed(2),
@@ -306,11 +338,12 @@ const Delivery = () => {
       deliverCharagePrice: deliverCharagePrice.toFixed(2),
       packingPrice: packingPrice.toFixed(2),
       transactionPrice: transactionPrice.toFixed(2),
-      couponDiscount: couponDiscount?.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
       Total_amount: total_amount.toFixed(2),
       total_for_dining: total_for_dining.toFixed(2),
       total_qty: total_qty,
       itemdiscountPrice: total_dc_price.toFixed(2),
+      isDeliveryFree,
     };
   };
 
@@ -583,7 +616,8 @@ const Delivery = () => {
                     &#8377; {_.get(getTotalAmount(), "itemPrice", 0)}
                   </div>
                 </div>
-                {coupon ? (
+                {coupon &&
+                Number(_.get(getTotalAmount(), "couponDiscount", 0)) ? (
                   <div className="flex  justify-between pt-4 border-b border-[#C1C1C1] lg:text-lg text-sm">
                     <div className="flex gap-x-2">
                       <div className="text-[#3F3F3F] font-normal">
@@ -623,7 +657,16 @@ const Delivery = () => {
                     </div>{" "}
                   </div>
                   <div className=" text-[#3A3A3A]">
-                    &#8377; {_.get(getTotalAmount(), "packingPrice", 0)}
+                    <div className="lg:text-lg text-[#3A3A3A]">
+                      {_.get(getTotalAmount(), "isDeliveryFree", 0) ? (
+                        "FREE DELIVERY"
+                      ) : (
+                        <p>
+                          &#8377;{" "}
+                          {_.get(getTotalAmount(), "deliverCharagePrice", 0)}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
                 {/* Transaction charges */}
