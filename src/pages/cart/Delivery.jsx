@@ -332,17 +332,17 @@ const Delivery = () => {
     }
 
     return {
-      total_amount: total_amount?.toFixed(2),
-      itemPrice: itemPrice?.toFixed(2),
-      gstPrice: gstPrice?.toFixed(2),
-      deliverCharagePrice: deliverCharagePrice?.toFixed(2),
-      packingPrice: packingPrice?.toFixed(2),
-      transactionPrice: transactionPrice?.toFixed(2),
+      total_amount: total_amount?.toFixed(0),
+      itemPrice: itemPrice?.toFixed(0),
+      gstPrice: gstPrice?.toFixed(0),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      packingPrice: packingPrice?.toFixed(0),
+      transactionPrice: transactionPrice?.toFixed(0),
       couponDiscount: couponPrice?.toFixed(0),
-      Total_amount: total_amount?.toFixed(2),
-      total_for_dining: total_for_dining?.toFixed(2),
+      Total_amount: total_amount?.toFixed(0),
+      total_for_dining: total_for_dining?.toFixed(0),
       total_qty: total_qty,
-      itemdiscountPrice: total_dc_price?.toFixed(2),
+      itemdiscountPrice: total_dc_price?.toFixed(0),
       isDeliveryFree,
     };
   };
@@ -646,7 +646,16 @@ const Delivery = () => {
                       Delivery Charge
                     </div>{" "}
                   </div>
-                  <div className=" text-[#3A3A3A]">&#8377; 50</div>
+                  <div className=" text-[#3A3A3A]">
+                    {_.get(getTotalAmount(), "isDeliveryFree", 0) ? (
+                      "FREE DELIVERY"
+                    ) : (
+                      <p>
+                        &#8377;{" "}
+                        {_.get(getTotalAmount(), "deliverCharagePrice", 0)}
+                      </p>
+                    )}{" "}
+                  </div>
                 </div>
                 {/* Packing charges */}
                 <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
@@ -658,14 +667,7 @@ const Delivery = () => {
                   </div>
                   <div className=" text-[#3A3A3A]">
                     <div className="lg:text-lg text-[#3A3A3A]">
-                      {_.get(getTotalAmount(), "isDeliveryFree", 0) ? (
-                        "FREE DELIVERY"
-                      ) : (
-                        <p>
-                          &#8377;{" "}
-                          {_.get(getTotalAmount(), "deliverCharagePrice", 0)}
-                        </p>
-                      )}
+                      {_.get(getTotalAmount(), "packingPrice", 0)}
                     </div>
                   </div>
                 </div>
