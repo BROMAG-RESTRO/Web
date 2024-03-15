@@ -323,7 +323,7 @@ const Delivery = () => {
         if (isDeliveryFree) {
           total_amount = total_amount - deliverCharagePrice;
           deliverCharagePrice = 0;
-        }
+        }ges
       } else {
         couponPrice = 0;
       }
@@ -338,7 +338,7 @@ const Delivery = () => {
       deliverCharagePrice: deliverCharagePrice?.toFixed(2),
       packingPrice: packingPrice?.toFixed(2),
       transactionPrice: transactionPrice?.toFixed(2),
-      couponDiscount: couponPrice??.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
       Total_amount: total_amount?.toFixed(2),
       total_for_dining: total_for_dining?.toFixed(2),
       total_qty: total_qty,
