@@ -320,17 +320,17 @@ const CheckoutPage = () => {
       couponPrice = 0;
     }
     return {
-      total_amount: total_amount,
-      itemPrice: itemPrice,
-      gstPrice: gstPrice,
-      deliverCharagePrice: deliverCharagePrice,
-      packingPrice: packingPrice,
-      transactionPrice: transactionPrice,
-      couponDiscount: couponPrice,
-      Total_amount: total_amount.toFixed(2),
-      total_for_dining: total_for_dining,
+      total_amount: total_amount?.toFixed(0),
+      itemPrice: itemPrice?.toFixed(0),
+      gstPrice: gstPrice?.toFixed(0),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      packingPrice: packingPrice?.toFixed(0),
+      transactionPrice: transactionPrice?.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
+      Total_amount: total_amount?.toFixed(0),
+      total_for_dining: total_for_dining?.toFixed(0),
       total_qty: total_qty,
-      itemdiscountPrice: total_dc_price,
+      itemdiscountPrice: total_dc_price?.toFixed(0),
       isDeliveryFree,
     };
   };

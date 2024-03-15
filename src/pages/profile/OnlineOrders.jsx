@@ -356,7 +356,12 @@ const OnlineOrders = () => {
                 <p>Packing Charge</p> &#8377; {currentSelected?.packingCharge}
               </div>
               <div className="flex items-center justify-between border-b-2">
-                <p>Delivery Charge</p> &#8377; {currentSelected?.deliveryCharge}
+                <p>Delivery Charge</p>
+                {currentSelected?.coupon?.deliveryFree ? (
+                  "FREE DELIVERY"
+                ) : (
+                  <span>&#8377;{currentSelected?.deliveryCharge}</span>
+                )}
               </div>
               <div className="flex items-center justify-between border-b-2">
                 <p>Transaction Charge</p> &#8377;{" "}
