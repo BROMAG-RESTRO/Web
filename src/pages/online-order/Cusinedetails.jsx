@@ -789,7 +789,6 @@ const Cusinedetails = () => {
             product_data={customizeProduct}
             isDining={pageName === "/dining-cusines"}
             DININGMODE={DININGMODE}
-            DININGPERCENTAGE={DININGPERCENTAGE}
             OnClose={() => {
               fetchData(false);
               fetchCurrentUserCarts(false);
