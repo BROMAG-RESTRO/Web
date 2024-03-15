@@ -157,6 +157,7 @@ const CheckoutPage = () => {
         transactionCharge: _.get(getTotalAmount(), "transactionPrice", 0),
         couponAmount: _.get(getTotalAmount(), "couponDiscount", 0),
         coupon,
+        isDeliveryFree: _.get(getTotalAmount(), "isDeliveryFree", false),
         itemPrice: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
         payment_mode: paymentMethod,
@@ -176,6 +177,7 @@ const CheckoutPage = () => {
       dispatch(addCoupon(null));
       navigate("/profile-online-order");
     } catch (err) {
+      console.log(err);
       notification.error({ message: "Something went wrong" });
     } finally {
       setLoadingPlaceOrder(false);
@@ -274,8 +276,7 @@ const CheckoutPage = () => {
       transactionMode === "percentage"
         ? (itemPrice * transaction) / 100
         : transaction;
-    let couponDiscount =
-      (itemPrice * Number(coupon?.discountPercentage || 0)) / 100;
+    let couponDiscount = 0;
 
     let total_amount =
       itemPrice +
@@ -290,7 +291,34 @@ const CheckoutPage = () => {
       _.get(location, "pathname", "") !== "/dining-cart"
         ? total_for_dining - itemPrice + itemdiscountPrice
         : total_amount - itemPrice + itemdiscountPrice;
+    let couponPrice = 0;
+    let isDeliveryFree = false;
 
+    if (coupon) {
+      const validPurchase = coupon.min_purchase
+        ? itemPrice >= coupon.min_purchase
+        : true;
+
+      if (validPurchase) {
+        let discount =
+          coupon?.discount_type === "percentage"
+            ? (itemPrice * coupon?.discount) / 100
+            : coupon?.discount;
+        couponPrice =
+          discount <= coupon?.max_discount ? discount : coupon?.max_discount;
+
+        isDeliveryFree = coupon?.deliveryFree;
+        total_amount = total_amount - couponPrice;
+        if (isDeliveryFree) {
+          total_amount = total_amount - deliverCharagePrice;
+          deliverCharagePrice = 0;
+        }
+      } else {
+        couponPrice = 0;
+      }
+    } else {
+      couponPrice = 0;
+    }
     return {
       total_amount: total_amount,
       itemPrice: itemPrice,
@@ -298,11 +326,12 @@ const CheckoutPage = () => {
       deliverCharagePrice: deliverCharagePrice,
       packingPrice: packingPrice,
       transactionPrice: transactionPrice,
-      couponDiscount: couponDiscount,
+      couponDiscount: couponPrice,
       Total_amount: total_amount.toFixed(2),
       total_for_dining: total_for_dining,
       total_qty: total_qty,
       itemdiscountPrice: total_dc_price,
+      isDeliveryFree,
     };
   };
 
