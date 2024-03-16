@@ -24,8 +24,8 @@ const Customization = ({
   isDining,
   OnClose,
   edit = false,
-  DININGMODE,
-  DININGPERCENTAGE,
+  DININGMODE = null,
+  DININGPERCENTAGE = 0,
 }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -49,7 +49,7 @@ const Customization = ({
   const [historyCartId, setNewhistoryCartID] = useState({});
   const [customizeCart, setCustomizeCart] = useState({});
   const [cartID, setCartId] = useState([]);
-  console.log({ price, productPrice, historyCartId });
+  console.log({ productData, DININGMODE, DININGPERCENTAGE });
   useEffect(() => {
     let maxPrice = 0;
     let correspondingOfferPercentage = 0;

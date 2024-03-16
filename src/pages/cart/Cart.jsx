@@ -454,20 +454,20 @@ const Cart = () => {
     }
 
     return {
-      total_amount: total_amount,
-      itemPrice: itemPrice,
-      gstPrice: gstPrice,
-      deliverCharagePrice: deliverCharagePrice,
-      packingPrice: packingPrice,
-      transactionPrice: transactionPrice,
-      couponDiscount: couponPrice,
+      total_amount: total_amount?.toFixed(0),
+      itemPrice: itemPrice?.toFixed(0),
+      gstPrice: gstPrice?.toFixed(0),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      packingPrice: packingPrice?.toFixed(0),
+      transactionPrice: transactionPrice?.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
       Total_amount:
         _.get(location, "pathname", "") === "/online-order-cart"
-          ? total_amount.toFixed(2)
-          : total_amount.toFixed(2),
-      total_for_dining: total_for_dining,
+          ? total_amount.toFixed(0)
+          : total_amount.toFixed(0),
+      total_for_dining: total_for_dining?.toFixed(0),
       total_qty: total_qty,
-      itemdiscountPrice: total_dc_price,
+      itemdiscountPrice: total_dc_price?.toFixed(0),
       isDeliveryFree,
     };
   };

@@ -295,8 +295,7 @@ const TakeAwayChackout = () => {
       transactionMode === "percentage"
         ? itemPrice * (transaction / 100)
         : transaction;
-    let couponDiscount =
-      (itemPrice * Number(coupon?.discountPercentage || 0)) / 100;
+    let couponDiscount = 0;
 
     let total_amount =
       itemPrice +
@@ -311,22 +310,51 @@ const TakeAwayChackout = () => {
       _.get(location, "pathname", "") !== "/dining-cart"
         ? total_for_dining - itemPrice + itemdiscountPrice
         : total_amount - itemPrice + itemdiscountPrice;
+    //coupon
 
+    let couponPrice = 0;
+    let isDeliveryFree = false;
+
+    if (coupon) {
+      const validPurchase = coupon.min_purchase
+        ? itemPrice >= coupon.min_purchase
+        : true;
+
+      if (validPurchase) {
+        let discount =
+          coupon?.discount_type === "percentage"
+            ? (itemPrice * coupon?.discount) / 100
+            : coupon?.discount;
+        couponPrice =
+          discount <= coupon?.max_discount ? discount : coupon?.max_discount;
+
+        isDeliveryFree = coupon?.deliveryFree;
+        total_amount = total_amount - couponPrice;
+        if (isDeliveryFree) {
+          total_amount = total_amount - deliverCharagePrice;
+          deliverCharagePrice = 0;
+        }
+      } else {
+        couponPrice = 0;
+      }
+    } else {
+      couponPrice = 0;
+    }
     return {
-      total_amount: total_amount,
-      itemPrice: itemPrice,
-      gstPrice: gstPrice,
-      deliverCharagePrice: deliverCharagePrice,
-      packingPrice: packingPrice,
-      transactionPrice: transactionPrice,
-      couponDiscount: couponDiscount,
+      total_amount: total_amount?.toFixed(0),
+      itemPrice: itemPrice?.toFixed(0),
+      gstPrice: gstPrice?.toFixed(0),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      packingPrice: packingPrice?.toFixed(0),
+      transactionPrice: transactionPrice?.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
       Total_amount:
         _.get(location, "pathname", "") === "/online-order-cart"
-          ? total_amount.toFixed(2)
-          : total_amount.toFixed(2),
-      total_for_dining: total_for_dining,
+          ? total_amount.toFixed(0)
+          : total_amount.toFixed(0),
+      total_for_dining: total_for_dining?.toFixed(0),
       total_qty: total_qty,
-      itemdiscountPrice: total_dc_price,
+      itemdiscountPrice: total_dc_price?.toFixed(0),
     };
   };
 
