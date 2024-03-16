@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import AllCusines from "../online-order/AllCusines";
 import ProfileHeading from "../../components/ProfileHeading";
 import BoxLoadingScreen from "../../components/BoxLoadingScreen";
+import { useSelector } from "react-redux";
 
 const BookedTables = () => {
   const [loading, setLoading] = useState(false);
@@ -22,12 +23,12 @@ const BookedTables = () => {
   const [selectedCurrentTable, setSelectedTable] = useState([]);
   const [collectBookingIds, setCollectBookingIds] = useState([]);
   const [orderStatus, setOrderStatus] = useState([]);
-
+  const messages = useSelector((state) => state.auth.message);
   const navigate = useNavigate();
 
-  const fetchData = async () => {
+  const fetchData = async (load = true) => {
     try {
-      setLoading(true);
+      setLoading(load);
       const result = await getMyProfileDining();
       setBookedTables(_.get(result, "data.data", []));
       const diningOrders = await getDiningOrders();
@@ -45,6 +46,10 @@ const BookedTables = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData(false);
+  }, [messages]);
 
   const handleCancelTable = async (id) => {
     try {
