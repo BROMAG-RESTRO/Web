@@ -63,7 +63,7 @@ const Cusinedetails = () => {
   const navigate = useNavigate();
   const currentLocation = useHref();
 
-  console.log(filteredData, "filteredData");
+  console.log(charges, "filteredData");
   const DININGMODE = charges?.dining?.mode;
   const DININGPERCENTAGE =
     DININGMODE === "percentage"
@@ -789,6 +789,7 @@ const Cusinedetails = () => {
             product_data={customizeProduct}
             isDining={pageName === "/dining-cusines"}
             DININGMODE={DININGMODE}
+            DININGPERCENTAGE={DININGPERCENTAGE}
             OnClose={() => {
               fetchData(false);
               fetchCurrentUserCarts(false);
