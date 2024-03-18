@@ -35,6 +35,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { addCoupon } from "../../redux/authSlice";
+import { calculateFare } from "../../helper/utils";
 
 const CheckoutPage = () => {
   const [changeRight, setChangeRight] = useState(false);
@@ -149,7 +150,7 @@ const CheckoutPage = () => {
 
       let formData = {
         customerName: _.get(selectedDeliveryAddress, "name", ""),
-        mobileNumber: _.get(selectedDeliveryAddress, "mobileNumber", ""),
+        mobileNumber: _.get(selectedDeliveryAddress, "contactNumber", ""),
         billAmount: _.get(getTotalAmount(), "Total_amount", 0),
         gst: _.get(getTotalAmount(), "gstPrice", 0),
         deliveryCharge: _.get(getTotalAmount(), "deliverCharagePrice", 0),
@@ -218,6 +219,9 @@ const CheckoutPage = () => {
     let transactionMode = charges?.transaction?.mode;
     let dining = charges?.dining?.value;
     let diningMode = charges?.dining?.mode;
+    let distance = address?.distance;
+
+    let deliveryFee = calculateFare(distance);
     // let itemPrice = _.sum(
     //   cartData.map((res) => {
     //     const typeRefId = _.get(res, "typeRef", "");
@@ -268,8 +272,7 @@ const CheckoutPage = () => {
       })
     );
     let gstPrice = gstMode === "percentage" ? (itemPrice * cgst) / 100 : cgst;
-    let deliverCharagePrice =
-      deliveryMode === "percentage" ? (itemPrice * delivery) / 100 : delivery;
+    let deliverCharagePrice = deliveryFee;
     let packingPrice =
       packingMode === "percentage" ? (itemPrice * packing) / 100 : packing;
     let transactionPrice =
@@ -323,7 +326,7 @@ const CheckoutPage = () => {
       total_amount: total_amount?.toFixed(0),
       itemPrice: itemPrice?.toFixed(0),
       gstPrice: gstPrice?.toFixed(0),
-      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      deliverCharagePrice: deliveryFee?.toFixed(0),
       packingPrice: packingPrice?.toFixed(0),
       transactionPrice: transactionPrice?.toFixed(0),
       couponDiscount: couponPrice?.toFixed(0),

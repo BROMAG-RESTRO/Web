@@ -28,3 +28,13 @@ export const couponCheck = ({ coupon, amount, type }) => {
     };
   }
 };
+
+export function calculateFare(distance) {
+  if (distance <= 2) {
+    return 30;
+  } else if (distance <= 7) {
+    return 30 + 10 * (distance - 2);
+  } else {
+    return 70;
+  }
+}
