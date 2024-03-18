@@ -31,6 +31,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "../../assets/css/address-modal.css";
+import { calculateFare } from "../../helper/utils";
 const Delivery = () => {
   const [changeRight, setChangeRight] = useState(false);
   const ProductInstructions = useSelector(
@@ -223,6 +224,10 @@ const Delivery = () => {
     let transactionMode = charges?.transaction?.mode;
     let dining = charges?.dining?.value;
     let diningMode = charges?.dining?.mode;
+    let distance = selectedDeliveryAddress?.distance;
+
+    let deliveryFee = calculateFare(distance);
+    console.log({ deliveryFee, distance, selectedDeliveryAddress });
     // let itemPrice = _.sum(
     //   cartData.map((res) => {
     //     const typeRefId = _.get(res, "typeRef", "");
@@ -274,8 +279,7 @@ const Delivery = () => {
     );
 
     let gstPrice = gstMode === "percentage" ? (itemPrice * cgst) / 100 : cgst;
-    let deliverCharagePrice =
-      deliveryMode === "percentage" ? (itemPrice * delivery) / 100 : delivery;
+    let deliverCharagePrice = deliveryFee;
     let packingPrice =
       packingMode === "percentage" ? (itemPrice * packing) / 100 : packing;
     let transactionPrice =
@@ -353,8 +357,6 @@ const Delivery = () => {
       navigate(-1);
     } catch (err) {}
   };
-
-  console.log({ selectedDeliveryAddress });
 
   return loading ? (
     <div>
@@ -633,7 +635,7 @@ const Delivery = () => {
                 {/* gst */}
                 <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
                   <div className="flex gap-x-2">
-                    <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
+                    <div className="text-[#3F3F3F] font-normal">Taxes</div>{" "}
                   </div>
                   <div className=" text-[#3A3A3A]">
                     &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
@@ -658,32 +660,36 @@ const Delivery = () => {
                   </div>
                 </div>
                 {/* Packing charges */}
-                <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
-                  <div className="flex gap-x-2">
-                    <div className="text-[#3F3F3F] font-normal">
-                      {" "}
-                      Packing Charges
-                    </div>{" "}
-                  </div>
-                  <div className=" text-[#3A3A3A]">
-                    <div className="lg:text-lg text-[#3A3A3A]">
-                      {_.get(getTotalAmount(), "packingPrice", 0)}
+                {Number(_.get(getTotalAmount(), "packingPrice", 0)) ? (
+                  <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
+                    <div className="flex gap-x-2">
+                      <div className="text-[#3F3F3F] font-normal">
+                        {" "}
+                        Restaurant Packing Charges
+                      </div>{" "}
+                    </div>
+                    <div className=" text-[#3A3A3A]">
+                      <div className="lg:text-lg text-[#3A3A3A]">
+                        {_.get(getTotalAmount(), "packingPrice", 0)}
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
                 {/* Transaction charges */}
-                <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
-                  <div className="flex gap-x-2">
-                    <div className="text-[#3F3F3F] font-normal">
-                      {" "}
-                      Transaction Charges
-                    </div>{" "}
-                  </div>
+                {Number(_.get(getTotalAmount(), "transactionPrice", 0)) ? (
+                  <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
+                    <div className="flex gap-x-2">
+                      <div className="text-[#3F3F3F] font-normal">
+                        {" "}
+                        Platform Fee
+                      </div>{" "}
+                    </div>
 
-                  <div className=" text-[#3A3A3A]">
-                    &#8377; {_.get(getTotalAmount(), "transactionPrice", 0)}
+                    <div className=" text-[#3A3A3A]">
+                      &#8377; {_.get(getTotalAmount(), "transactionPrice", 0)}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* Coupon discount */}
                 {/* <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">

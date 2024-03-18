@@ -391,7 +391,9 @@ const Cart = () => {
     let gstPrice = gstMode === "percentage" ? itemPrice * (cgst / 100) : cgst;
     let deliverCharagePrice =
       _.get(location, "pathname", "") !== "/take-away-cart"
-        ? deliveryMode === "percentage"
+        ? _.get(location, "pathname", "") === "/online-order-cart"
+          ? 0
+          : deliveryMode === "percentage"
           ? itemPrice * (delivery / 100)
           : delivery
         : 0;
@@ -938,21 +940,25 @@ const Cart = () => {
                         </div>
                       ) : null}
                       {/* gst */}
-                      <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                        <div className="flex gap-x-2">
-                          <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
+                      {_.get(getTotalAmount(), "gstPrice", 0) ? (
+                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                          <div className="flex gap-x-2">
+                            <div className="text-[#3F3F3F] font-normal">
+                              Taxes
+                            </div>{" "}
+                          </div>
+                          <div className=" text-[#3A3A3A]">
+                            &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
+                          </div>
                         </div>
-                        <div className=" text-[#3A3A3A]">
-                          &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
-                        </div>
-                      </div>
+                      ) : null}
                       {/* delivery charge */}
                       {_.get(location, "pathname", "") ===
                       "/online-order-cart" ? (
                         <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
                           <div className="flex gap-x-2">
                             <div className="text-[#3F3F3F] font-normal">
-                              Delivery Charge
+                              Delivery Charges
                             </div>{" "}
                           </div>
                           <div className="lg:text-lg text-[#3A3A3A]">
@@ -975,33 +981,39 @@ const Cart = () => {
                       )}
 
                       {/* otehr charges */}
-                      {_.get(location, "pathname", "") !== "/dining-cart" && (
-                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                          <div className="flex gap-x-2">
-                            <div className="text-[#3F3F3F] font-normal">
-                              Packing Charges
-                            </div>{" "}
-                          </div>
-                          <div className=" text-[#3A3A3A]">
-                            &#8377;
-                            {_.get(getTotalAmount(), "packingPrice", 0)}
-                          </div>
-                        </div>
-                      )}
+                      {Number(_.get(getTotalAmount(), "packingPrice", 0))
+                        ? _.get(location, "pathname", "") !==
+                            "/dining-cart" && (
+                            <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                              <div className="flex gap-x-2">
+                                <div className="text-[#3F3F3F] font-normal">
+                                  Restaurant Packing Charges
+                                </div>{" "}
+                              </div>
+                              <div className=" text-[#3A3A3A]">
+                                &#8377;
+                                {_.get(getTotalAmount(), "packingPrice", 0)}
+                              </div>
+                            </div>
+                          )
+                        : null}
                       {/* Transaction charges */}
-                      {_.get(location, "pathname", "") !== "/dining-cart" && (
-                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                          <div className="flex gap-x-2">
-                            <div className="text-[#3F3F3F] font-normal overflow-hidden text-ellipsis ">
-                              Transaction Charges
-                            </div>{" "}
-                          </div>
-                          <div className="text-[#3A3A3A] text-sm">
-                            &#8377;
-                            {_.get(getTotalAmount(), "transactionPrice", 0)}
-                          </div>
-                        </div>
-                      )}
+                      {Number(_.get(getTotalAmount(), "transactionPrice", 0))
+                        ? _.get(location, "pathname", "") !==
+                            "/dining-cart" && (
+                            <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                              <div className="flex gap-x-2">
+                                <div className="text-[#3F3F3F] font-normal overflow-hidden text-ellipsis ">
+                                  Platform Fee
+                                </div>{" "}
+                              </div>
+                              <div className="text-[#3A3A3A] text-sm">
+                                &#8377;
+                                {_.get(getTotalAmount(), "transactionPrice", 0)}
+                              </div>
+                            </div>
+                          )
+                        : null}
                       {/* Coupon discount */}
                       {/* {_.get(location, "pathname", "") !==
                                         "/dining-cart" && (

@@ -133,6 +133,10 @@ body ::-webkit-scrollbar {
 .signup_wrap #signup {
   width: 50%;
 }
+.google-autocomplete__value-container{
+  min-height: 47px;
+  
+}
 
 @media screen and (max-width: 756px) {
   .signup_wrap #signup {
