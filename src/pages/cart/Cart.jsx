@@ -117,7 +117,7 @@ const Cart = () => {
   const [loadingPlaceOrder, setLoadingPlaceOrder] = useState(false);
   const [coupons, setCoupons] = useState([]);
   const [cartData, setCartData] = useState([]);
-  const [coupon, setCoupon] = useState(selectedCoupon);
+  const [coupon, setCoupon] = useState();
   const isDining = location?.pathname === "/dining-cart";
 
   const DININGMODE = charges?.dining?.mode;
@@ -1054,7 +1054,7 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    {!isDining ? (
+                    {/* {!isDining ? (
                       <Button
                         block
                         type="text"
@@ -1063,8 +1063,8 @@ const Cart = () => {
                       >
                         Apply Coupon
                       </Button>
-                    ) : null}
-                    {coupon ? (
+                    ) : null} */}
+                    {/* {coupon ? (
                       <>
                         <div className="flex flex-row items-center center-div justify-center">
                           <p className="bg-white m-2 text-center p-2 rounded-xl text-[green] shadow">
@@ -1091,7 +1091,7 @@ const Cart = () => {
                           </div>
                         ) : null}
                       </>
-                    ) : null}
+                    ) : null} */}
 
                     {/* confirm button */}
                     <div

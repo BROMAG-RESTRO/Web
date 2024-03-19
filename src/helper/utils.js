@@ -33,6 +33,10 @@ export const couponCheck = ({ coupon, amount, type }) => {
 
 export function calculateFare(distance, charges) {
   console.log({ chargesData: charges });
+
+  if (!charges) {
+    return 0;
+  }
   let deliveryCharges = charges;
 
   let {
