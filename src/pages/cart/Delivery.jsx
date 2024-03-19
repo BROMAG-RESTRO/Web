@@ -9,7 +9,7 @@ import {
   message,
   notification,
 } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddNewAddress from "./AddNewAddress";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -17,6 +17,7 @@ import {
   decrementCartQuantity,
   getCurrentUserCartProducts,
   getDeliveryAddress,
+  getUserCoupons,
   incrementCartQuantity,
   removeSoloFromCart,
 } from "../../helper/api/apiHelper";
@@ -28,16 +29,21 @@ import { GoArrowLeft } from "react-icons/go";
 import { IoIosArrowBack } from "react-icons/io";
 import CheckoutPage from "./CheckoutPage";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import explore from "../../assets/explore_food.png";
+import nocoupon from "../../assets/no.png";
 
 import "../../assets/css/address-modal.css";
+import { calculateFare, couponCheck } from "../../helper/utils";
+import { addCoupon } from "../../redux/authSlice";
 const Delivery = () => {
   const [changeRight, setChangeRight] = useState(false);
   const ProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
+  const dispatch = useDispatch();
   const charges = useSelector((state) => state.auth.charges);
-  const coupon = useSelector((state) => state.auth.coupon);
+  const couponData = useSelector((state) => state.auth.coupon);
   const location = useLocation();
   const [allDeliveryAddress, setAllDeliveryAddress] = useState([]);
   const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState([]);
@@ -52,6 +58,14 @@ const Delivery = () => {
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
   let routepath = _.get(location, "pathname", "");
+
+  //coupons
+  const [couponError, setCouponError] = useState(null);
+  const [couponModal, setCouponModal] = useState(false);
+  const [coupons, setCoupons] = useState([]);
+  const [coupon, setCoupon] = useState(couponData);
+  //coupons
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -122,9 +136,24 @@ const Delivery = () => {
       return notification.error({ message: "Something went wrong" });
     }
   };
+  const fetchCoupons = async (load = true) => {
+    try {
+      const result = await getUserCoupons();
+
+      // Assuming result.data.data is an array
+
+      console.log("coupons", result.data.data);
+      setCoupons(_.get(result, "data", []));
+    } catch (err) {
+      console.log(err);
+
+      return notification.error({ message: "Something went wrong" });
+    }
+  };
 
   useEffect(() => {
     fetchData();
+    fetchCoupons();
   }, []);
 
   const getSingleItemTotalPrice = (id) => {
@@ -215,14 +244,18 @@ const Delivery = () => {
   const getTotalAmount = () => {
     let cgst = charges?.gst?.value;
     let gstMode = charges?.gst?.mode;
-    let delivery = charges?.delivery?.value;
-    let deliveryMode = charges?.delivery?.mode;
+    // let delivery = charges?.delivery?.value;
+    // let deliveryMode = charges?.delivery?.mode;
     let packing = charges?.packing?.value;
     let packingMode = charges?.packing?.mode;
     let transaction = charges?.transaction?.value;
     let transactionMode = charges?.transaction?.mode;
     let dining = charges?.dining?.value;
     let diningMode = charges?.dining?.mode;
+    let distance = selectedDeliveryAddress?.distance;
+
+    let deliveryFee = calculateFare(distance, charges?.delivery);
+    console.log({ deliveryFee, distance, selectedDeliveryAddress });
     // let itemPrice = _.sum(
     //   cartData.map((res) => {
     //     const typeRefId = _.get(res, "typeRef", "");
@@ -236,7 +269,7 @@ const Delivery = () => {
     //     return Number(price) * res.quantity;
     //   })
     // );
-
+    let isDeliveryFree = false;
     let itemPrice = _.sum(
       cartData?.map((res) => {
         const typeRefId = _.get(res, "typeRef", "");
@@ -273,38 +306,9 @@ const Delivery = () => {
       })
     );
 
-    let gstPrice = gstMode === "percentage" ? (itemPrice * cgst) / 100 : cgst;
-    let deliverCharagePrice =
-      deliveryMode === "percentage" ? (itemPrice * delivery) / 100 : delivery;
-    let packingPrice =
-      packingMode === "percentage" ? (itemPrice * packing) / 100 : packing;
-    let transactionPrice =
-      transactionMode === "percentage"
-        ? (itemPrice * transaction) / 100
-        : transaction;
     let couponDiscount = 0;
-
-    let total_amount =
-      itemPrice +
-      gstPrice +
-      deliverCharagePrice +
-      packingPrice +
-      transactionPrice -
-      couponDiscount;
-
-    let total_for_dining = itemPrice + gstPrice;
-    let total_dc_price =
-      _.get(location, "pathname", "") !== "/dining-cart"
-        ? total_for_dining - itemPrice + itemdiscountPrice
-        : total_amount - itemPrice + itemdiscountPrice;
     let couponPrice = 0;
-    let isDeliveryFree = false;
-    const orderType = routepath?.includes("online")
-      ? "online"
-      : routepath?.includes("takeaway")
-      ? "takeaway"
-      : "null";
-
+    let couponAppliedPrice = itemPrice;
     if (coupon) {
       const validPurchase = coupon.min_purchase
         ? itemPrice >= coupon.min_purchase
@@ -319,17 +323,63 @@ const Delivery = () => {
           discount <= coupon?.max_discount ? discount : coupon?.max_discount;
 
         isDeliveryFree = coupon?.deliveryFree;
-        total_amount = total_amount - couponPrice;
-        if (isDeliveryFree) {
-          total_amount = total_amount - deliverCharagePrice;
-          deliverCharagePrice = 0;
-        }
+        couponAppliedPrice = couponAppliedPrice - couponPrice;
       } else {
         couponPrice = 0;
+        couponAppliedPrice = itemPrice;
       }
     } else {
       couponPrice = 0;
+      couponAppliedPrice = itemPrice;
     }
+    let gstPrice =
+      gstMode === "percentage" ? (couponAppliedPrice * cgst) / 100 : cgst;
+    let deliverCharagePrice = deliveryFee;
+    let packingPrice =
+      packingMode === "percentage"
+        ? (couponAppliedPrice * packing) / 100
+        : packing;
+    let transactionPrice =
+      transactionMode === "percentage"
+        ? (couponAppliedPrice * transaction) / 100
+        : transaction;
+
+    if (coupon?.deliveryFree) {
+      deliverCharagePrice = 0;
+    }
+    let total_amount =
+      couponAppliedPrice +
+      gstPrice +
+      deliverCharagePrice +
+      packingPrice +
+      transactionPrice;
+
+    let total_for_dining = itemPrice + gstPrice;
+    let total_dc_price =
+      _.get(location, "pathname", "") !== "/dining-cart"
+        ? total_for_dining - itemPrice + itemdiscountPrice
+        : total_amount - itemPrice + itemdiscountPrice;
+
+    const orderType = routepath?.includes("online")
+      ? "online"
+      : routepath?.includes("takeaway")
+      ? "takeaway"
+      : "null";
+
+    console.log({
+      total_amount: total_amount?.toFixed(0),
+      itemPrice: itemPrice?.toFixed(0),
+      gstPrice: gstPrice?.toFixed(0),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      packingPrice: packingPrice?.toFixed(0),
+      transactionPrice: transactionPrice?.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
+      Total_amount: total_amount?.toFixed(0),
+      total_for_dining: total_for_dining?.toFixed(0),
+      total_qty: total_qty,
+      itemdiscountPrice: total_dc_price?.toFixed(0),
+      isDeliveryFree,
+    });
 
     return {
       total_amount: total_amount?.toFixed(0),
@@ -353,8 +403,6 @@ const Delivery = () => {
       navigate(-1);
     } catch (err) {}
   };
-
-  console.log({ selectedDeliveryAddress });
 
   return loading ? (
     <div>
@@ -507,7 +555,7 @@ const Delivery = () => {
             {/* right */}
 
             <div
-              className="lg:w-[70%] w-full lg:h-[600px] overflow-y-auto bg-white rounded-2xl lg:px-10 pt-0 flex flex-col gap-y-2 pb-10 px-2"
+              className="lg:w-[70%] w-full  overflow-y-auto bg-white rounded-2xl lg:px-10 pt-0 flex flex-col gap-y-2 pb-10 px-2"
               id="address-cart-summary"
             >
               {/* foods */}
@@ -633,7 +681,7 @@ const Delivery = () => {
                 {/* gst */}
                 <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
                   <div className="flex gap-x-2">
-                    <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
+                    <div className="text-[#3F3F3F] font-normal">Taxes</div>{" "}
                   </div>
                   <div className=" text-[#3A3A3A]">
                     &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
@@ -658,32 +706,36 @@ const Delivery = () => {
                   </div>
                 </div>
                 {/* Packing charges */}
-                <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
-                  <div className="flex gap-x-2">
-                    <div className="text-[#3F3F3F] font-normal">
-                      {" "}
-                      Packing Charges
-                    </div>{" "}
-                  </div>
-                  <div className=" text-[#3A3A3A]">
-                    <div className="lg:text-lg text-[#3A3A3A]">
-                      {_.get(getTotalAmount(), "packingPrice", 0)}
+                {Number(_.get(getTotalAmount(), "packingPrice", 0)) ? (
+                  <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
+                    <div className="flex gap-x-2">
+                      <div className="text-[#3F3F3F] font-normal">
+                        {" "}
+                        Restaurant Packing Charges
+                      </div>{" "}
+                    </div>
+                    <div className=" text-[#3A3A3A]">
+                      <div className="lg:text-lg text-[#3A3A3A]">
+                        &#8377; {_.get(getTotalAmount(), "packingPrice", 0)}
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
                 {/* Transaction charges */}
-                <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
-                  <div className="flex gap-x-2">
-                    <div className="text-[#3F3F3F] font-normal">
-                      {" "}
-                      Transaction Charges
-                    </div>{" "}
-                  </div>
+                {Number(_.get(getTotalAmount(), "transactionPrice", 0)) ? (
+                  <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
+                    <div className="flex gap-x-2">
+                      <div className="text-[#3F3F3F] font-normal">
+                        {" "}
+                        Platform Fee
+                      </div>{" "}
+                    </div>
 
-                  <div className=" text-[#3A3A3A]">
-                    &#8377; {_.get(getTotalAmount(), "transactionPrice", 0)}
+                    <div className=" text-[#3A3A3A]">
+                      &#8377; {_.get(getTotalAmount(), "transactionPrice", 0)}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* Coupon discount */}
                 {/* <div className="flex  justify-between border-b border-[#C1C1C1] lg:text-lg text-sm">
@@ -724,6 +776,40 @@ const Delivery = () => {
                     </div>
                   </div>
                 </div>
+                {true ? (
+                  <Button
+                    block
+                    type="text"
+                    onClick={() => setCouponModal(true)}
+                    className=" lg:h-[40px] h-[40px] text-xl   rounded-2xl cursor-pointer font-bold text-[orange]"
+                  >
+                    Apply Coupon
+                  </Button>
+                ) : null}
+                {coupon ? (
+                  <>
+                    <div className="flex flex-row items-center center-div justify-center">
+                      <p className="bg-white m-2 text-center p-2 rounded-xl text-[green] shadow">
+                        Coupon Applied
+                      </p>
+                      <span
+                        className="cursor-pointer font-medium"
+                        onClick={() => {
+                          setCoupon(null);
+                          dispatch(addCoupon({ coupon: null, path: null }));
+                        }}
+                      >
+                        X
+                      </span>
+                    </div>
+                    {Number(_.get(getTotalAmount(), "couponDiscount", 0)) ? (
+                      <div className="text-center text-lime-500 mt-1">
+                        You have saved Rs.
+                        {Number(_.get(getTotalAmount(), "couponDiscount", 0))}
+                      </div>
+                    ) : null}
+                  </>
+                ) : null}
               </div>
             </div>
           </div>
@@ -778,6 +864,136 @@ const Delivery = () => {
           )}
         </div>
       </Drawer>
+
+      <Modal
+        open={couponModal}
+        centered
+        width={"60vw"}
+        title="Coupons"
+        className="bg-white rounded-2xl"
+        closable={true}
+        footer={false}
+        onCancel={() => {
+          setCouponModal(false);
+          setCouponError(null);
+        }}
+      >
+        {/* <div>
+              <div>
+                <Formik
+                  enableReinitialize
+                  onSubmit={async (values, formik) => {
+                    try {
+                      const result = await checkCouponCode({
+                        code: values?.code,
+                      });
+                      if (result?.status == 200 && result?.data) {
+                        setCoupon(result?.data);
+                        setCouponModal(false);
+                        dispatch(addCoupon(result?.data));
+                      } else {
+                        formik.setFieldError("code", "Invalid Code");
+                      }
+                      console.log({ result });
+                    } catch (error) {}
+                  }}
+                  initialValues={{
+                    code: "",
+                  }}
+                  validationSchema={yup.object({
+                    code: yup.string().required("code is required"),
+                  })}
+                >
+                  {(formik) => {
+                    return (
+                      <>
+                        <div class="flex items-center w-100 gap-2">
+                          <input
+                            value={formik.values.code}
+                            type="text"
+                            className="w-8/12 shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Coupon code"
+                            onChange={formik.handleChange("code")}
+                          />
+
+                          <button
+                            class="w-4/12 shadow bg-orange-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded"
+                            type="button"
+                            onClick={formik.handleSubmit}
+                          >
+                            Apply
+                          </button>
+                        </div>
+                        {formik.errors.code ? (
+                          <p className="ms-1 text-medium text-[red]">
+                            {formik.errors.code}
+                          </p>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                </Formik>
+              </div>
+            </div> */}
+        {couponError?.msg ? (
+          <div className="p-2 bg-red-400 text-white text-center">
+            {couponError?.msg}
+          </div>
+        ) : null}
+        <div className="coupon_container">
+          {coupons?.length ? (
+            coupons?.map((cd, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <div
+                    className="coupon_wrapper"
+                    onClick={() => {
+                      const { valid, msg } = couponCheck({
+                        coupon: cd,
+                        amount: _.get(getTotalAmount(), `itemPrice`, 0),
+                        type: "online",
+                      });
+                      console.log({ valid, msg });
+                      if (valid) {
+                        setCoupon(cd);
+                        setCouponError(null);
+                        setCouponModal(false);
+                        dispatch(
+                          addCoupon({
+                            coupon: cd,
+                            path: location?.pathname.includes("delivery")
+                              ? "online"
+                              : "takeaway",
+                          })
+                        );
+                      } else {
+                        setCouponError({ valid, msg });
+                      }
+                    }}
+                  >
+                    <img
+                      src={cd?.image}
+                      alt={`coupin${i}`}
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
+                </React.Fragment>
+              );
+            })
+          ) : (
+            <div className="flex flex-col justify-center items-center">
+              <img
+                src={nocoupon}
+                alt="nocoupon"
+                style={{
+                  width: "150px",
+                }}
+              />
+              <p className="font-lg text-1xl">Better luck next time!!</p>
+            </div>
+          )}
+        </div>
+      </Modal>
       <Modal
         open={openModal}
         className="bg-black rounded-2xl"

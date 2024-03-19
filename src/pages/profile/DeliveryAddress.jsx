@@ -109,7 +109,7 @@ const DeliveryAddress = () => {
                     <div className="flex flex-col gap-y-2">
                       <p>
                         <span className="font-bold">Contact Number</span> :
-                        &nbsp; {res.mobileNumber}
+                        &nbsp; {res.contactNumber}
                       </p>
                       <p>
                         <span className="font-bold">Address Type</span> : &nbsp;{" "}

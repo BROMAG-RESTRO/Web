@@ -10,7 +10,10 @@ import _ from "lodash";
 import { PhoneInput } from "react-international-phone";
 import { phoneNumberValidation } from "../../helper/validation";
 import axios from "axios";
-
+import GooglePlacesAutocomplete, {
+  geocodeByAddress,
+} from "react-google-places-autocomplete";
+import { geocodeByPlaceId } from "react-google-places-autocomplete";
 const AddNewAddress = ({
   setChangeRight,
   changeRight,
@@ -24,8 +27,50 @@ const AddNewAddress = ({
   const [loading, setLoading] = useState(false);
   const [otherAddressType, setOtherAddressType] = useState("");
   const [location, setLocation] = useState(null);
+  const [currentlocation, setCurrentLocation] = useState(null);
   const [googleAddress, setGoogleAddressLocation] = useState(null);
   const [userDetail, setUserDetail] = useState("");
+
+  const [value, setValue] = useState(null);
+
+  const handleChange = async (val) => {
+    console.log({ val });
+    const data = await geocodeByPlaceId(val?.value?.place_id);
+    console.log({ data });
+    const location = data?.[0]?.geometry.location;
+    const latitude = location?.lat();
+    const longitude = location?.lng();
+    console.log("Latitude:", latitude);
+
+    let doorno = "";
+    let street = "";
+    let area = val?.value?.terms?.[1]?.value;
+    let city = val?.value?.terms?.[2]?.value;
+    let country = val?.value?.terms?.[3]?.value;
+    let pincode = null;
+    let state = val?.value?.terms?.[4]?.value;
+    setLocation({ latitude, longitude });
+    setValue(val);
+    setGoogleAddressLocation({
+      doorno: "",
+      street,
+      area,
+      city,
+      country,
+      pincode,
+      state,
+    });
+
+    form.setFieldsValue({
+      streetName: ``,
+      landMark: area,
+      city: city,
+      picCode: pincode,
+      customerState: state,
+    });
+  };
+
+  console.log({ value });
 
   const getLocation = async (lat, long) => {
     try {
@@ -39,12 +84,12 @@ const AddNewAddress = ({
         requestOptions
       )
         .then((response) => response.json())
-        .then((result) => {
+        .then(async (result) => {
           console.log({ result });
           if (result?.status === "OK") {
             const allAddress = result?.results;
             const userAddress = allAddress?.[0]?.address_components;
-            console.log({ userAddress });
+            console.log({ userAddress, allAddress });
             let doorno = "",
               street = "",
               area = "",
@@ -76,6 +121,15 @@ const AddNewAddress = ({
               country,
               pincode,
               state,
+            });
+
+            const address = await geocodeByAddress(
+              allAddress?.[0]?.formatted_address
+            );
+            console.log({ address });
+            setValue({
+              label: allAddress?.[0]?.formatted_address,
+              value: address,
             });
 
             form.setFieldsValue({
@@ -148,19 +202,29 @@ const AddNewAddress = ({
   };
 
   useEffect(() => {
-    if (!updateId) {
-      handleGetCurrentLocation();
-    }
+    // if (!updateId) {
+    //   handleGetCurrentLocation();
+    // }
     fetchUserData();
   }, []);
 
-  console.log({ location, googleAddress });
+  console.log({ updateId });
 
   useEffect(() => {
     if (updateId) {
-      form.setFieldsValue({ name: updateId?.user });
-      // form.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
+      form.setFieldsValue({
+        name: updateId?.user,
+        contactNumber: updateId?.contactNumber,
+      });
       form.setFieldsValue(updateId);
+
+      // form.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
+
+      setCurrentLocation(updateId?.currentlocation);
+      setLocation({
+        latitude: updateId?.latitude,
+        longitude: updateId?.longitude,
+      });
     }
   }, [updateId]);
 
@@ -170,7 +234,18 @@ const AddNewAddress = ({
     // form.setFieldsValue({ name: "Helloooooooooooooooooooo"})
     // form.getFieldsValue()
     // if(form.getFieldValue("addressType") === "Other") form.setfi
-    console.log("valueeeeeeeeeee", values);
+    if (!value && !updateId) {
+      alert("select google address");
+      return;
+    }
+
+    console.log(
+      "valueeeeeeeeeee",
+      values,
+      location,
+      currentlocation,
+      googleAddress
+    );
 
     try {
       setLoading(true);
@@ -181,7 +256,7 @@ const AddNewAddress = ({
           userId: updateId?.userId,
         });
       } else {
-        await addDeliveryAddress(values);
+        await addDeliveryAddress({ ...values, ...location });
       }
       setChangeRight(!changeRight);
       fetchData();
@@ -197,7 +272,8 @@ const AddNewAddress = ({
     }
   };
 
-  form?.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
+  console.log("values...", form.getFieldsValue());
+
   return (
     <Skeleton
       active
@@ -209,7 +285,22 @@ const AddNewAddress = ({
           <div className="text-dark3a_color font-semibold lg:text-2xl tracking-wider pt-2">
             {updateId ? "Edit your address" : "Add your address"}
           </div>
-          <Form className="pt-4" form={form} onFinish={handleFinish}>
+          <Form
+            className="pt-4"
+            form={form}
+            onFinish={handleFinish}
+            scrollToFirstError
+          >
+            <Form.Item
+              name="addressType"
+              rules={[{ required: true, message: "Please select an option!" }]}
+            >
+              <Radio.Group>
+                <Radio value={"Home"}>Home</Radio>
+                <Radio value={"Work"}>Work</Radio>
+                <Radio value={"Other"}>Other</Radio>
+              </Radio.Group>
+            </Form.Item>
             <div className="flex flex-col gap-y-2">
               <div className="text-dark3a_color  font-medium lg:text-lg">
                 Contact information
@@ -237,15 +328,18 @@ const AddNewAddress = ({
                       phoneNumberValidation("Enter your phone number", value),
                   },
                 ]}
-                name="mobileNumber"
+                name="contactNumber"
                 className=" lg:w-[400px] w-[98%]  h-[50px]"
+                initialValue={form.getFieldValue("contactNumber")}
               >
                 <PhoneInput
                   defaultCountry={"in"}
                   disableDialCodeAndPrefix
                   inputStyle={{ background: "red" }}
                   className="!w-full !bg-white"
-                  value={form.getFieldValue("mobileNumber")}
+                  value={form.getFieldValue("contactNumber")}
+                  name="contactNumber"
+                  id="contactNumber"
                 />
               </Form.Item>
             </div>
@@ -270,84 +364,120 @@ const AddNewAddress = ({
                 </Form.Item> */}
 
                 <Form.Item
-                  name="addressType"
+                  name="currentLocation"
                   rules={[
                     { required: true, message: "Please select an option!" },
                   ]}
                 >
-                  <Radio.Group>
-                    <Radio value={"Home"}>Home</Radio>
-                    <Radio value={"Work"}>Work</Radio>
-                    <Radio value={"Other"}>Other</Radio>
+                  <Radio.Group
+                    name="currentLocation"
+                    onChange={(val) => {
+                      let locationtype = val?.target?.value;
+                      if (locationtype) {
+                        handleGetCurrentLocation();
+                      }
+                      setCurrentLocation(val?.target?.value);
+                    }}
+                  >
+                    <Radio value={true}>Current Location</Radio>
+                    <Radio value={false}>Other Locations</Radio>
                   </Radio.Group>
                 </Form.Item>
-                {/* <input onChange={(e) => setOtherAddressType(e.target.value)} /> */}
+                <div
+                  style={{
+                    display: currentlocation !== null ? "block" : "none",
+                  }}
+                >
+                  {/* <input onChange={(e) => setOtherAddressType(e.target.value)} /> */}
+                  <div>
+                    <div className="text-dark3a_color  font-medium lg:text-lg">
+                      Search google address{" "}
+                      <span className="text-[red]">*</span>
+                    </div>
+                    <GooglePlacesAutocomplete
+                      apiKey="AIzaSyBTKE5U_KnZAbWR4qUhsHLsj4titj2uIWg"
+                      selectProps={{
+                        value: value,
+                        onChange: handleChange,
+                        classNamePrefix: "google-autocomplete",
+                        placeholder: "search address",
+                        isClearable: true,
+                        backspaceRemovesValue: true,
+                        escapeClearsValue: true,
+                      }}
+                      autocompletionRequest={{
+                        componentRestrictions: {
+                          country: ["in"],
+                        },
+                      }}
+                    />
+                  </div>
+                  <Form.Item
+                    name="streetName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Enter Door / Flat no, Street name",
+                      },
+                    ]}
+                    className="mt-3"
+                  >
+                    {/* <div className="booking_input lg:w-[400px] w-full h-[40px]"> */}
+                    <Input
+                      className="antd_input "
+                      placeholder="Door / Flat no, Street name"
+                    />
+                    {/* </div> */}
+                  </Form.Item>
+                  <Form.Item
+                    name="landMark"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Enter Area name / Landmark",
+                      },
+                    ]}
+                  >
+                    <Input
+                      className="antd_input "
+                      placeholder="Area name / Landmark"
+                    />
+                  </Form.Item>
 
-                <Form.Item
-                  name="streetName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Enter Door / Flat no, Street name",
-                    },
-                  ]}
-                >
-                  {/* <div className="booking_input lg:w-[400px] w-full h-[40px]"> */}
-                  <Input
-                    className="antd_input "
-                    placeholder="Door / Flat no, Street name"
-                  />
-                  {/* </div> */}
-                </Form.Item>
-                <Form.Item
-                  name="landMark"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Enter Area name / Landmark",
-                    },
-                  ]}
-                >
-                  <Input
-                    className="antd_input "
-                    placeholder="Area name / Landmark"
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  name="city"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Enter Your City",
-                    },
-                  ]}
-                >
-                  <Input className="antd_input " placeholder="City" />
-                </Form.Item>
-                <Form.Item
-                  name="picCode"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Enter Your Pin code",
-                    },
-                  ]}
-                >
-                  <Input className="antd_input " placeholder="Pin code" />
-                </Form.Item>
-                <Form.Item
-                  name="customerState"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Enter Your State",
-                    },
-                  ]}
-                >
-                  <Input className="antd_input " placeholder="State" />
-                </Form.Item>
-
+                  <Form.Item
+                    name="city"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Enter Your City",
+                      },
+                    ]}
+                  >
+                    <Input className="antd_input " placeholder="City" />
+                  </Form.Item>
+                  <Form.Item
+                    name="picCode"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Enter Your Pin code",
+                      },
+                    ]}
+                  >
+                    <Input className="antd_input " placeholder="Pin code" />
+                  </Form.Item>
+                  <Form.Item
+                    name="customerState"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Enter Your State",
+                      },
+                    ]}
+                  >
+                    <Input className="antd_input " placeholder="State" />
+                  </Form.Item>
+                </div>
                 {/* <img
                   src="/assets/images/map.png"
                   alt=""

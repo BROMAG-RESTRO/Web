@@ -48,8 +48,8 @@ const Cart = () => {
     (state) => state.auth.foodInstructions
   );
   const charges = useSelector((state) => state.auth.charges);
-  const selectedCoupon = useSelector((state) => state.auth.coupon);
-
+  const userData = useSelector((state) => state.auth);
+  const selectedCoupon = userData?.coupon;
   const handleAddInstruction = (productId, newInstruction) => {
     if (newInstruction.trim() !== "") {
       const updatedInstructions = {
@@ -117,7 +117,7 @@ const Cart = () => {
   const [loadingPlaceOrder, setLoadingPlaceOrder] = useState(false);
   const [coupons, setCoupons] = useState([]);
   const [cartData, setCartData] = useState([]);
-  const [coupon, setCoupon] = useState(selectedCoupon);
+  const [coupon, setCoupon] = useState();
   const isDining = location?.pathname === "/dining-cart";
 
   const DININGMODE = charges?.dining?.mode;
@@ -303,10 +303,11 @@ const Cart = () => {
 
   const getTotalAmount = () => {
     console.log(cartData, " ia ma cartdata");
+    const path = location?.pathname.includes("online") ? "online" : "takeaway";
     let cgst = charges?.gst?.value;
     let gstMode = charges?.gst?.mode;
-    let delivery = charges?.delivery?.value;
-    let deliveryMode = charges?.delivery?.mode;
+    // let delivery = charges?.delivery?.value;
+    // let deliveryMode = charges?.delivery?.mode;
     let packing = charges?.packing?.value;
     let packingMode = charges?.packing?.mode;
     let transaction = charges?.transaction?.value;
@@ -388,45 +389,10 @@ const Cart = () => {
       })
     );
 
-    let gstPrice = gstMode === "percentage" ? itemPrice * (cgst / 100) : cgst;
-    let deliverCharagePrice =
-      _.get(location, "pathname", "") !== "/take-away-cart"
-        ? deliveryMode === "percentage"
-          ? itemPrice * (delivery / 100)
-          : delivery
-        : 0;
-    let packingPrice =
-      packingMode === "percentage" ? itemPrice * (packing / 100) : packing;
-    let transactionPrice =
-      transactionMode === "percentage"
-        ? itemPrice * (transaction / 100)
-        : transaction;
-    let couponDiscount = 0;
-
-    let total_amount =
-      itemPrice +
-      gstPrice +
-      deliverCharagePrice +
-      packingPrice +
-      transactionPrice -
-      couponDiscount;
-
-    let total_for_dining = itemPrice + gstPrice;
-    let total_dc_price =
-      _.get(location, "pathname", "") !== "/dining-cart"
-        ? total_for_dining - itemPrice + itemdiscountPrice
-        : total_amount - itemPrice + itemdiscountPrice;
-
     //coupon
     let couponPrice = 0;
     let isDeliveryFree = false;
-
-    const orderType = routepath?.includes("online")
-      ? "online"
-      : routepath?.includes("take")
-      ? "takeaway"
-      : "null";
-
+    let couponAppliedPrice = itemPrice;
     if (coupon) {
       const validPurchase = coupon.min_purchase
         ? itemPrice >= coupon.min_purchase
@@ -441,17 +407,48 @@ const Cart = () => {
           discount <= coupon?.max_discount ? discount : coupon?.max_discount;
 
         isDeliveryFree = coupon?.deliveryFree;
-        total_amount = total_amount - couponPrice;
-        if (isDeliveryFree) {
-          total_amount = total_amount - deliverCharagePrice;
-          deliverCharagePrice = 0;
-        }
+        couponAppliedPrice = couponAppliedPrice - couponPrice;
       } else {
         couponPrice = 0;
       }
     } else {
       couponPrice = 0;
     }
+
+    let gstPrice =
+      gstMode === "percentage" ? couponAppliedPrice * (cgst / 100) : cgst;
+    let deliverCharagePrice = 0;
+    let packingPrice =
+      packingMode === "percentage"
+        ? couponAppliedPrice * (packing / 100)
+        : packing;
+    let transactionPrice =
+      transactionMode === "percentage"
+        ? couponAppliedPrice * (transaction / 100)
+        : transaction;
+    let couponDiscount = 0;
+    if (isDeliveryFree) {
+      deliverCharagePrice = 0;
+    }
+
+    let total_amount =
+      couponAppliedPrice +
+      gstPrice +
+      deliverCharagePrice +
+      packingPrice +
+      transactionPrice;
+
+    let total_for_dining = itemPrice + gstPrice;
+    let total_dc_price =
+      _.get(location, "pathname", "") !== "/dining-cart"
+        ? total_for_dining - itemPrice + itemdiscountPrice
+        : total_amount - itemPrice + itemdiscountPrice;
+
+    const orderType = routepath?.includes("online")
+      ? "online"
+      : routepath?.includes("take")
+      ? "takeaway"
+      : "null";
 
     return {
       total_amount: total_amount?.toFixed(0),
@@ -938,21 +935,25 @@ const Cart = () => {
                         </div>
                       ) : null}
                       {/* gst */}
-                      <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                        <div className="flex gap-x-2">
-                          <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
+                      {_.get(getTotalAmount(), "gstPrice", 0) ? (
+                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                          <div className="flex gap-x-2">
+                            <div className="text-[#3F3F3F] font-normal">
+                              Taxes
+                            </div>{" "}
+                          </div>
+                          <div className=" text-[#3A3A3A]">
+                            &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
+                          </div>
                         </div>
-                        <div className=" text-[#3A3A3A]">
-                          &#8377; {_.get(getTotalAmount(), "gstPrice", 0)}
-                        </div>
-                      </div>
+                      ) : null}
                       {/* delivery charge */}
-                      {_.get(location, "pathname", "") ===
+                      {/* {_.get(location, "pathname", "") ===
                       "/online-order-cart" ? (
                         <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
                           <div className="flex gap-x-2">
                             <div className="text-[#3F3F3F] font-normal">
-                              Delivery Charge
+                              Delivery Charges
                             </div>{" "}
                           </div>
                           <div className="lg:text-lg text-[#3A3A3A]">
@@ -972,36 +973,42 @@ const Cart = () => {
                         </div>
                       ) : (
                         ""
-                      )}
+                      )} */}
 
                       {/* otehr charges */}
-                      {_.get(location, "pathname", "") !== "/dining-cart" && (
-                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                          <div className="flex gap-x-2">
-                            <div className="text-[#3F3F3F] font-normal">
-                              Packing Charges
-                            </div>{" "}
-                          </div>
-                          <div className=" text-[#3A3A3A]">
-                            &#8377;
-                            {_.get(getTotalAmount(), "packingPrice", 0)}
-                          </div>
-                        </div>
-                      )}
+                      {Number(_.get(getTotalAmount(), "packingPrice", 0))
+                        ? _.get(location, "pathname", "") !==
+                            "/dining-cart" && (
+                            <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                              <div className="flex gap-x-2">
+                                <div className="text-[#3F3F3F] font-normal">
+                                  Restaurant Packing Charges
+                                </div>{" "}
+                              </div>
+                              <div className=" text-[#3A3A3A]">
+                                &#8377;
+                                {_.get(getTotalAmount(), "packingPrice", 0)}
+                              </div>
+                            </div>
+                          )
+                        : null}
                       {/* Transaction charges */}
-                      {_.get(location, "pathname", "") !== "/dining-cart" && (
-                        <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
-                          <div className="flex gap-x-2">
-                            <div className="text-[#3F3F3F] font-normal overflow-hidden text-ellipsis ">
-                              Transaction Charges
-                            </div>{" "}
-                          </div>
-                          <div className="text-[#3A3A3A] text-sm">
-                            &#8377;
-                            {_.get(getTotalAmount(), "transactionPrice", 0)}
-                          </div>
-                        </div>
-                      )}
+                      {Number(_.get(getTotalAmount(), "transactionPrice", 0))
+                        ? _.get(location, "pathname", "") !==
+                            "/dining-cart" && (
+                            <div className="flex  justify-between border-b border-[#C1C1C1] text-sm lg:text-lg">
+                              <div className="flex gap-x-2">
+                                <div className="text-[#3F3F3F] font-normal overflow-hidden text-ellipsis ">
+                                  Platform Fee
+                                </div>{" "}
+                              </div>
+                              <div className="text-[#3A3A3A] text-sm">
+                                &#8377;
+                                {_.get(getTotalAmount(), "transactionPrice", 0)}
+                              </div>
+                            </div>
+                          )
+                        : null}
                       {/* Coupon discount */}
                       {/* {_.get(location, "pathname", "") !==
                                         "/dining-cart" && (
@@ -1047,7 +1054,7 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    {!isDining ? (
+                    {/* {!isDining ? (
                       <Button
                         block
                         type="text"
@@ -1056,23 +1063,35 @@ const Cart = () => {
                       >
                         Apply Coupon
                       </Button>
-                    ) : null}
-                    {coupon ? (
-                      <div className="flex flex-row items-center center-div justify-center">
-                        <p className="bg-white m-2 text-center p-2 rounded-xl text-[green] shadow">
-                          Coupon Applied
-                        </p>
-                        <span
-                          className="cursor-pointer font-medium"
-                          onClick={() => {
-                            setCoupon(null);
-                            dispatch(addCoupon(null));
-                          }}
-                        >
-                          X
-                        </span>
-                      </div>
-                    ) : null}
+                    ) : null} */}
+                    {/* {coupon ? (
+                      <>
+                        <div className="flex flex-row items-center center-div justify-center">
+                          <p className="bg-white m-2 text-center p-2 rounded-xl text-[green] shadow">
+                            Coupon Applied
+                          </p>
+                          <span
+                            className="cursor-pointer font-medium"
+                            onClick={() => {
+                              setCoupon(null);
+                              dispatch(addCoupon({ coupon: null, path: null }));
+                            }}
+                          >
+                            X
+                          </span>
+                        </div>
+                        {Number(
+                          _.get(getTotalAmount(), "couponDiscount", 0)
+                        ) ? (
+                          <div className="text-center text-lime-500 mt-1">
+                            You have saved Rs.
+                            {Number(
+                              _.get(getTotalAmount(), "couponDiscount", 0)
+                            )}
+                          </div>
+                        ) : null}
+                      </>
+                    ) : null} */}
 
                     {/* confirm button */}
                     <div
@@ -1204,7 +1223,14 @@ const Cart = () => {
                             setCoupon(cd);
                             setCouponError(null);
                             setCouponModal(false);
-                            dispatch(addCoupon(cd));
+                            dispatch(
+                              addCoupon({
+                                coupon: cd,
+                                path: location?.pathname.includes("online")
+                                  ? "online"
+                                  : "takeaway",
+                              })
+                            );
                           } else {
                             setCouponError({ valid, msg });
                           }

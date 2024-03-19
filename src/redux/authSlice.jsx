@@ -11,6 +11,7 @@ const authSlice = createSlice({
     foodInstructions: {},
     message: null,
     coupon: null,
+    couponPath: null,
     footer: null,
     charges: null,
   },
@@ -32,7 +33,8 @@ const authSlice = createSlice({
       state.message = action.payload;
     },
     addCoupon: (state, action) => {
-      state.coupon = action.payload;
+      state.coupon = action.payload?.coupon;
+      state.couponPath = action.payload.path;
     },
     addFooter: (state, action) => {
       state.footer = action.payload;

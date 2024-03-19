@@ -243,8 +243,8 @@ const TakeAwayChackout = () => {
   const getTotalAmount = () => {
     let cgst = charges?.gst?.value;
     let gstMode = charges?.gst?.mode;
-    let delivery = charges?.delivery?.value;
-    let deliveryMode = charges?.delivery?.mode;
+    // let delivery = charges?.delivery?.value;
+    // let deliveryMode = charges?.delivery?.mode;
     let packing = charges?.packing?.value;
     let packingMode = charges?.packing?.mode;
     let transaction = charges?.transaction?.value;
@@ -282,39 +282,9 @@ const TakeAwayChackout = () => {
       })
     );
 
-    let gstPrice = gstMode === "percentage" ? itemPrice * (cgst / 100) : cgst;
-    let deliverCharagePrice =
-      _.get(location, "pathname", "") !== "/takeaway-checkout"
-        ? deliveryMode === "percentage"
-          ? itemPrice * (delivery / 100)
-          : delivery
-        : 0;
-    let packingPrice =
-      packingMode === "percentage" ? itemPrice * (packing / 100) : packing;
-    let transactionPrice =
-      transactionMode === "percentage"
-        ? itemPrice * (transaction / 100)
-        : transaction;
-    let couponDiscount = 0;
-
-    let total_amount =
-      itemPrice +
-      gstPrice +
-      deliverCharagePrice +
-      packingPrice +
-      transactionPrice -
-      couponDiscount;
-
-    let total_for_dining = itemPrice + gstPrice;
-    let total_dc_price =
-      _.get(location, "pathname", "") !== "/dining-cart"
-        ? total_for_dining - itemPrice + itemdiscountPrice
-        : total_amount - itemPrice + itemdiscountPrice;
-    //coupon
-
     let couponPrice = 0;
     let isDeliveryFree = false;
-
+    let couponAppliedPrice = itemPrice;
     if (coupon) {
       const validPurchase = coupon.min_purchase
         ? itemPrice >= coupon.min_purchase
@@ -329,17 +299,43 @@ const TakeAwayChackout = () => {
           discount <= coupon?.max_discount ? discount : coupon?.max_discount;
 
         isDeliveryFree = coupon?.deliveryFree;
-        total_amount = total_amount - couponPrice;
-        if (isDeliveryFree) {
-          total_amount = total_amount - deliverCharagePrice;
-          deliverCharagePrice = 0;
-        }
+        couponAppliedPrice = couponAppliedPrice - couponPrice;
       } else {
         couponPrice = 0;
       }
     } else {
       couponPrice = 0;
     }
+
+    let gstPrice =
+      gstMode === "percentage" ? couponAppliedPrice * (cgst / 100) : cgst;
+    let deliverCharagePrice = 0;
+    let packingPrice =
+      packingMode === "percentage"
+        ? couponAppliedPrice * (packing / 100)
+        : packing;
+    let transactionPrice =
+      transactionMode === "percentage"
+        ? couponAppliedPrice * (transaction / 100)
+        : transaction;
+    let couponDiscount = 0;
+    if (isDeliveryFree) {
+      deliverCharagePrice = 0;
+    }
+
+    let total_amount =
+      couponAppliedPrice +
+      gstPrice +
+      deliverCharagePrice +
+      packingPrice +
+      transactionPrice;
+
+    let total_for_dining = itemPrice + gstPrice;
+    let total_dc_price =
+      _.get(location, "pathname", "") !== "/dining-cart"
+        ? total_for_dining - itemPrice + itemdiscountPrice
+        : total_amount - itemPrice + itemdiscountPrice;
+
     return {
       total_amount: total_amount?.toFixed(0),
       itemPrice: itemPrice?.toFixed(0),
@@ -415,7 +411,7 @@ const TakeAwayChackout = () => {
       notification.success({
         message: "Your order has been successfully placed.",
       });
-      dispatch(addCoupon(null));
+      dispatch(addCoupon({ coupon: null, path: null }));
       navigate("/profile-take-away-order", {
         replace: true,
       });

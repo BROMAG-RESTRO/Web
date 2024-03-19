@@ -350,11 +350,14 @@ const OnlineOrders = () => {
                 </div>
               ) : null}
               <div className="flex items-center justify-between border-b-2">
-                <p>Total GST</p> &#8377; {currentSelected?.gst}
+                <p>Taxes</p> &#8377; {currentSelected?.gst}
               </div>
-              <div className="flex items-center justify-between border-b-2">
-                <p>Packing Charge</p> &#8377; {currentSelected?.packingCharge}
-              </div>
+              {Number(currentSelected?.packingCharge) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Restaurant Packing Charges</p> &#8377;
+                  {currentSelected?.packingCharge}
+                </div>
+              ) : null}
               <div className="flex items-center justify-between border-b-2">
                 <p>Delivery Charge</p>
                 {currentSelected?.coupon?.deliveryFree ? (
@@ -363,10 +366,12 @@ const OnlineOrders = () => {
                   <span>&#8377;{currentSelected?.deliveryCharge}</span>
                 )}
               </div>
-              <div className="flex items-center justify-between border-b-2">
-                <p>Transaction Charge</p> &#8377;{" "}
-                {currentSelected?.transactionCharge}
-              </div>
+              {Number(currentSelected?.transactionCharge) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Platform Fee</p> &#8377;{" "}
+                  {currentSelected?.transactionCharge}
+                </div>
+              ) : null}
               <div className="flex items-center justify-end gap-x-2">
                 <p>Total :</p> &#8377;{" "}
                 {_.get(currentSelected, "billAmount", [])}

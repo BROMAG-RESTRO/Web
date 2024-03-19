@@ -365,12 +365,14 @@ const CallforOrders = () => {
                 {_.get(currentSelected, "billAmount", "")}
               </div>
               <div className="flex items-center justify-between border-b-2">
-                <p>Total GST</p> &#8377; {_.get(currentSelected, "gst", "")}
+                <p>Taxes</p> &#8377; {_.get(currentSelected, "gst", "")}
               </div>
-              <div className="flex items-center justify-between border-b-2">
-                <p>Packing Charge</p> &#8377;{" "}
-                {_.get(currentSelected, "packingCharge", "")}
-              </div>
+              {Number(_.get(currentSelected, "packingCharge", 0)) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Packing Charge</p> &#8377;{" "}
+                  {_.get(currentSelected, "packingCharge", 0)}
+                </div>
+              ) : null}
 
               {_.get(currentSelected, "deliveryCharge", "") > 0 && (
                 <div className="flex items-center justify-between border-b-2">
@@ -378,11 +380,12 @@ const CallforOrders = () => {
                   {_.get(currentSelected, "deliveryCharge", "")}
                 </div>
               )}
-
-              <div className="flex items-center justify-between border-b-2">
-                <p>Transaction Charge</p> &#8377;{" "}
-                {_.get(currentSelected, "transactionCharge", "")}
-              </div>
+              {Number(_.get(currentSelected, "transactionCharge", 0)) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Transaction Charge</p> &#8377;{" "}
+                  {_.get(currentSelected, "transactionCharge", 0)}
+                </div>
+              ) : null}
               <div className="flex items-center justify-end gap-x-2">
                 <p>Total :</p> &#8377; {currentSelected?.grandTotal}
               </div>

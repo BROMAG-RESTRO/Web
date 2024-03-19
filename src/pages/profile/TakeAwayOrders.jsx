@@ -360,16 +360,20 @@ const TakeAwayOrders = () => {
                 </div>
               ) : null}
               <div className="flex items-center justify-between border-b-2">
-                <p>Total GST</p> &#8377; {_.get(currentSelected, "gst", [])}
+                <p>Taxes</p> &#8377; {_.get(currentSelected, "gst", [])}
               </div>
-              <div className="flex items-center justify-between border-b-2">
-                <p>Packing Charges</p> &#8377;{" "}
-                {_.get(currentSelected, "packing_charge", [])}
-              </div>
-              <div className="flex items-center justify-between border-b-2">
-                <p>Transaction Charges</p> &#8377;{" "}
-                {_.get(currentSelected, "transaction_charge", [])}
-              </div>
+              {Number(_.get(currentSelected, "packing_charge", 0)) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Restaurant Packing Charges</p> &#8377;{" "}
+                  {_.get(currentSelected, "packing_charge", 0)}
+                </div>
+              ) : null}
+              {Number(_.get(currentSelected, "transaction_charge", 0)) ? (
+                <div className="flex items-center justify-between border-b-2">
+                  <p>Transaction Charges</p> &#8377;{" "}
+                  {_.get(currentSelected, "transaction_charge", 0)}
+                </div>
+              ) : null}
               <div className="flex items-center justify-end gap-x-2">
                 <p>Total :</p> &#8377;{" "}
                 {_.get(currentSelected, "billAmount", [])}
