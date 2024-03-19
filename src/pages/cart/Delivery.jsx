@@ -269,7 +269,7 @@ const Delivery = () => {
     //     return Number(price) * res.quantity;
     //   })
     // );
-
+    let isDeliveryFree = false;
     let itemPrice = _.sum(
       cartData?.map((res) => {
         const typeRefId = _.get(res, "typeRef", "");
@@ -322,12 +322,8 @@ const Delivery = () => {
         couponPrice =
           discount <= coupon?.max_discount ? discount : coupon?.max_discount;
 
-        // isDeliveryFree = coupon?.deliveryFree;
+        isDeliveryFree = coupon?.deliveryFree;
         couponAppliedPrice = couponAppliedPrice - couponPrice;
-        // if (isDeliveryFree) {
-        //   total_amount = total_amount - deliverCharagePrice;
-        //   deliverCharagePrice = 0;
-        // }
       } else {
         couponPrice = 0;
         couponAppliedPrice = itemPrice;
@@ -364,7 +360,6 @@ const Delivery = () => {
         ? total_for_dining - itemPrice + itemdiscountPrice
         : total_amount - itemPrice + itemdiscountPrice;
 
-    let isDeliveryFree = false;
     const orderType = routepath?.includes("online")
       ? "online"
       : routepath?.includes("takeaway")
