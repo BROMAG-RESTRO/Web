@@ -1,3 +1,5 @@
+import { store } from "../redux/store";
+
 export const couponCheck = ({ coupon, amount, type }) => {
   const orderType = type?.includes("online")
     ? "online"
@@ -29,12 +31,23 @@ export const couponCheck = ({ coupon, amount, type }) => {
   }
 };
 
-export function calculateFare(distance) {
-  if (distance <= 2) {
-    return 30;
-  } else if (distance <= 7) {
-    return 30 + 10 * (distance - 2);
+export function calculateFare(distance, charges) {
+  console.log({ chargesData: charges });
+  let deliveryCharges = charges;
+
+  let {
+    min_km = 0,
+    max_km = 0,
+    min_price = 0,
+    max_price = 0,
+    extra_charges = 0,
+  } = deliveryCharges;
+  console.log({ min_km, max_km, min_price, max_price, extra_charges });
+  if (distance <= min_km) {
+    return min_price || 0;
+  } else if (distance <= max_km) {
+    return min_price + extra_charges * (distance - min_km) || 0;
   } else {
-    return 70;
+    return max_price || 0;
   }
 }
