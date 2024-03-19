@@ -26,7 +26,7 @@ function WhoAreWe() {
   return (
     <div className="w-screen lg:py-20 lg:px-20 px-4 py-4 flex flex-col gap-y-4 min-h-screen">
       <h1 className="font-bold text-center lg:pb-4 text-xl lg:text-4xl">
-        Who are we
+        Who we are
       </h1>
       <div
         className="text-justify indent-10 leading-loose"

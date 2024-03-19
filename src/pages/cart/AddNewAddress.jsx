@@ -212,9 +212,12 @@ const AddNewAddress = ({
 
   useEffect(() => {
     if (updateId) {
-      form.setFieldsValue({ name: updateId?.user });
+      form.setFieldsValue({
+        name: updateId?.user,
+        contactNumber: updateId?.contactNumber,
+      });
       form.setFieldsValue(updateId);
-      form?.setFieldValue("contactNumber", updateId?.contactNumber);
+
       // form.setFieldsValue({ mobileNumber: updateId?.mobileNumber });
 
       setCurrentLocation(updateId?.currentlocation);
@@ -231,6 +234,11 @@ const AddNewAddress = ({
     // form.setFieldsValue({ name: "Helloooooooooooooooooooo"})
     // form.getFieldsValue()
     // if(form.getFieldValue("addressType") === "Other") form.setfi
+    if (!value && !updateId) {
+      alert("select google address");
+      return;
+    }
+
     console.log(
       "valueeeeeeeeeee",
       values,
@@ -322,6 +330,7 @@ const AddNewAddress = ({
                 ]}
                 name="contactNumber"
                 className=" lg:w-[400px] w-[98%]  h-[50px]"
+                initialValue={form.getFieldValue("contactNumber")}
               >
                 <PhoneInput
                   defaultCountry={"in"}

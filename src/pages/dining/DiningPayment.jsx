@@ -156,7 +156,7 @@ const DiningPayment = () => {
                     {/* gst */}
                     <div className="flex  justify-between pt-4 border-b border-[#C1C1C1] text-sm lg:text-lg">
                       <div className="flex gap-x-2">
-                        <div className="text-[#3F3F3F] font-normal">Gst</div>{" "}
+                        <div className="text-[#3F3F3F] font-normal">Taxes</div>{" "}
                       </div>
                       <div className=" text-[#3A3A3A]">
                         &#8377; {_.get(res, "gst", 0)}

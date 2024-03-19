@@ -216,8 +216,8 @@ const Delivery = () => {
   const getTotalAmount = () => {
     let cgst = charges?.gst?.value;
     let gstMode = charges?.gst?.mode;
-    let delivery = charges?.delivery?.value;
-    let deliveryMode = charges?.delivery?.mode;
+    // let delivery = charges?.delivery?.value;
+    // let deliveryMode = charges?.delivery?.mode;
     let packing = charges?.packing?.value;
     let packingMode = charges?.packing?.mode;
     let transaction = charges?.transaction?.value;
@@ -226,7 +226,7 @@ const Delivery = () => {
     let diningMode = charges?.dining?.mode;
     let distance = selectedDeliveryAddress?.distance;
 
-    let deliveryFee = calculateFare(distance);
+    let deliveryFee = calculateFare(distance, charges?.delivery);
     console.log({ deliveryFee, distance, selectedDeliveryAddress });
     // let itemPrice = _.sum(
     //   cartData.map((res) => {
@@ -278,37 +278,9 @@ const Delivery = () => {
       })
     );
 
-    let gstPrice = gstMode === "percentage" ? (itemPrice * cgst) / 100 : cgst;
-    let deliverCharagePrice = deliveryFee;
-    let packingPrice =
-      packingMode === "percentage" ? (itemPrice * packing) / 100 : packing;
-    let transactionPrice =
-      transactionMode === "percentage"
-        ? (itemPrice * transaction) / 100
-        : transaction;
     let couponDiscount = 0;
-
-    let total_amount =
-      itemPrice +
-      gstPrice +
-      deliverCharagePrice +
-      packingPrice +
-      transactionPrice -
-      couponDiscount;
-
-    let total_for_dining = itemPrice + gstPrice;
-    let total_dc_price =
-      _.get(location, "pathname", "") !== "/dining-cart"
-        ? total_for_dining - itemPrice + itemdiscountPrice
-        : total_amount - itemPrice + itemdiscountPrice;
     let couponPrice = 0;
-    let isDeliveryFree = false;
-    const orderType = routepath?.includes("online")
-      ? "online"
-      : routepath?.includes("takeaway")
-      ? "takeaway"
-      : "null";
-
+    let couponAppliedPrice = itemPrice;
     if (coupon) {
       const validPurchase = coupon.min_purchase
         ? itemPrice >= coupon.min_purchase
@@ -322,18 +294,69 @@ const Delivery = () => {
         couponPrice =
           discount <= coupon?.max_discount ? discount : coupon?.max_discount;
 
-        isDeliveryFree = coupon?.deliveryFree;
-        total_amount = total_amount - couponPrice;
-        if (isDeliveryFree) {
-          total_amount = total_amount - deliverCharagePrice;
-          deliverCharagePrice = 0;
-        }
+        // isDeliveryFree = coupon?.deliveryFree;
+        couponAppliedPrice = couponAppliedPrice - couponPrice;
+        // if (isDeliveryFree) {
+        //   total_amount = total_amount - deliverCharagePrice;
+        //   deliverCharagePrice = 0;
+        // }
       } else {
         couponPrice = 0;
+        couponAppliedPrice = itemPrice;
       }
     } else {
       couponPrice = 0;
+      couponAppliedPrice = itemPrice;
     }
+    let gstPrice =
+      gstMode === "percentage" ? (couponAppliedPrice * cgst) / 100 : cgst;
+    let deliverCharagePrice = deliveryFee;
+    let packingPrice =
+      packingMode === "percentage"
+        ? (couponAppliedPrice * packing) / 100
+        : packing;
+    let transactionPrice =
+      transactionMode === "percentage"
+        ? (couponAppliedPrice * transaction) / 100
+        : transaction;
+
+    if (coupon?.deliveryFree) {
+      deliverCharagePrice = 0;
+    }
+    let total_amount =
+      couponAppliedPrice +
+      gstPrice +
+      deliverCharagePrice +
+      packingPrice +
+      transactionPrice;
+
+    let total_for_dining = itemPrice + gstPrice;
+    let total_dc_price =
+      _.get(location, "pathname", "") !== "/dining-cart"
+        ? total_for_dining - itemPrice + itemdiscountPrice
+        : total_amount - itemPrice + itemdiscountPrice;
+
+    let isDeliveryFree = false;
+    const orderType = routepath?.includes("online")
+      ? "online"
+      : routepath?.includes("takeaway")
+      ? "takeaway"
+      : "null";
+
+    console.log({
+      total_amount: total_amount?.toFixed(0),
+      itemPrice: itemPrice?.toFixed(0),
+      gstPrice: gstPrice?.toFixed(0),
+      deliverCharagePrice: deliverCharagePrice?.toFixed(0),
+      packingPrice: packingPrice?.toFixed(0),
+      transactionPrice: transactionPrice?.toFixed(0),
+      couponDiscount: couponPrice?.toFixed(0),
+      Total_amount: total_amount?.toFixed(0),
+      total_for_dining: total_for_dining?.toFixed(0),
+      total_qty: total_qty,
+      itemdiscountPrice: total_dc_price?.toFixed(0),
+      isDeliveryFree,
+    });
 
     return {
       total_amount: total_amount?.toFixed(0),
@@ -670,7 +693,7 @@ const Delivery = () => {
                     </div>
                     <div className=" text-[#3A3A3A]">
                       <div className="lg:text-lg text-[#3A3A3A]">
-                        {_.get(getTotalAmount(), "packingPrice", 0)}
+                        &#8377; {_.get(getTotalAmount(), "packingPrice", 0)}
                       </div>
                     </div>
                   </div>
