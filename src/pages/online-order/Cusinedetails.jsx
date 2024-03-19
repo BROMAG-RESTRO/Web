@@ -790,7 +790,9 @@ const Cusinedetails = () => {
             isDining={pageName === "/dining-cusines"}
             DININGMODE={DININGMODE}
             DININGPERCENTAGE={DININGPERCENTAGE}
+            refreshData={fetchData}
             OnClose={() => {
+              console.log("closed");
               fetchData(false);
               fetchCurrentUserCarts(false);
               document?.getElementById("customization")?.hideModal();

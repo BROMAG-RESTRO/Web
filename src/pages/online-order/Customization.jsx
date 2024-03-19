@@ -473,7 +473,7 @@ const Customization = ({
                   onClick={() => {
                     setPrice(0);
                     setQuantity(1);
-                    historyCart({});
+                    setNewhistoryCart({});
                     setNewhistoryCartID({});
                     OnClose();
                     // document?.getElementById("customization")?.hideModal();

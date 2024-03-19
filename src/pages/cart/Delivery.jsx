@@ -868,7 +868,7 @@ const Delivery = () => {
       <Modal
         open={couponModal}
         centered
-        width={"60vw"}
+        // width={"60vw"}
         title="Coupons"
         className="bg-white rounded-2xl"
         closable={true}
