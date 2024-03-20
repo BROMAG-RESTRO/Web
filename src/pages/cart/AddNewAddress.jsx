@@ -1,5 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Button, Form, Input, Radio, Skeleton, notification } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Skeleton,
+  notification,
+} from "antd";
 import { memo, useEffect, useState } from "react";
 import {
   addDeliveryAddress,
@@ -14,6 +22,9 @@ import GooglePlacesAutocomplete, {
   geocodeByAddress,
 } from "react-google-places-autocomplete";
 import { geocodeByPlaceId } from "react-google-places-autocomplete";
+import { calculateDistance } from "../../helper/utils";
+import { useSelector } from "react-redux";
+import OOPS from "../../assets/OOPS.png";
 const AddNewAddress = ({
   setChangeRight,
   changeRight,
@@ -23,7 +34,9 @@ const AddNewAddress = ({
 }) => {
   console.log({ updateId });
   const [form] = Form.useForm();
-
+  const [openModal, setOpenModal] = useState(false);
+  const footerData = useSelector((state) => state?.auth?.footer);
+  const { latitude: rLatitude, longitude: rLongitude } = footerData?.data?.[0];
   const [loading, setLoading] = useState(false);
   const [otherAddressType, setOtherAddressType] = useState("");
   const [location, setLocation] = useState(null);
@@ -41,7 +54,16 @@ const AddNewAddress = ({
     const latitude = location?.lat();
     const longitude = location?.lng();
     console.log("Latitude:", latitude);
-
+    const distance = calculateDistance(
+      Number(rLatitude),
+      Number(rLongitude),
+      latitude,
+      longitude
+    );
+    if (distance > 20) {
+      setOpenModal(true);
+      return;
+    }
     let doorno = "";
     let street = "";
     let area = val?.value?.terms?.[1]?.value;
@@ -171,6 +193,16 @@ const AddNewAddress = ({
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
+          const distance = calculateDistance(
+            Number(rLatitude),
+            Number(rLongitude),
+            latitude,
+            longitude
+          );
+          if (distance > 20) {
+            setOpenModal(true);
+            return;
+          }
           getLocation(latitude, longitude);
           setLocation({
             latitude: latitude,
@@ -505,6 +537,22 @@ const AddNewAddress = ({
           </Form>
         </div>
       </div>
+      <Modal
+        open={openModal}
+        className="bg-white rounded-2xl"
+        closable={true}
+        footer={false}
+        onCancel={() => {
+          setOpenModal(false);
+        }}
+      >
+        <div className="center_div">
+          <img src={OOPS} alt="no" width={200} />
+          <p className="font-bold  text-base text-zinc-700 text-center">
+            Currently ,we are not delivering at this location !
+          </p>
+        </div>
+      </Modal>
     </Skeleton>
   );
 };
