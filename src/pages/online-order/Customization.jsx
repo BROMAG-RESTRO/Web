@@ -471,10 +471,11 @@ const Customization = ({
               <div className="sticky top-0 z-50 flex justify-end ">
                 <button
                   onClick={() => {
-                    setPrice(0);
                     setQuantity(1);
-                    historyCart({});
+                    setNewhistoryCart({});
                     setNewhistoryCartID({});
+                    setTypeRef("");
+                    setMultipleTypesMenu(false);
                     OnClose();
                     // document?.getElementById("customization")?.hideModal();
                   }}
@@ -659,7 +660,15 @@ const Customization = ({
                   //   ></div>
                   // </div>
                 }
-
+                {console.log({
+                  isMultipleTypeMenu,
+                  historyCart,
+                  currentCartsData,
+                  productData,
+                  keys: Object.keys(historyCart),
+                  typeRef,
+                  checker: Object.keys(historyCart)?.includes(typeRef),
+                })}
                 {(isMultipleTypeMenu &&
                   Object.keys(historyCart)?.includes(typeRef)) ||
                 (!isMultipleTypeMenu &&
