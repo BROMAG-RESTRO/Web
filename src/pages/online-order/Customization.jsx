@@ -88,6 +88,7 @@ const Customization = ({
         setProductPrice(maxPrice);
         setMultipleTypesMenu(true);
       }
+      setMultipleTypesMenu(true);
 
       setCartId(productData?._id);
       // const initialPrice =
@@ -126,6 +127,7 @@ const Customization = ({
 
     setTypeRef(id);
     setTypeOfferPer(offerPercentage);
+    setMultipleTypesMenu(true);
   };
 
   // =============
@@ -471,10 +473,12 @@ const Customization = ({
               <div className="sticky top-0 z-50 flex justify-end ">
                 <button
                   onClick={() => {
-                    setPrice(0);
                     setQuantity(1);
-                    historyCart({});
+                    setNewhistoryCart({});
                     setNewhistoryCartID({});
+                    setTypeRef("");
+
+                    setMultipleTypesMenu(false);
                     OnClose();
                     // document?.getElementById("customization")?.hideModal();
                   }}
@@ -566,6 +570,7 @@ const Customization = ({
                                       isDining ? 0 : data?.TypeOfferPercentage
                                     )
                                   }
+                                  defaultChecked={false}
                                 />
                                 <span className="item__type--name uppercase">
                                   {data?.Type}
@@ -659,7 +664,15 @@ const Customization = ({
                   //   ></div>
                   // </div>
                 }
-
+                {console.log({
+                  isMultipleTypeMenu,
+                  historyCart,
+                  currentCartsData,
+                  productData,
+                  keys: Object.keys(historyCart),
+                  typeRef,
+                  checker: Object.keys(historyCart)?.includes(typeRef),
+                })}
                 {(isMultipleTypeMenu &&
                   Object.keys(historyCart)?.includes(typeRef)) ||
                 (!isMultipleTypeMenu &&
