@@ -88,6 +88,7 @@ const Customization = ({
         setProductPrice(maxPrice);
         setMultipleTypesMenu(true);
       }
+      setMultipleTypesMenu(true);
 
       setCartId(productData?._id);
       // const initialPrice =
@@ -126,6 +127,7 @@ const Customization = ({
 
     setTypeRef(id);
     setTypeOfferPer(offerPercentage);
+    setMultipleTypesMenu(true);
   };
 
   // =============
@@ -475,6 +477,7 @@ const Customization = ({
                     setNewhistoryCart({});
                     setNewhistoryCartID({});
                     setTypeRef("");
+
                     setMultipleTypesMenu(false);
                     OnClose();
                     // document?.getElementById("customization")?.hideModal();
@@ -567,6 +570,7 @@ const Customization = ({
                                       isDining ? 0 : data?.TypeOfferPercentage
                                     )
                                   }
+                                  defaultChecked={false}
                                 />
                                 <span className="item__type--name uppercase">
                                   {data?.Type}
