@@ -72,13 +72,15 @@ textarea:where(.css-dev-only-do-not-override-nllxry).ant-input {
   color: inherit !important;
 }
 
-:where(.css-dev-only-do-not-override-1xg9z9n).ant-tag.ant-tag-green {
+.ant-tag.ant-tag-green {
   /* color: #389e0d; */
   /* background: #f6ffed; */
   /* border-color: #b7eb8f; */
   background-color: #df9300 !important;
   border-color: #df9300 !important;
   color: #fff;
+  padding: 3px;
+  font-size: 14px;
 }
 
 .ant-select-selector {
@@ -133,9 +135,8 @@ body ::-webkit-scrollbar {
 .signup_wrap #signup {
   width: 50%;
 }
-.google-autocomplete__value-container{
+.google-autocomplete__value-container {
   min-height: 47px;
-  
 }
 
 @media screen and (max-width: 756px) {
