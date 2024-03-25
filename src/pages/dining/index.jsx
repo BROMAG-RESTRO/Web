@@ -10,12 +10,16 @@ import {
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Dining = () => {
+  const location = useLocation();
+  const { moreFood = false } = location?.state || {};
+
+  console.log({ moreFood, location });
   const [bookedTables, setBookedTables] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(moreFood);
   const [selectedCurrentTable, setSelectedTable] = useState([]);
   const [collectBookingIds, setCollectBookingIds] = useState([]);
   const [orderStatus, setOrderStatus] = useState([]);

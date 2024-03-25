@@ -197,13 +197,8 @@ const router = createBrowserRouter([
   },
   {
     path: "/dining",
-    element: <App />,
-    children: [
-      {
-        path: "/dining",
-        element: <Dining />,
-      },
-    ],
+
+    element: <Dining />,
   },
   {
     path: "/dining-cusines",
