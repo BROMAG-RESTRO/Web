@@ -382,7 +382,7 @@ const CallforOrders = () => {
               )}
               {Number(_.get(currentSelected, "transactionCharge", 0)) ? (
                 <div className="flex items-center justify-between border-b-2">
-                  <p>Transaction Charge</p> &#8377;{" "}
+                  <p>Platform Fee</p> &#8377;{" "}
                   {_.get(currentSelected, "transactionCharge", 0)}
                 </div>
               ) : null}
