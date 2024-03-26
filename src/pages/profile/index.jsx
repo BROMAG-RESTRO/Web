@@ -39,6 +39,7 @@ import { useSelector } from "react-redux";
 const Profile = () => {
   const navigate = useNavigate();
   const { thirdColor } = useSelector((state) => state.auth);
+  const footer = useSelector((state) => state?.auth?.footer?.data?.[0]);
   const refPage = useHref();
 
   useEffect(() => {
@@ -67,13 +68,7 @@ const Profile = () => {
       icon: <IoIosCall />,
       goto: "/profile-call-for-order",
     },
-    {
-      id: 4,
-      name: "Your Table Bookings",
-      component: <BookedTables />,
-      icon: <MdOutlineTableBar />,
-      goto: "/profile-table-booking",
-    },
+
     {
       id: 5,
       name: "Your Delivery Address",
@@ -103,38 +98,48 @@ const Profile = () => {
       goto: "/my-account",
     },
   ];
-
+  if (footer?.isDining) {
+    orderTypes?.push({
+      id: 4,
+      name: "Your Table Bookings",
+      component: <BookedTables />,
+      icon: <MdOutlineTableBar />,
+      goto: "/profile-table-booking",
+    });
+  }
   const navs = () => {
     return (
       <div className="w-full ">
         <div className="lg:bg-white bg-light_white w-full min-h-[200px] rounded-lg   py-2 lg:px-0">
-          {orderTypes.map((res, index) => {
-            return (
-              <div
-                key={index}
-                className={`w-full  rounded-lg  hover:lg:bg-primary_color lg:shadow-lg ${
-                  refPage === res.goto
-                    ? "lg:bg-primary_color lg:!text-white"
-                    : "bg-white !text-black"
-                }`}
-              >
+          {orderTypes
+            ?.sort((a, b) => a.id - b.id)
+            ?.map((res, index) => {
+              return (
                 <div
-                  onClick={() => {
-                    navigate(res.goto);
-                  }}
                   key={index}
-                  className={`h-[50px] lg:text-sm text-[12px] !w-full line-clamp-1  flex cursor-pointer font-bold tracking-wider items-center !pl-4  m-1 px-1 rounded `}
+                  className={`w-full  rounded-lg  hover:lg:bg-primary_color lg:shadow-lg ${
+                    refPage === res.goto
+                      ? "lg:bg-primary_color lg:!text-white"
+                      : "bg-white !text-black"
+                  }`}
                 >
-                  {res?.icon} &nbsp;&nbsp;
-                  <h1 className="!overflow-hidden  line-clamp-1 !text-ellipsis  ">
-                    {" "}
-                    {res?.name}
-                  </h1>
+                  <div
+                    onClick={() => {
+                      navigate(res.goto);
+                    }}
+                    key={index}
+                    className={`h-[50px] lg:text-sm text-[12px] !w-full line-clamp-1  flex cursor-pointer font-bold tracking-wider items-center !pl-4  m-1 px-1 rounded `}
+                  >
+                    {res?.icon} &nbsp;&nbsp;
+                    <h1 className="!overflow-hidden  line-clamp-1 !text-ellipsis  ">
+                      {" "}
+                      {res?.name}
+                    </h1>
+                  </div>
+                  <hr />
                 </div>
-                <hr />
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
         {/* <div className="mt-2">
           <Popconfirm
