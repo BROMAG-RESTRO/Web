@@ -136,7 +136,11 @@ const Cart = () => {
     } else if (path === "/take-away-cart") {
       navigate("/take-away");
     } else if (path === "/dining-cart") {
-      navigate("/dining");
+      navigate("/dining", {
+        state: {
+          moreFood: "true",
+        },
+      });
     }
   };
 
@@ -879,11 +883,11 @@ const Cart = () => {
                 );
               })}
 
-              <Link onClick={handleBrowseMoreFoodClick}>
+              <div onClick={handleBrowseMoreFoodClick}>
                 <div className="w-full flex justify-center items-center gap-2 px-6 bg-white h-20 border border-gray-300 rounded-2xl cursor-pointer ">
                   + Browse more food
                 </div>
-              </Link>
+              </div>
             </div>
             {/* right */}
 
