@@ -29,13 +29,14 @@ import {
 } from "../../helper/validation";
 import CountdownTimer from "../../components/CountdownTimer";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const CallforOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentSelected, setCurrentSelected] = useState([]);
   const [dummy, setDummy] = useState(false);
-
+  const messages = useSelector((state) => state.auth.message);
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -50,6 +51,9 @@ const CallforOrders = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    fetchData(false);
+  }, [messages]);
 
   const handleCancelOrder = async (value) => {
     try {
@@ -180,6 +184,22 @@ const CallforOrders = () => {
             </div>
           </div>
         );
+      case "Order ready to pick":
+        return (
+          <div className="flex justify-evenly">
+            <div
+              className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
+              onClick={() => {
+                setCurrentSelected(data);
+              }}
+            >
+              View Menu
+            </div>
+            <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
+              Order ready to pick
+            </div>
+          </div>
+        );
     }
   };
 
@@ -228,6 +248,7 @@ const CallforOrders = () => {
                           "Order moved to KDS",
                           "Order ready to preparing",
                           "Order ready to pack",
+                          "Order ready to pick",
                         ].includes(res.status) ? (
                           getStatus(res)
                         ) : (
