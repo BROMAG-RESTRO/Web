@@ -26,7 +26,9 @@ function Navbar() {
   const data = useSelector((data) => {
     return data;
   });
-
+  const footer = useSelector((state) => {
+    return state?.auth?.footer?.data;
+  });
   //=============
   const [showBadge, setShowBadge] = useState(false);
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
@@ -145,18 +147,7 @@ function Navbar() {
         "/delivery-address",
       ],
     },
-    {
-      id: 3,
-      name: "Dining",
-      link: "/dining",
-      navigations: [
-        "/dining",
-        "/dining-cusines",
-        "/dining-cart",
-        "/book-my-tables",
-        "/dining-payment",
-      ],
-    },
+
     {
       id: 4,
       name: "Call for order",
@@ -176,6 +167,21 @@ function Navbar() {
     //   navigations: ["/my-cart", "/delivery-address"],
     // },
   ];
+
+  if (footer?.[0]?.isDining) {
+    Menus.push({
+      id: 3,
+      name: "Dining",
+      link: "/dining",
+      navigations: [
+        "/dining",
+        "/dining-cusines",
+        "/dining-cart",
+        "/book-my-tables",
+        "/dining-payment",
+      ],
+    });
+  }
 
   const handleTrackLogin = () => {
     navigate("/login", { state: { backLocation: pathname } });
@@ -251,7 +257,7 @@ function Navbar() {
         <div className="center_div gap-x-20">
           {/* menus */}
           <div className="center_div gap-x-10 ">
-            {Menus.map((res, index) => {
+            {Menus?.sort((a, b) => a.id - b.id)?.map((res, index) => {
               return (
                 <Link
                   to={res.link}
@@ -378,7 +384,7 @@ function Navbar() {
       >
         <div className=" flex flex-col justify-between gap-y-10 pl-4 py-4">
           <div className="flex flex-col gap-y-10 lg:text-xl text-sm">
-            {Menus.map((res, index) => {
+            {Menus?.sort((a, b) => a.id - b.id)?.map((res, index) => {
               return (
                 <p
                   key={index}

@@ -13,12 +13,14 @@ import { Spin, notification } from "antd";
 import { getAllfeedback, gettAllBanners } from "../../helper/api/apiHelper";
 import _ from "lodash";
 import LoadingScreen from "../../components/LoadingScreen";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [banners, setBanners] = useState([]);
   const [customerReview, setCustomerReview] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const footerData = useSelector((state) => state?.auth?.footer);
+  console.log({ footerData });
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -51,11 +53,9 @@ const Home = () => {
       <Banner banners={banners} />
       <TopFoods topfoods={banners} />
       <TopVideos />
-      <NonVeg nonVegFoods={banners} />
-
+      {footerData?.data?.[0]?.nonveg ? <NonVeg nonVegFoods={banners} /> : null}
       <CustomerReview customerReview={customerReview} />
-
-      <VegFoods veg={banners} />
+      {footerData?.data?.[0]?.veg ? <VegFoods veg={banners} /> : null}
       <div className="flex flex-col lg:gap-y-[30vh] pt-10 gap-y-10">
         {/* <Fixedbanner /> */}
         <PlayContext />

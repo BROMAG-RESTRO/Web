@@ -138,6 +138,13 @@ body ::-webkit-scrollbar {
 .google-autocomplete__value-container {
   min-height: 47px;
 }
+ol {
+  list-style: decimal;
+}
+
+ul {
+  list-style: disc;
+}
 
 @media screen and (max-width: 756px) {
   .signup_wrap #signup {
