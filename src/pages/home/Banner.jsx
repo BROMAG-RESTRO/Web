@@ -45,7 +45,7 @@ const Banner = ({ banners }) => {
                 // }}
                 src={_.get(res, "image[0]", "")}
                 alt=""
-                className="object-cover cursor-pointer lg:h-[620px] h-1/2 w-full"
+                className="object-fill cursor-pointer lg:h-[620px] h-1/2 w-full"
               />
             </SwiperSlide>
           );
