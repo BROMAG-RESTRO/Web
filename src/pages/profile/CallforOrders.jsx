@@ -37,9 +37,9 @@ const CallforOrders = () => {
   const [currentSelected, setCurrentSelected] = useState([]);
   const [dummy, setDummy] = useState(false);
   const messages = useSelector((state) => state.auth.message);
-  const fetchData = async () => {
+  const fetchData = async (load = true) => {
     try {
-      setLoading(true);
+      setLoading(load);
       const result = await getMyCallForOrder();
       setOrders(_.get(result, "data.data", []));
     } catch (err) {
@@ -184,7 +184,7 @@ const CallforOrders = () => {
             </div>
           </div>
         );
-      case "Order ready to pick":
+      case "Order ready to pickup":
         return (
           <div className="flex justify-evenly">
             <div
@@ -196,7 +196,56 @@ const CallforOrders = () => {
               View Menu
             </div>
             <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
-              Order ready to pick
+              Order ready to pickup
+            </div>
+          </div>
+        );
+      case "Foods Handoff":
+        return (
+          <div className="flex justify-evenly">
+            <div
+              className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
+              onClick={() => {
+                setCurrentSelected(data);
+              }}
+            >
+              View Bill
+            </div>
+            <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
+              Foods Handoff
+            </div>
+          </div>
+        );
+      case "Order out for delivery":
+      case "Delivered":
+        return (
+          <div className="flex justify-evenly">
+            <div
+              className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
+              onClick={() => {
+                setCurrentSelected(data);
+              }}
+            >
+              View Bill
+            </div>
+            <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
+              {data?.status}
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex justify-evenly">
+            {/* <div
+              className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
+              onClick={() => {
+                setCurrentSelected(data);
+              }}
+            >
+              View Bill
+            </div> */}
+            <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
+              {data?.status}
             </div>
           </div>
         );
@@ -248,7 +297,9 @@ const CallforOrders = () => {
                           "Order moved to KDS",
                           "Order ready to preparing",
                           "Order ready to pack",
-                          "Order ready to pick",
+                          "Order ready to pickup",
+                          "Foods Handoff",
+                          "Order out for delivery",
                         ].includes(res.status) ? (
                           getStatus(res)
                         ) : (

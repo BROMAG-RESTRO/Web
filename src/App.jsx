@@ -11,26 +11,27 @@ import { onMessage } from "firebase/messaging";
 const App = () => {
   const dispatch = useDispatch();
 
-  async function handleNotify(payload) {
-    console.log("notify", payload);
-    dispatch(setMessage(payload));
-    const audio = new Audio(sound);
-    if (audio) {
-      audio?.play();
-    }
-    notification.success({
-      message: payload?.data?.body,
-    });
-  }
+  // function handleNotify(payload) {
+  //   console.log("notify", payload);
+  //   alert("message");
+  //   dispatch(setMessage(payload));
+  //   const audio = new Audio(sound);
+  //   if (audio) {
+  //     audio?.play();
+  //   }
+  //   notification.success({
+  //     message: payload?.data?.body,
+  //   });
+  // }
   useEffect(() => {
     window.scrollTo(0, 0);
-    requestPermission();
+    // requestPermission();
   }, []);
 
-  onMessage(messaging, (data) => {
-    console.log("foreground messsager", data);
-    handleNotify(data);
-  });
+  // onMessage(messaging, (data) => {
+  //   console.log("foreground messsager", data);
+  //   handleNotify(data);
+  // });
 
   return (
     <div data-theme="light">

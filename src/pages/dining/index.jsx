@@ -11,6 +11,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Dining = () => {
   const location = useLocation();
@@ -23,12 +24,12 @@ const Dining = () => {
   const [selectedCurrentTable, setSelectedTable] = useState([]);
   const [collectBookingIds, setCollectBookingIds] = useState([]);
   const [orderStatus, setOrderStatus] = useState([]);
-
+  const messages = useSelector((state) => state.auth.message);
   const navigate = useNavigate();
 
-  const fetchData = async () => {
+  const fetchData = async (load = true) => {
     try {
-      setLoading(true);
+      setLoading(load);
       const result = await getAllBookedTables();
       const diningOrders = await getDiningOrders();
       let collect = _.get(diningOrders, "data.data", []).map((res) => {
@@ -64,6 +65,9 @@ const Dining = () => {
     }
   }, []);
 
+  useEffect(() => {
+    fetchData(false);
+  }, [messages]);
   const handleCancelTable = async (id) => {
     try {
       setLoading(true);
