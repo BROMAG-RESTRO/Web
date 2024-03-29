@@ -128,6 +128,8 @@ const Delivery = () => {
       setCartData(_.get(result, "data.data", []));
       const address = await getDeliveryAddress();
       setAllDeliveryAddress(_.get(address, "data.data", []));
+      setOpen(_.get(address, "data.data", [])?.length === 0);
+      setChangeRight(_.get(address, "data.data", [])?.length === 0);
       setSelectedDeliveryAddress(_.get(address, "data.data[0]", []));
       setLoading(false);
     } catch (err) {

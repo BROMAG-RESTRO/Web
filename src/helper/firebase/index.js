@@ -20,7 +20,7 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
-export const getFireToken = () => {
+export const getFireToken = async () => {
   getToken(messaging, {
     vapidKey:
       "BL43BnIQnCwhTThzD9RK8n5pWQNZ9RkjuLtbqiIsBhF7kKQ6TwuIwg89oox8xUOFtMX7SZ6wyi4OZcDswmYglew",
@@ -31,7 +31,7 @@ export const getFireToken = () => {
         if (
           localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq")
         ) {
-          addNotifyToken(currentToken);
+          await addNotifyToken(currentToken);
         }
         //
         // Send the token to your server and update the UI if necessary
@@ -53,8 +53,9 @@ export const getFireToken = () => {
 export function requestPermission() {
   console.log("Requesting permission...");
   Notification.requestPermission()
-    .then((permission) => {
+    .then(async (permission) => {
       if (permission === "granted") {
+        await getFireToken();
         console.log("Notification permission granted.");
       } else {
         console.log("PErmission Denied!!");
