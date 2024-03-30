@@ -57,6 +57,8 @@ const AllCusines = ({ selectedCurrentTable }) => {
       orderRef = "takeaway_order";
     } else if (path === "/dining") {
       orderRef = "dining_order";
+    } else if (path === "/profile-table-booking") {
+      orderRef = "dining_order";
     }
 
     // else if (path === "/take-away-cusiness") {
@@ -73,7 +75,9 @@ const AllCusines = ({ selectedCurrentTable }) => {
     try {
       setLoading(true);
       let orderStatus = getOrderReference();
-
+      if (!orderStatus) {
+        return;
+      }
       let current_carts = await getCurrentUserCarts(orderStatus);
       let cardsref = "";
       if (_.get(location, "pathname", "") === "/dining") {

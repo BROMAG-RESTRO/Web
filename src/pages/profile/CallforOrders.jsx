@@ -103,7 +103,7 @@ const CallforOrders = () => {
                 setCurrentSelected(data);
               }}
             >
-              View Menu
+              View Bill
             </div>
             <Divider type="vertical" />
             <div className="text-green-500 font-bold  lg:text-[15px] text-[12px]">
@@ -120,7 +120,7 @@ const CallforOrders = () => {
                 setCurrentSelected(data);
               }}
             >
-              View Menu
+              View Bill
             </div>
             <Divider type="vertical" />
             <div className="text-green-500 font-bold  lg:text-[15px] text-[12px]">
@@ -177,7 +177,7 @@ const CallforOrders = () => {
                 setCurrentSelected(data);
               }}
             >
-              View Menu
+              View Bill
             </div>
             <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
               Order ready to pack
@@ -193,7 +193,7 @@ const CallforOrders = () => {
                 setCurrentSelected(data);
               }}
             >
-              View Menu
+              View Bill
             </div>
             <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
               Order ready to pickup

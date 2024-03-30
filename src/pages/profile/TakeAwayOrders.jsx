@@ -157,18 +157,36 @@ const TakeAwayOrders = () => {
           </div>
         );
       case "Order ready to pack":
+      case "Order ready to pickup":
+      case "Food Handsoff":
         return (
           <div className="flex justify-evenly">
-            <div
+            {/* <div
               className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
               onClick={() => {
                 setCurrentSelected(data);
               }}
             >
-              View Menu
-            </div>
+              View Bill
+            </div> */}
             <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
-              Order ready to pack
+              {data?.status}
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex justify-evenly">
+            {/* <div
+              className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
+              onClick={() => {
+                setCurrentSelected(data);
+              }}
+            >
+              View Bill
+            </div> */}
+            <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
+              {data?.status}
             </div>
           </div>
         );
@@ -220,18 +238,20 @@ const TakeAwayOrders = () => {
                           "Order placed",
                           "Order ready to preparing",
                           "Order ready to pack",
+                          "Order ready to pickup",
+                          "Foods Handoff",
                         ].includes(res.status) ? (
                           getStatus(res)
                         ) : (
                           <div className="flex justify-evenly">
-                            <div
+                            {/* <div
                               className="text-dark_color  font-bold lg:text-[15px] text-[12px]"
                               onClick={() => {
                                 setCurrentSelected(res);
                               }}
                             >
-                              View Menu
-                            </div>
+                              View Bill
+                            </div> */}
                             <Divider type="vertical" />
                             <div className="text-green-400 !font-bold lg:text-[15px] text-[12px]">
                               {_.get(res, "status", "")}
@@ -269,7 +289,7 @@ const TakeAwayOrders = () => {
                         }}
                       >
                         <IoFastFoodOutline />
-                        <span className="!text-[10px]">View Menus</span>
+                        <span className="!text-[10px]">View Bill</span>
                       </Tag>
                       {_.get(res, "status", "") ===
                         "Order ready to preparing" && (
