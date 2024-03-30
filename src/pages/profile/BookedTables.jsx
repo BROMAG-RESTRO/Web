@@ -133,13 +133,13 @@ const BookedTables = () => {
             >
               Cancel
             </div>
-            <Divider type="vertical" />
+            {/* <Divider type="vertical" />
             <div
               onClick={() => handleCheckin(data)}
               className="text-green-500 font-bold"
             >
               Checkin
-            </div>
+            </div> */}
           </div>
         );
       case "CheckIn":

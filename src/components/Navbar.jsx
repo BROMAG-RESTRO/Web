@@ -186,6 +186,9 @@ function Navbar() {
   const handleTrackLogin = () => {
     navigate("/login", { state: { backLocation: pathname } });
   };
+  const handlecallOrderLogin = (backto) => {
+    navigate("/login", { state: { backLocation: backto } });
+  };
 
   useEffect(() => {
     window.addEventListener("online", () => {
@@ -258,61 +261,181 @@ function Navbar() {
           {/* menus */}
           <div className="center_div gap-x-10 ">
             {Menus?.sort((a, b) => a.id - b.id)?.map((res, index) => {
-              return (
-                <Link
-                  to={res.link}
-                  className="flex flex-col items-center group cursor-pointer  "
-                  key={index}
-                >
-                  <div
-                    className={`center_div  group-hover:visible  ${
-                      res.navigations.includes(
-                        _.get(location, "pathname", false)
-                      )
-                        ? "visible"
-                        : "invisible"
-                    }`}
+              if (res?.link === "/call-for-order") {
+                if (
+                  localStorage.getItem(
+                    "chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq"
+                  )
+                ) {
+                  return (
+                    <Link
+                      to={res.link}
+                      className="flex flex-col items-center group cursor-pointer  "
+                      key={index}
+                    >
+                      <div
+                        className={`center_div  group-hover:visible  ${
+                          res.navigations.includes(
+                            _.get(location, "pathname", false)
+                          )
+                            ? "visible"
+                            : "invisible"
+                        }`}
+                      >
+                        <img
+                          src="/assets/icons/lines.png"
+                          alt=""
+                          className="w-[5px] h-[10px]"
+                        />
+                        <img
+                          src="/assets/icons/lines.png"
+                          alt=""
+                          className="w-[5px] h-[10px]"
+                        />
+                        <img
+                          src="/assets/icons/lines.png"
+                          alt=""
+                          className="w-[5px] h-[10px]"
+                        />
+                      </div>
+                      <h1
+                        className={`group-hover:text-primary_color ${
+                          res.navigations.includes(
+                            _.get(location, "pathname", false)
+                          )
+                            ? "text-primary_color"
+                            : ""
+                        }`}
+                      >
+                        {res.name}
+                      </h1>
+                      <img
+                        src="/assets/icons/nav_bottom.png"
+                        alt=""
+                        className={`w-[20px] h-[10px]  group-hover:visible  ${
+                          res.navigations.includes(
+                            _.get(location, "pathname", false)
+                          )
+                            ? "visible"
+                            : "invisible"
+                        }`}
+                      />
+                    </Link>
+                  );
+                } else {
+                  return (
+                    <div
+                      className="flex flex-col items-center group cursor-pointer  "
+                      key={index}
+                      onClick={() => handlecallOrderLogin(res?.link)}
+                    >
+                      <div
+                        className={`center_div  group-hover:visible  ${
+                          res.navigations.includes(
+                            _.get(location, "pathname", false)
+                          )
+                            ? "visible"
+                            : "invisible"
+                        }`}
+                      >
+                        <img
+                          src="/assets/icons/lines.png"
+                          alt=""
+                          className="w-[5px] h-[10px]"
+                        />
+                        <img
+                          src="/assets/icons/lines.png"
+                          alt=""
+                          className="w-[5px] h-[10px]"
+                        />
+                        <img
+                          src="/assets/icons/lines.png"
+                          alt=""
+                          className="w-[5px] h-[10px]"
+                        />
+                      </div>
+                      <h1
+                        className={`group-hover:text-primary_color ${
+                          res.navigations.includes(
+                            _.get(location, "pathname", false)
+                          )
+                            ? "text-primary_color"
+                            : ""
+                        }`}
+                      >
+                        {res.name}
+                      </h1>
+                      <img
+                        src="/assets/icons/nav_bottom.png"
+                        alt=""
+                        className={`w-[20px] h-[10px]  group-hover:visible  ${
+                          res.navigations.includes(
+                            _.get(location, "pathname", false)
+                          )
+                            ? "visible"
+                            : "invisible"
+                        }`}
+                      />
+                    </div>
+                  );
+                }
+              } else {
+                return (
+                  <Link
+                    to={res.link}
+                    className="flex flex-col items-center group cursor-pointer  "
+                    key={index}
                   >
+                    <div
+                      className={`center_div  group-hover:visible  ${
+                        res.navigations.includes(
+                          _.get(location, "pathname", false)
+                        )
+                          ? "visible"
+                          : "invisible"
+                      }`}
+                    >
+                      <img
+                        src="/assets/icons/lines.png"
+                        alt=""
+                        className="w-[5px] h-[10px]"
+                      />
+                      <img
+                        src="/assets/icons/lines.png"
+                        alt=""
+                        className="w-[5px] h-[10px]"
+                      />
+                      <img
+                        src="/assets/icons/lines.png"
+                        alt=""
+                        className="w-[5px] h-[10px]"
+                      />
+                    </div>
+                    <h1
+                      className={`group-hover:text-primary_color ${
+                        res.navigations.includes(
+                          _.get(location, "pathname", false)
+                        )
+                          ? "text-primary_color"
+                          : ""
+                      }`}
+                    >
+                      {res.name}
+                    </h1>
                     <img
-                      src="/assets/icons/lines.png"
+                      src="/assets/icons/nav_bottom.png"
                       alt=""
-                      className="w-[5px] h-[10px]"
+                      className={`w-[20px] h-[10px]  group-hover:visible  ${
+                        res.navigations.includes(
+                          _.get(location, "pathname", false)
+                        )
+                          ? "visible"
+                          : "invisible"
+                      }`}
                     />
-                    <img
-                      src="/assets/icons/lines.png"
-                      alt=""
-                      className="w-[5px] h-[10px]"
-                    />
-                    <img
-                      src="/assets/icons/lines.png"
-                      alt=""
-                      className="w-[5px] h-[10px]"
-                    />
-                  </div>
-                  <h1
-                    className={`group-hover:text-primary_color ${
-                      res.navigations.includes(
-                        _.get(location, "pathname", false)
-                      )
-                        ? "text-primary_color"
-                        : ""
-                    }`}
-                  >
-                    {res.name}
-                  </h1>
-                  <img
-                    src="/assets/icons/nav_bottom.png"
-                    alt=""
-                    className={`w-[20px] h-[10px]  group-hover:visible  ${
-                      res.navigations.includes(
-                        _.get(location, "pathname", false)
-                      )
-                        ? "visible"
-                        : "invisible"
-                    }`}
-                  />
-                </Link>
-              );
+                  </Link>
+                );
+              }
             })}
           </div>
           {/* login */}

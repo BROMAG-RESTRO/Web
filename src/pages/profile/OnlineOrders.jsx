@@ -158,14 +158,14 @@ const OnlineOrders = () => {
       case "Order ready to pack":
         return (
           <div className="flex justify-evenly">
-            <div
+            {/* <div
               className="text-dark_color font-bold  lg:text-[15px] text-[12px]"
               onClick={() => {
                 setCurrentSelected(data);
               }}
             >
-              View Menu
-            </div>
+              View Bill
+            </div> */}
             <div className="text-green-400 font-bold  lg:text-[15px] text-[12px]">
               Order ready to pack
             </div>
@@ -259,7 +259,7 @@ const OnlineOrders = () => {
                         }}
                       >
                         <IoFastFoodOutline />
-                        <span className="!text-[10px]">View Menus</span>
+                        <span className="!text-[10px]">View Bill</span>
                       </Tag>
                       {_.get(res, "status", "") ===
                         "Order ready to preparing" && (

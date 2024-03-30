@@ -36,7 +36,8 @@ const AddNewAddress = ({
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const footerData = useSelector((state) => state?.auth?.footer);
-  const { latitude: rLatitude, longitude: rLongitude } = footerData?.data?.[0];
+  const { latitude: rLatitude, longitude: rLongitude } =
+    footerData?.data?.[0] || {};
   const [loading, setLoading] = useState(false);
   const [otherAddressType, setOtherAddressType] = useState("");
   const [location, setLocation] = useState(null);
