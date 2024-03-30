@@ -215,9 +215,16 @@ function Footer() {
                 </div>
                 <div className="flex gap-2 lg:items-center footer-wrap">
                   <MdLocationPin size={15} className="footer-link" />
-                  <span className="text-[10px] text-capitalize footer-link">
+                  <a
+                    href={firstFooterData?.location?.map_link || "/"}
+                    target="_blank"
+                    className="text-[10px] footer-link"
+                  >
                     {firstFooterData?.address}
-                  </span>
+                  </a>
+                  {/* <span className="text-[10px] text-capitalize footer-link">
+                    {firstFooterData?.address}
+                  </span> */}
                 </div>
               </div>
             </div>
