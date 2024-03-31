@@ -58,7 +58,7 @@ const Cusinedetails = () => {
   const [editMultiType, setEditMulti] = useState(false);
   const location = useLocation();
   const charges = useSelector((state) => state.auth.charges);
-
+  const orderMode = useSelector((state) => state.auth.orderMode);
   const pageName = location?.pathname;
   const navigate = useNavigate();
   const currentLocation = useHref();
@@ -157,6 +157,7 @@ const Cusinedetails = () => {
         subCat: currentSubCategory || "",
         isVegOnly: isVegOnly,
         isNonVegOnly: isNonVegOnly,
+        orderMode,
       };
 
       const productDatas = await getFilteredProducts(
@@ -624,6 +625,7 @@ const Cusinedetails = () => {
           <div className="flex flex-col lg:gap-y-24 gap-y-4">
             {productData.map((res, index) => {
               let isDining = pageName === "/dining-cusines";
+              let isTakeAway = pageName === "/take-away-cusiness";
               const available = res?.status;
               const isMultityped = res?.types?.length;
               const largeItem = isMultityped
@@ -636,7 +638,11 @@ const Cusinedetails = () => {
               const offerPercentage = isDining
                 ? 0
                 : isMultityped
-                ? largeItem?.TypeOfferPercentage || 0
+                ? isTakeAway
+                  ? largeItem?.TypeTakeAwayOfferPercentage || 0
+                  : largeItem?.TypeOfferPercentage || 0
+                : isTakeAway
+                ? Number(res?.takeawayOffer || 0)
                 : Number(res?.offer || 0);
               const offerPrice = isMultityped
                 ? isDining
@@ -651,6 +657,8 @@ const Cusinedetails = () => {
                 ? DININGMODE === "percentage"
                   ? Number(res?.price) + Number(res?.price) * DININGPERCENTAGE
                   : Number(res?.price) + DININGPERCENTAGE
+                : isTakeAway
+                ? Number(res?.takeawayDiscountPrice || 0)
                 : Number(res?.discountPrice || 0);
 
               const isAddedtoCart = currentCartsData?.includes(res?._id);
@@ -788,6 +796,7 @@ const Cusinedetails = () => {
             edit={editMultiType}
             product_data={customizeProduct}
             isDining={pageName === "/dining-cusines"}
+            isTakeAway={pageName === "/take-away-cusiness"}
             DININGMODE={DININGMODE}
             DININGPERCENTAGE={DININGPERCENTAGE}
             refreshData={fetchData}

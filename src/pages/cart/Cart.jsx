@@ -119,7 +119,7 @@ const Cart = () => {
   const [cartData, setCartData] = useState([]);
   const [coupon, setCoupon] = useState();
   const isDining = location?.pathname === "/dining-cart";
-
+  const isTakeAway = location?.pathname === "/take-away-cart";
   const DININGMODE = charges?.dining?.mode;
   const DININGPERCENTAGE =
     DININGMODE === "percentage"
@@ -356,6 +356,8 @@ const Cart = () => {
               ? Number(typeRefId?.TypePrice) +
                 Number(typeRefId?.TypePrice) * DININGPERCENTAGE
               : Number(typeRefId?.TypePrice) + DININGPERCENTAGE
+            : isTakeAway
+            ? typeRefId?.TypeTakeAwayOfferPrice
             : typeRefId?.TypeOfferPrice
             ? typeRefId?.TypeOfferPrice
             : typeRefId.TypePrice
@@ -364,6 +366,10 @@ const Cart = () => {
             ? Number(productRef?.price) +
               Number(productRef?.price) * DININGPERCENTAGE
             : Number(productRef?.price) + DININGPERCENTAGE
+          : isTakeAway
+          ? productRef?.takeawayDiscountPrice
+            ? parseFloat(productRef?.takeawayDiscountPrice)
+            : parseFloat(productRef?.price)
           : productRef?.discountPrice
           ? parseFloat(productRef?.discountPrice)
           : parseFloat(productRef?.price);
@@ -503,6 +509,8 @@ const Cart = () => {
         foodPrice: isDining ? DiningPrice : _.get(res, "productRef.price", 0),
         originalPrice: isDining
           ? DiningPrice
+          : isTakeAway
+          ? _.get(res, "productRef.takeawayDiscountPrice", 0)
           : _.get(res, "productRef.discountPrice", 0),
         foodQuantity: _.get(res, "quantity", 0),
       };
@@ -560,6 +568,8 @@ const Cart = () => {
             ? Number(res?.productRef?.price) +
               Number(res?.productRef?.price) * DININGPERCENTAGE
             : Number(res?.productRef?.price) + DININGPERCENTAGE
+          : isTakeAway
+          ? parseFloat(res?.productRef?.takeawayDiscountPrice) || 0
           : parseFloat(res?.productRef?.discountPrice) || 0,
       };
     });
@@ -649,7 +659,7 @@ const Cart = () => {
                 const productId = res._id;
                 const typeRefId = _.get(res, "typeRef", "");
                 const productRef = _.get(res, "productRef", "");
-                const selectedType = typeRefId.Type;
+                const selectedType = typeRefId?.Type;
                 let qty = Number(_.get(res, "quantity", ""));
                 console.log({
                   typeRefId,
@@ -667,6 +677,10 @@ const Cart = () => {
                           typeRefId.TypePrice * DININGPERCENTAGE) *
                         qty
                       : (typeRefId.TypePrice + DININGPERCENTAGE) * qty
+                    : isTakeAway
+                    ? (typeRefId.TypeTakeAwayOfferPrice
+                        ? typeRefId.TypeTakeAwayOfferPrice
+                        : typeRefId.TypePrice) * qty
                     : (typeRefId.TypeOfferPrice
                         ? typeRefId.TypeOfferPrice
                         : typeRefId.TypePrice) * qty
@@ -677,6 +691,11 @@ const Cart = () => {
                       _.get(res, "quantity", 0)
                     : (parseFloat(productRef?.price) + DININGPERCENTAGE) *
                       _.get(res, "quantity", 0)
+                  : isTakeAway
+                  ? (productRef?.takeawayDiscountPrice
+                      ? parseFloat(productRef?.takeawayDiscountPrice)
+                      : parseFloat(productRef?.price)) *
+                    _.get(res, "quantity", 0)
                   : (productRef?.discountPrice
                       ? parseFloat(productRef?.discountPrice)
                       : parseFloat(productRef?.price)) *
