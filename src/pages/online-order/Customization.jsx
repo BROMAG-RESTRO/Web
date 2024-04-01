@@ -526,18 +526,20 @@ const Customization = ({
                 <div className="flex mt-5 justify-between px-3 items-center border-b-2 border-black/25 py-5 relative  price__wrapper">
                   {!isDining &&
                   Number(product_data?.offer) &&
-                  !isMultipleTypeMenu ? (
-                    <Tag
-                      color="green"
-                      className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
-                    >
-                      <CiDiscount1 className="text-white text-sm font-bold" />
-                      {isTakeAway
-                        ? product_data?.takeawayOffer
-                        : product_data?.offer}
-                      % Discount
-                    </Tag>
-                  ) : null}
+                  !isMultipleTypeMenu
+                    ? product_data?.takeawayOffer > 0 && (
+                        <Tag
+                          color="green"
+                          className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
+                        >
+                          <CiDiscount1 className="text-white text-sm font-bold" />
+                          {isTakeAway
+                            ? product_data?.takeawayOffer
+                            : product_data?.offer}
+                          % Discount
+                        </Tag>
+                      )
+                    : null}
 
                   {!isDining &&
                     product_data?.types?.length > 0 &&
