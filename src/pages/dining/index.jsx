@@ -11,12 +11,13 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setMode } from "../../redux/authSlice";
 
 const Dining = () => {
   const location = useLocation();
   const { moreFood = false } = location?.state || {};
-
+  const dispatch = useDispatch();
   console.log({ moreFood, location });
   const [bookedTables, setBookedTables] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ const Dining = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(setMode("dining"));
   }, []);
 
   useEffect(() => {
@@ -66,7 +68,11 @@ const Dining = () => {
   }, []);
 
   useEffect(() => {
-    fetchData(false);
+    if (
+      localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq")
+    ) {
+      fetchData(false);
+    }
   }, [messages]);
   const handleCancelTable = async (id) => {
     try {
