@@ -184,10 +184,10 @@ function Navbar() {
   }
 
   const handleTrackLogin = () => {
-    navigate("/login", { state: { backLocation: pathname } });
+    return navigate("/login", { state: { backLocation: pathname } });
   };
   const handlecallOrderLogin = (backto) => {
-    navigate("/login", { state: { backLocation: backto } });
+    return navigate("/login", { state: { backLocation: backto } });
   };
 
   useEffect(() => {
@@ -508,22 +508,70 @@ function Navbar() {
         <div className=" flex flex-col justify-between gap-y-10 pl-4 py-4">
           <div className="flex flex-col gap-y-10 lg:text-xl text-sm">
             {Menus?.sort((a, b) => a.id - b.id)?.map((res, index) => {
-              return (
-                <p
-                  key={index}
-                  className={`  ${
-                    res.navigations.includes(_.get(location, "pathname", false))
-                      ? "text-primary_color"
-                      : "text-white"
-                  } cursor-pointer`}
-                  onClick={() => {
-                    setMenu(false);
-                    navigate(`${res.link}`);
-                  }}
-                >
-                  {res.name}
-                </p>
-              );
+              if (res?.link === "/call-for-order") {
+                if (
+                  localStorage.getItem(
+                    "chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq"
+                  )
+                ) {
+                  return (
+                    <p
+                      key={index}
+                      className={`  ${
+                        res.navigations.includes(
+                          _.get(location, "pathname", false)
+                        )
+                          ? "text-primary_color"
+                          : "text-white"
+                      } cursor-pointer`}
+                      onClick={() => {
+                        setMenu(false);
+                        navigate(`${res.link}`);
+                      }}
+                    >
+                      {res.name}
+                    </p>
+                  );
+                } else {
+                  return (
+                    <p
+                      key={index}
+                      className={`  ${
+                        res.navigations.includes(
+                          _.get(location, "pathname", false)
+                        )
+                          ? "text-primary_color"
+                          : "text-white"
+                      } cursor-pointer`}
+                      onClick={() => {
+                        setMenu(false);
+                        handlecallOrderLogin(res?.link);
+                      }}
+                    >
+                      {res.name}
+                    </p>
+                  );
+                }
+              } else {
+                return (
+                  <p
+                    key={index}
+                    className={`  ${
+                      res.navigations.includes(
+                        _.get(location, "pathname", false)
+                      )
+                        ? "text-primary_color"
+                        : "text-white"
+                    } cursor-pointer`}
+                    onClick={() => {
+                      setMenu(false);
+                      navigate(`${res.link}`);
+                    }}
+                  >
+                    {res.name}
+                  </p>
+                );
+              }
             })}
           </div>
 

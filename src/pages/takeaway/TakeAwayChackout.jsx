@@ -54,7 +54,7 @@ const TakeAwayChackout = () => {
   // const allInstructions = Object.values(productInstructions).flat(); //get instructions
   const [productInstructions, setProductInstructions] = useState([]);
   const [bannersData, setbannersData] = useState([1, 2, 3, 4, 5]);
-
+  const isTakeAway = location?.pathname === "/takeaway-checkout";
   const ProductInstructions = useSelector(
     (state) => state.auth.foodInstructions
   );
@@ -258,11 +258,19 @@ const TakeAwayChackout = () => {
           (type) => type._id === typeRefId
         );
         const productRef = _.get(res, "productRef", "");
-        const price = typeRefId.Type
-          ? typeRefId.TypeOfferPrice
-            ? typeRefId.TypeOfferPrice
+        const price = typeRefId?.Type
+          ? isTakeAway
+            ? typeRefId?.TypeTakeAwayOfferPrice
+              ? typeRefId?.TypeTakeAwayOfferPrice
+              : typeRefId.TypePrice
+            : typeRefId?.TypeOfferPrice
+            ? typeRefId?.TypeOfferPrice
             : typeRefId.TypePrice
-          : productRef.discountPrice
+          : isTakeAway
+          ? productRef?.takeawayDiscountPrice
+            ? parseFloat(productRef.takeawayDiscountPrice)
+            : parseFloat(productRef.price)
+          : productRef?.discountPrice
           ? parseFloat(productRef.discountPrice)
           : parseFloat(productRef.price);
 
@@ -362,10 +370,18 @@ const TakeAwayChackout = () => {
     let food_data = cartData.map((res) => {
       const typeRefId = _.get(res, "typeRef", "");
       const productRef = _.get(res, "productRef", "");
-      const price = typeRefId.Type
-        ? typeRefId.TypeOfferPrice
+      const price = typeRefId?.Type
+        ? isTakeAway
+          ? typeRefId?.TypeTakeAwayOfferPrice
+            ? typeRefId?.TypeTakeAwayOfferPrice
+            : typeRefId.TypePrice
+          : typeRefId.TypeOfferPrice
           ? typeRefId.TypeOfferPrice
           : typeRefId.TypePrice
+        : isTakeAway
+        ? productRef?.takeawayDiscountPrice
+          ? parseFloat(productRef?.takeawayDiscountPrice)
+          : parseFloat(productRef?.price)
         : productRef.discountPrice
         ? parseFloat(productRef.discountPrice)
         : parseFloat(productRef.price);
@@ -435,7 +451,9 @@ const TakeAwayChackout = () => {
       return {
         id: res._id,
         quantity: res.quantity || 1,
-        price: parseFloat(res.productRef.discountPrice) || 0,
+        price: isTakeAway
+          ? parseFloat(res?.productRef?.takeawayDiscountPrice) || 0
+          : parseFloat(res.productRef.discountPrice) || 0,
       };
     });
     setProducts(initialProducts);

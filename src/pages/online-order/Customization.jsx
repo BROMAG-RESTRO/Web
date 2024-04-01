@@ -22,6 +22,8 @@ const Customization = ({
   product_data,
   id,
   isDining,
+  isTakeAway,
+
   OnClose,
   edit = false,
   DININGMODE = null,
@@ -49,7 +51,13 @@ const Customization = ({
   const [historyCartId, setNewhistoryCartID] = useState({});
   const [customizeCart, setCustomizeCart] = useState({});
   const [cartID, setCartId] = useState([]);
-  console.log({ productData, DININGMODE, DININGPERCENTAGE });
+  console.log("datatake", {
+    isTakeAway,
+    isDining,
+    productData,
+    DININGMODE,
+    DININGPERCENTAGE,
+  });
   useEffect(() => {
     let maxPrice = 0;
     let correspondingOfferPercentage = 0;
@@ -61,23 +69,41 @@ const Customization = ({
       product_data?.types?.length > 0
     ) {
       for (const type of product_data?.types) {
-        if (type?.TypeOfferPrice && type?.TypeOfferPrice > maxPrice) {
-          maxPrice = isDining
-            ? DININGMODE === "percentage"
-              ? Number(type.TypePrice) +
-                Number(type?.TypePrice) * DININGPERCENTAGE
-              : Number(type.TypePrice) + DININGPERCENTAGE
-            : type.TypeOfferPrice;
-          correspondingOfferPercentage = isDining
-            ? type.TypeOfferPercentage
-            : 0;
-        } else if (type.TypePrice && type.TypePrice > maxPrice) {
-          maxPrice =
-            DININGMODE === "percentage"
-              ? Number(type.TypePrice) +
-                Number(type?.TypePrice) * DININGPERCENTAGE
-              : Number(type.TypePrice) + DININGPERCENTAGE;
-          correspondingOfferPercentage = 0;
+        if (isTakeAway) {
+          if (
+            type?.TypeTakeAwayOfferPrice &&
+            type?.TypeTakeAwayOfferPrice > maxPrice
+          ) {
+            console.log("ssasa", maxPrice, type);
+            maxPrice = type?.TypeTakeAwayOfferPrice;
+            correspondingOfferPercentage =
+              type?.TypeTakeAwayOfferPercentage || 0;
+          } else if (
+            type?.TypeTakeAwayOfferPrice &&
+            type?.TypeTakeAwayOfferPrice > maxPrice
+          ) {
+            maxPrice = type?.TypeTakeAwayOfferPrice;
+            correspondingOfferPercentage = type?.TypeTakeAwayOfferPercentage;
+          }
+        } else {
+          if (type?.TypeOfferPrice && type?.TypeOfferPrice > maxPrice) {
+            maxPrice = isDining
+              ? DININGMODE === "percentage"
+                ? Number(type.TypePrice) +
+                  Number(type?.TypePrice) * DININGPERCENTAGE
+                : Number(type.TypePrice) + DININGPERCENTAGE
+              : type.TypeOfferPrice;
+            correspondingOfferPercentage = isDining
+              ? type.TypeOfferPercentage
+              : 0;
+          } else if (type.TypePrice && type.TypePrice > maxPrice) {
+            maxPrice =
+              DININGMODE === "percentage"
+                ? Number(type.TypePrice) +
+                  Number(type?.TypePrice) * DININGPERCENTAGE
+                : Number(type.TypePrice) + DININGPERCENTAGE;
+            correspondingOfferPercentage = 0;
+          }
         }
       }
       if (correspondingOfferPercentage > 0) {
@@ -99,6 +125,8 @@ const Customization = ({
           ? Number(product_data?.price) +
             Number(product_data?.price) * DININGPERCENTAGE
           : Number(product_data?.price) + DININGPERCENTAGE
+        : isTakeAway
+        ? product_data?.takeawayDiscountPrice
         : product_data?.discountPrice
         ? product_data?.discountPrice
         : product_data?.price;
@@ -106,6 +134,8 @@ const Customization = ({
       setProductPrice(price);
     }
   }, [product_data]);
+
+  console.log({ price, typeOfferPercentage });
 
   const handleTypeChange = (
     selectedType,
@@ -502,12 +532,15 @@ const Customization = ({
                       className="flex items-center bg-primary_color text-white rounded-md border-none absolute left-2 top-1"
                     >
                       <CiDiscount1 className="text-white text-sm font-bold" />
-                      {product_data?.offer}% Discount
+                      {isTakeAway
+                        ? product_data?.takeawayOffer
+                        : product_data?.offer}
+                      % Discount
                     </Tag>
                   ) : null}
 
                   {!isDining &&
-                    product_data?.types.length > 0 &&
+                    product_data?.types?.length > 0 &&
                     isMultipleTypeMenu &&
                     typeOfferPercentage > 0 && (
                       <Tag
@@ -563,11 +596,17 @@ const Customization = ({
                                               DININGPERCENTAGE
                                           : Number(data?.TypePrice) +
                                             DININGPERCENTAGE
+                                        : isTakeAway
+                                        ? data?.TypeTakeAwayOfferPrice
                                         : data?.TypeOfferPrice
                                         ? data?.TypeOfferPrice
                                         : data?.TypePrice,
                                       data?._id,
-                                      isDining ? 0 : data?.TypeOfferPercentage
+                                      isDining
+                                        ? 0
+                                        : isTakeAway
+                                        ? data?.TypeTakeAwayOfferPercentage
+                                        : data?.TypeOfferPercentage
                                     )
                                   }
                                   defaultChecked={false}
@@ -584,6 +623,8 @@ const Customization = ({
                                     ? Number(data?.TypePrice) +
                                       Number(data?.TypePrice) * DININGPERCENTAGE
                                     : Number(data?.TypePrice) + DININGPERCENTAGE
+                                  : isTakeAway
+                                  ? data?.TypeTakeAwayOfferPrice
                                   : data?.TypeOfferPrice
                                   ? data?.TypeOfferPrice
                                   : data?.TypePrice}
@@ -702,5 +743,6 @@ const Customization = ({
     </>
   );
 };
+3;
 
 export default Customization;
