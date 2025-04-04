@@ -19,7 +19,7 @@ jobs:
          npm ci
          npm run build 
       - name: Produce build tar
-        run: tar -cvf build.tar build
+        run: tar -cvf build.tar dist
       - name: install ssh
         run: sudo apt update && sudo apt install -y sshpass
       - name: copy Frontend
