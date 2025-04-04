@@ -1,0 +1,31 @@
+name: Qa Branch
+
+on:
+  push:
+    branches: [ "Qa" ]
+  
+jobs:
+  Qaweb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: copy the env
+        run: |
+         echo "${{ secrets.QA }}" >> .env
+         npm ci
+         npm run build 
+      - name: Produce build tar
+        run: tar -cvf build.tar build
+      - name: install ssh
+        run: sudo apt update && sudo apt install -y sshpass
+      - name: copy Frontend
+        run: |
+          sshpass -p ${{ secrets.PASSWORD }} scp -o StrictHostKeyChecking=no build.tar ${{ secrets.USER }}@${{ secrets.HOST }}:/home/ubuntu/qa/web
+      - name: Start the frontend
+        run: |
+          sshpass -p ${{ secrets.PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} << 'EOF'
+          cd /home/ubuntu/qa/web
+          tar -xvf build.tar
+          ls
+          EOF
