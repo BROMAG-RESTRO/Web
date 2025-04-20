@@ -44,7 +44,7 @@ function Advertisement() {
             className="ultraSm:text-xl lg:text-4xl text-black"
             style={{ color: fourthColor }}
           >
-            BROMAG Advertisement
+            BROMAG COUPONS
           </h1>
           <div className="w-[30px] lg:h-[40px]  h-[5px] ultraSm:bg-[#DF9300] lg:hidden xl:hidden 2xl:hidden md:hidden rounded-2xl "></div>
         </div>
