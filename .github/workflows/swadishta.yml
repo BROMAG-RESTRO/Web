@@ -1,0 +1,31 @@
+name: Prod Branch
+
+on:
+  push:
+    branches: [ "Swadishta" ]
+  
+jobs:
+  Qaweb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: copy the env
+        run: |
+         echo "${{ secrets.SWADISHTA }}" >> .env
+         npm ci
+         npm run build 
+      - name: Produce build tar
+        run: tar -cvf build.tar dist
+      - name: install ssh
+        run: sudo apt update && sudo apt install -y sshpass
+      - name: copy Frontend
+        run: |
+          sshpass -p ${{ secrets.PASSWORD }} scp -o StrictHostKeyChecking=no build.tar ${{ secrets.USER }}@${{ secrets.HOST }}:/home/ubuntu/swadishta/web
+      - name: Start the frontend
+        run: |
+          sshpass -p ${{ secrets.PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} << 'EOF'
+          cd /home/ubuntu/swadishta/web
+          tar -xvf build.tar
+          ls
+          EOF
