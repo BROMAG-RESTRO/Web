@@ -119,6 +119,11 @@ const CheckoutPage = () => {
     try {
       setLoadingPlaceOrder(true);
 
+      if (paymentMethod === "Credit/Debit Card") {
+        navigate("/card-details", { state: { formCheckout: true} });
+        return;
+      }
+
       let food_data = cartData.map((res) => {
         const typeRefId = _.get(res, "typeRef", "");
         const productRef = _.get(res, "productRef", "");
@@ -402,7 +407,7 @@ const CheckoutPage = () => {
         {/* ==================================== */}
 
         <div className="flex flex-col gap-y-4  mt-4 p-5 justify-center items-center ">
-          <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border payment_disabled">
+          <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
             <CiCreditCard1 className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
               Credit / Debit cards
@@ -410,7 +415,6 @@ const CheckoutPage = () => {
             <label className="flex items-center">
               <input
                 type="radio"
-                disabled
                 name="paymentMethod"
                 className="radio  ml-2"
                 checked={paymentMethod === "Credit/Debit"}
@@ -418,14 +422,13 @@ const CheckoutPage = () => {
               />
             </label>
           </div>
-          <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border payment_disabled">
+          <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border ">
             <LuMonitorSmartphone className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
               UPI Payment
             </span>
             <label className="flex items-center">
               <input
-                disabled
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
