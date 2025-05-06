@@ -1,0 +1,129 @@
+.footer_icons {
+  width: 20px !important;
+  height: 20px;
+}
+
+.footer-container {
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+.ant-picker-ok button{
+  background-color: orange;
+  
+}
+
+
+.error_text{
+  border:2px solid red !important;
+}
+
+.textareat{
+  background-color: rgb(233,233,233) !important; 
+}
+
+.footer-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+}
+
+.footer-part1 {
+  width: 25%;
+  /* background-color: aqua; */
+  /* background-color: red; */
+}
+
+.footer-part2 {
+  width: 25%;
+  /* background-color: bisque; */
+  /* background-color: red; */
+}
+
+.footer-part3 {
+  width: 40%;
+  /* background-color: blue; */
+  /* background-color: green; */
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.footer-wrap:hover .footer-link {
+  color: orange;
+  cursor: pointer;
+}
+
+.footer-link:hover {
+  color: orange;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .footer-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+  }
+  .footer-part3 {
+    display: none;
+  }
+  .footer-part1 {
+    width: 40%;
+    /* background-color: aqua; */
+    /* background-color: red; */
+  }
+
+  .footer-part2 {
+    width: 40%;
+    /* background-color: bisque; */
+    /* background-color: red; */
+  }
+}
+
+@media screen and (max-width: 456px) {
+  .footer-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  .footer-part3 {
+    display: none;
+  }
+  .footer-part1 {
+    width: 80%;
+    /* background-color: aqua; */
+    /* background-color: red; */
+  }
+
+  .footer-link-wrapper {
+    align-items: flex-start;
+  }
+  .footer-link-header {
+    text-align: start;
+  }
+
+  .footer-line {
+    /* margin: auto; */
+    width: 174px;
+    height: 10px;
+  }
+
+  .footer-part2 {
+    width: 80%;
+    /* background-color: bisque; */
+    /* background-color: red; */
+  }
+}

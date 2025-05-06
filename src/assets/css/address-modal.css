@@ -1,0 +1,42 @@
+#delivery-container #address-cart-summary::-webkit-scrollbar {
+  display: auto !important;
+  scrollbar-width: thin !important;
+}
+
+.payment_disabled {
+  opacity: 0.5 !important;
+}
+/* Change the color of the scrollbar track */
+
+body #delivery-container #address-cart-summary::-webkit-scrollbar {
+  width: 4px;
+  display: auto !important; /* Set the width of the scrollbar */
+}
+
+/* Change the color of the scrollbar handle (thumb) */
+#address-cart-summary::-webkit-scrollbar-thumb {
+  background-color: #df9300;
+  padding-top: 30px;
+  /* Set the color of the scrollbar thumb */
+}
+
+/* Change the color of the scrollbar track on hover */
+#address-cart-summary::-webkit-scrollbar-thumb:hover {
+  background-color: #df9300; /* Set the color on hover */
+}
+
+/* Change the color of the scrollbar track */
+#address-cart-summary::-webkit-scrollbar-track {
+  background-color: transparent;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  padding-top: 10px;
+  /* Set the color of the scrollbar track */
+}
+
+/* Change the color of the scrollbar handle (thumb) when it's pressed */
+#address-cart-summary::-webkit-scrollbar-thumb:active {
+  background-color: #df9300;
+  /* Set the color when pressed */
+}

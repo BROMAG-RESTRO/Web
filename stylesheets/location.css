@@ -1,0 +1,52 @@
+
+
+@media only screen and (min-width: 500px){
+  .iframe-gmap{
+    width: 480px !important;
+    height: 240px !important;
+  }
+}
+
+@media only screen and (min-width: 600px){
+  .iframe-gmap{
+    width: 570px !important;
+    height: 309px !important;
+  }
+}
+@media only screen and (min-width: 700px){
+  .iframe-gmap{
+    width: 650px !important;
+    height: 380px;
+  }
+}
+
+
+@media only screen and (min-width: 800px){
+  .iframe-gmap{
+    width: 750px !important;
+    height: 398px;
+  }
+}
+
+
+@media only screen and (min-width: 900px){
+  .iframe-gmap{
+    width: 850px !important;
+    height: 420px;
+  }
+}
+
+
+@media only screen and (min-width: 1000px){
+  .iframe-gmap{
+    width: 950px !important;
+    height: 490px;
+  }
+}
+
+@media only screen and (min-width: 1200px){
+  .iframe-gmap{
+    width: 1150px !important;
+    height: 550px;
+  }
+}
