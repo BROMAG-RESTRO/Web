@@ -748,3 +748,24 @@ const Customization = ({
 3;
 
 export default Customization;
+
+const handleCheckout = async () => {
+  try {
+    // First get the orderID
+    const orderIdResponse = await axios.get('/api/generate-order-id');
+    const orderId = orderIdResponse.data.orderId;
+
+    // Then proceed with order creation including the generated orderID
+    const orderData = {
+      // ... your existing order data ...
+      orderId: orderId
+    };
+
+    // Continue with your existing order creation logic
+    const result = await createOrder(orderData);
+    // ... rest of your checkout logic ...
+  } catch (error) {
+    console.error('Error during checkout:', error);
+    // Handle error appropriately
+  }
+};
