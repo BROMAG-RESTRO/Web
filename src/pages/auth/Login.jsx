@@ -134,42 +134,6 @@ const Login = () => {
           });
         }
         
-      //   if (loginTemplate) {
-      //     console.log("Getting WhatsApp credentials...");
-      //     const credRes = await axios.get(`${import.meta.env.VITE_base_url}/credentials`);
-      //     console.log('Credentials fetched:', credRes.data);
-      //     const { user, password, sender, url } = credRes.data;
-          
-      //     const params = {
-      //       user,
-      //       pass: password,
-      //       sender,
-      //       phone: phoneNumber,
-      //       text: loginTemplate.name,
-      //       priority: 'wa',
-      //       stype: 'normal',
-      //       params: '1,2,3'
-      //     };
-      //     console.log("WhatsApp params:", params);
-  
-      //     const smsUrl = `${url}?user=${params.user}&pass=${params.pass}&sender=${params.sender}&phone=${params.phone}&text=${params.text}&priority=${params.priority}&stype=${params.stype}&Params=${params.params}`;
-          
-      //     console.log("Sending WhatsApp message to URL:", smsUrl);
-          
-      //     const whatsappResponse = await axios.get(smsUrl);
-          
-      //     console.log("WhatsApp response:", whatsappResponse.data);
-      //   } else {
-      //     console.log('No enabled login template found with ID 1');
-      //   }
-      // } catch (error) {
-      //   console.error('WhatsApp message error:', {
-      //     message: error.message,
-      //     response: error.response?.data,
-      //     status: error.response?.status
-      //   });
-      // }
-  
       notification.success({
         message: "Delicious success! Explore our menu and indulge in delights",
       });
