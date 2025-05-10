@@ -100,6 +100,21 @@ const CheckoutPage = () => {
     fetchData();
   }, []);
 
+   // On your React success page (e.g., /payment-success)
+useEffect(() => {
+  const query = new URLSearchParams(window.location.search);
+  const transactionStatus = query.get("status");
+  const orderId = query.get("orderId");
+
+  if (transactionStatus === "success" && orderId) {
+    notification.success({
+      message: "Order placed successfully!",
+      description: `Order ID: ${orderId}`
+    });
+    navigate("/profile-online-order");
+  }
+}, []);
+
   const getSingleItemTotalPrice = (id) => {
     try {
       let filters = cartData.filter((res) => {
@@ -170,21 +185,35 @@ const CheckoutPage = () => {
         location: address,
         instructions: ProductInstructions,
         status: "placed",
-        orderId:
-          "BIPL031023" +
-          uuidv4()?.slice(0, 4)?.toUpperCase() +
-          moment(new Date()).format("DMy"),
+        orderId,
       };
-      await addOnlineOrder(formData);
 
-      notification.success({
-        message: "Your order has been successfully placed.",
-      });
-      dispatch(addCoupon({ coupon: null, path: null }));
-      navigate("/profile-online-order");
+      if (paymentMethod === "Credit/Debit") {
+        const response = await addOnlineOrder(formData);
+        const paymentUrl = response?.data?.paymentUrl;
+        
+        if (paymentUrl) {
+          // localStorage.setItem("pendingOrder", JSON.stringify(formData));
+          
+          window.location.href = paymentUrl;
+          console.log("PaymentURL:", paymentUrl);
+        } else {
+          throw new Error("Payment URL not received from server");
+        }
+
+      } else {
+        await addOnlineOrder(formData);
+        notification.success({ message: "Your order has been successfully placed." });
+        dispatch(addCoupon({ coupon: null, path: null }));
+        navigate("/profile-online-order");
+      }
+      
     } catch (err) {
-      console.log(err);
-      notification.error({ message: "Something went wrong" });
+      console.error("Order Error:", err);
+      notification.error({
+        message: "Order placement failed",
+        description: "Please try again later"
+      });
     } finally {
       setLoadingPlaceOrder(false);
     }
