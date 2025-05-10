@@ -134,21 +134,9 @@ useEffect(() => {
     try {
       setLoadingPlaceOrder(true);
 
-      if (paymentMethod === "Credit/Debit Card") {
-        navigate("/card-details", { state: { formCheckout: true} });
-        return;
-      }
-
       let food_data = cartData.map((res) => {
         const typeRefId = _.get(res, "typeRef", "");
         const productRef = _.get(res, "productRef", "");
-        // const selectedType = _.get(res, "productRef.types", []).find(
-        //   (type) => type._id === typeRefId
-        // );
-        // const price = selectedType
-        //   ? selectedType.price
-        //   : _.get(res, "productRef.discountPrice", "");
-
         const price = typeRefId.Type
           ? typeRefId.TypeOfferPrice
             ? typeRefId.TypeOfferPrice
@@ -161,7 +149,7 @@ useEffect(() => {
           id: res._id,
           pic: _.get(res, "productRef.image", ""),
           foodName: _.get(res, "productRef.name", ""),
-          foodPrice: price, // Consider the type price
+          foodPrice: price,
           originalPrice: _.get(res, "productRef.discountPrice", ""),
           foodQuantity: _.get(res, "quantity", ""),
           type: typeRefId.Type ? typeRefId.Type : "Regular",
@@ -181,16 +169,24 @@ useEffect(() => {
         isDeliveryFree: _.get(getTotalAmount(), "isDeliveryFree", false),
         itemPrice: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
-        payment_mode: paymentMethod,
+        payment_mode: paymentMethod.toLowerCase(),
         location: address,
         instructions: ProductInstructions,
         status: "placed",
-        
       };
+      console.log("paymentMethod:", paymentMethod);
+      
 
       if (paymentMethod === "Credit/Debit") {
-        const response = await addOnlineOrder(formData);
+        console.log("entering Payment process");
+        
+        const response = await axios.post(formData);
+        console.log("response:", response);
+        
         const paymentUrl = response?.data?.paymentUrl;
+
+        console.log("paymentURL:", paymentUrl);
+        
         
         if (paymentUrl) {
           // localStorage.setItem("pendingOrder", JSON.stringify(formData));
