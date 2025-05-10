@@ -185,7 +185,7 @@ useEffect(() => {
         location: address,
         instructions: ProductInstructions,
         status: "placed",
-        orderId,
+        
       };
 
       if (paymentMethod === "Credit/Debit") {
