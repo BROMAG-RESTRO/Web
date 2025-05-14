@@ -11,6 +11,7 @@ import {
   notification,
 } from "antd";
 import AddNewAddress from "./AddNewAddress";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   addOnlineOrder,
@@ -130,6 +131,7 @@ useEffect(() => {
     }
   };
 
+
   const handlePlaceOrder = async () => {
     try {
       setLoadingPlaceOrder(true);
@@ -156,6 +158,8 @@ useEffect(() => {
         };
       });
 
+      
+    
       let formData = {
         customerName: _.get(selectedDeliveryAddress, "name", ""),
         mobileNumber: _.get(selectedDeliveryAddress, "contactNumber", ""),
@@ -169,23 +173,24 @@ useEffect(() => {
         isDeliveryFree: _.get(getTotalAmount(), "isDeliveryFree", false),
         itemPrice: _.get(getTotalAmount(), "itemPrice", 0),
         orderedFood: food_data,
-        payment_mode: paymentMethod.toLowerCase(),
+        payment_mode: paymentMethod,
         location: address,
         instructions: ProductInstructions,
-        status: "placed",
+        status: paymentMethod?.toLowerCase() === "credit/debit"? "pending" : "placed",
+        orderId:`Online-${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
       };
-      console.log("paymentMethod:", paymentMethod);
-      
 
+      console.log("Cart data :", formData);
       if (paymentMethod === "Credit/Debit") {
         console.log("entering Payment process");
         
-        const response = await axios.post(formData);
+        const response = await addOnlineOrder(formData);
         console.log("response:", response);
-        
-        const paymentUrl = response?.data?.paymentUrl;
 
-        console.log("paymentURL:", paymentUrl);
+        const Url = await axios.get(`${import.meta.env.VITE_base_url}/payment-url?orderId=${formData.orderId}`)
+
+        const paymentUrl = Url?.data?.paymentUrl;
+        console.log("paymentURL:", Url);
         
         
         if (paymentUrl) {

@@ -83,6 +83,8 @@ export const getFilteredProducts = async (id) => {
 };
 
 export const addOnlineOrder = async (formData) => {
+  console.log("formdata:", formData);
+  
   return await axios.post(`${base_url}/add_online_order`, formData);
 };
 
