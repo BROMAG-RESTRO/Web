@@ -29,8 +29,6 @@ const NonVeg = ({ nonVegFoods }) => {
         <p className="lg:text-lg !leading-loose text-light_gray font-light pt-4 text-sm px-4 text-start">
           Embark on a culinary journey that tantalizes your taste buds with our diverse non-vegetarian menu. 
           From the rich and creamy Butter Chicken and aromatic Rogan Josh to the spicy and succulent Tandoori Chicken, our Indian classics are crafted to perfection. 
-          Dive into the fusion world with Indo-Chinese favorites like the fiery Chilli Chicken, tangy Chicken Manchurian, and crispy Chinese Bhel, each dish offering a unique blend of spices and textures. 
-          Whether you're in the mood for a hearty meal or a zesty snack, our offerings promise an unforgettable gastronomic experience that celebrates the rich tapestry of Indian and Indo-Chinese cuisines.
         </p>
       </div>
       <div className="lg:w-[60vw] w-screen relative lg:h-[80vh] center_div">
