@@ -86,19 +86,62 @@ const Login = () => {
   };
 
   const validateLogin = async (result) => {
-    console.log("result", result);
+    console.log("Starting login validation:", result);
     if (_.get(result, "data.success", false)) {
       let formData = { number: `${phoneNumber}` };
       const result = await makeUserToken(formData);
-
+      console.log("Token result:", result);
+  
       localStorage.setItem(
         "chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq",
         _.get(result, "data.data", "")
       );
-
+  
       axios.defaults.headers.common["aizasycoxsewxv2t64dxca-wl8n8qfq0gzux1as"] =
         localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq");
+  
+      // Check WhatsApp template status and send message if enabled
+      try {
+        console.log("Fetching templates...");
+        const templateRes = await axios.get(`${import.meta.env.VITE_base_url}/templates`);
+        console.log('Templates response:', templateRes.data);
+        let whatsappMsgCount = 0;
+        const loginTemplate = templateRes.data.find(
+          (template) => template.templateId === 1 && template.enabled === true
+        );
+        console.log('Found login template:', loginTemplate);
+        
+// By pass Whatsapp send message mandatory
+        if (loginTemplate) {
+    try {
+      console.log("Sending WhatsApp message via proxy...");
+      const res = await axios.post(`${import.meta.env.VITE_base_url}/send-whatsapp`, {
+        phone: phoneNumber,
+        text: loginTemplate.name,
+        params: "1,2,3",
+      });
+      whatsappMsgCount += 1;
+      console.log("WhatsApp MSG Sent:", res.data);
+      console.log("WhatsApp Count:", whatsappMsgCount);
+    } catch (error) {
+      console.error("WhatsApp sending failed but will not block login:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    }
+  } else {
+    console.log("No active WhatsApp login template found");
+  }
 
+} catch (error) {
+  console.error("Template fetch error (non-blocking):", {
+    message: error.message,
+    response: error.response?.data,
+    status: error.response?.status,
+  });
+}
+        
       notification.success({
         message: "Delicious success! Explore our menu and indulge in delights",
       });

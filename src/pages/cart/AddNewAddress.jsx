@@ -267,10 +267,10 @@ const AddNewAddress = ({
     // form.setFieldsValue({ name: "Helloooooooooooooooooooo"})
     // form.getFieldsValue()
     // if(form.getFieldValue("addressType") === "Other") form.setfi
-    if (!value && !updateId) {
-      alert("select google address");
-      return;
-    }
+    // if (!value && !updateId) {
+    //   alert("select google address");
+    //   return;
+    // }
 
     console.log(
       "valueeeeeeeeeee",
@@ -428,7 +428,7 @@ const AddNewAddress = ({
                   }}
                 >
                   {/* <input onChange={(e) => setOtherAddressType(e.target.value)} /> */}
-                  <div>
+                  {/* <div>
                     <div className="text-dark3a_color  font-medium lg:text-lg">
                       Search google address{" "}
                       <span className="text-[red]">*</span>
@@ -450,7 +450,7 @@ const AddNewAddress = ({
                         },
                       }}
                     />
-                  </div>
+                  </div> */}
                   <Form.Item
                     name="streetName"
                     rules={[

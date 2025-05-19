@@ -11,6 +11,7 @@ import {
   notification,
 } from "antd";
 import AddNewAddress from "./AddNewAddress";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   addOnlineOrder,
@@ -100,6 +101,21 @@ const CheckoutPage = () => {
     fetchData();
   }, []);
 
+   // On your React success page (e.g., /payment-success)
+useEffect(() => {
+  const query = new URLSearchParams(window.location.search);
+  const transactionStatus = query.get("status");
+  const orderId = query.get("orderId");
+
+  if (transactionStatus === "success" && orderId) {
+    notification.success({
+      message: "Order placed successfully!",
+      description: `Order ID: ${orderId}`
+    });
+    navigate("/profile-online-order");
+  }
+}, []);
+
   const getSingleItemTotalPrice = (id) => {
     try {
       let filters = cartData.filter((res) => {
@@ -115,6 +131,7 @@ const CheckoutPage = () => {
     }
   };
 
+
   const handlePlaceOrder = async () => {
     try {
       setLoadingPlaceOrder(true);
@@ -122,13 +139,6 @@ const CheckoutPage = () => {
       let food_data = cartData.map((res) => {
         const typeRefId = _.get(res, "typeRef", "");
         const productRef = _.get(res, "productRef", "");
-        // const selectedType = _.get(res, "productRef.types", []).find(
-        //   (type) => type._id === typeRefId
-        // );
-        // const price = selectedType
-        //   ? selectedType.price
-        //   : _.get(res, "productRef.discountPrice", "");
-
         const price = typeRefId.Type
           ? typeRefId.TypeOfferPrice
             ? typeRefId.TypeOfferPrice
@@ -141,13 +151,15 @@ const CheckoutPage = () => {
           id: res._id,
           pic: _.get(res, "productRef.image", ""),
           foodName: _.get(res, "productRef.name", ""),
-          foodPrice: price, // Consider the type price
+          foodPrice: price,
           originalPrice: _.get(res, "productRef.discountPrice", ""),
           foodQuantity: _.get(res, "quantity", ""),
           type: typeRefId.Type ? typeRefId.Type : "Regular",
         };
       });
 
+      
+    
       let formData = {
         customerName: _.get(selectedDeliveryAddress, "name", ""),
         mobileNumber: _.get(selectedDeliveryAddress, "contactNumber", ""),
@@ -164,22 +176,45 @@ const CheckoutPage = () => {
         payment_mode: paymentMethod,
         location: address,
         instructions: ProductInstructions,
-        status: "placed",
-        orderId:
-          "BIPL031023" +
-          uuidv4()?.slice(0, 4)?.toUpperCase() +
-          moment(new Date()).format("DMy"),
+        status: paymentMethod?.toLowerCase() === "credit/debit"? "pending" : "placed",
+        orderId:`Online-${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
       };
-      await addOnlineOrder(formData);
 
-      notification.success({
-        message: "Your order has been successfully placed.",
-      });
-      dispatch(addCoupon({ coupon: null, path: null }));
-      navigate("/profile-online-order");
+      console.log("Cart data :", formData);
+      if (paymentMethod === "Credit/Debit") {
+        console.log("entering Payment process");
+        
+        const response = await addOnlineOrder(formData);
+        console.log("response:", response);
+
+        const Url = await axios.get(`${import.meta.env.VITE_base_url}/payment-url?orderId=${formData.orderId}`)
+
+        const paymentUrl = Url?.data?.paymentUrl;
+        console.log("paymentURL:", Url);
+        
+        
+        if (paymentUrl) {
+          // localStorage.setItem("pendingOrder", JSON.stringify(formData));
+          
+          window.location.href = paymentUrl;
+          console.log("PaymentURL:", paymentUrl);
+        } else {
+          throw new Error("Payment URL not received from server");
+        }
+
+      } else {
+        await addOnlineOrder(formData);
+        notification.success({ message: "Your order has been successfully placed." });
+        dispatch(addCoupon({ coupon: null, path: null }));
+        navigate("/profile-online-order");
+      }
+      
     } catch (err) {
-      console.log(err);
-      notification.error({ message: "Something went wrong" });
+      console.error("Order Error:", err);
+      notification.error({
+        message: "Order placement failed",
+        description: "Please try again later"
+      });
     } finally {
       setLoadingPlaceOrder(false);
     }
@@ -402,15 +437,14 @@ const CheckoutPage = () => {
         {/* ==================================== */}
 
         <div className="flex flex-col gap-y-4  mt-4 p-5 justify-center items-center ">
-          <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border payment_disabled">
+          <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
             <CiCreditCard1 className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
-              Credit / Debit cards
+              Credit / Debit cards / UPI / Net Banking
             </span>
             <label className="flex items-center">
               <input
                 type="radio"
-                disabled
                 name="paymentMethod"
                 className="radio  ml-2"
                 checked={paymentMethod === "Credit/Debit"}
@@ -418,14 +452,13 @@ const CheckoutPage = () => {
               />
             </label>
           </div>
-          <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border payment_disabled">
+          {/* <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border ">
             <LuMonitorSmartphone className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
               UPI Payment
             </span>
             <label className="flex items-center">
               <input
-                disabled
                 type="radio"
                 name="paymentMethod"
                 className="radio  ml-2"
@@ -433,7 +466,7 @@ const CheckoutPage = () => {
                 onChange={() => setPaymentMethod("UPI")}
               />
             </label>
-          </div>
+          </div> */}
           <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
             <TbTruckDelivery className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
