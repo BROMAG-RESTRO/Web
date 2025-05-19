@@ -164,7 +164,7 @@ const Cart = () => {
           item_price: _.get(getTotalAmount(), "itemPrice", 0),
           orderedFood: food_data,
           bookingId: _.get(location, "state.table_details._id", ""),
-          orderId:`TAKE${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
+          orderId:`ORD-${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
           tableNo: _.get(location, "state.table_details.tableNo", ""),
           timeSlot: _.get(location, "state.table_details.timeSlot", ""),
           customerName: _.get(location, "state.table_details.customerName", ""),
@@ -529,7 +529,7 @@ const Cart = () => {
           coupon_amount: _.get(getTotalAmount(), "couponDiscount", 0)?.toFixed(0),
           item_price: _.get(getTotalAmount(), "itemPrice", 0),
           orderedFood: food_data,
-          orderId:`TAKE${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
+          orderId:`ORD-${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
         };
       await addTakeAwayOrder(formData);
       notification.success({

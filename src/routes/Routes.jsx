@@ -35,6 +35,7 @@ import Layout from "../pages/profile/Layout";
 import ProductDetails from "../pages/home/ProductDetails";
 import CheckoutPage from "../pages/cart/CheckoutPage";
 import TakeAwayChackout from "../pages/takeaway/TakeAwayChackout";
+import PaymentFailure from "../pages/PaymentFailure";
 
 const router = createBrowserRouter([
   {
@@ -377,6 +378,16 @@ const router = createBrowserRouter([
       {
         path: "/food-deatils",
         element: <ProductDetails />,
+      },
+    ],
+  },
+  {
+    path: "/payment-failed",
+    element: <App/>,
+    children: [
+      {
+      path: "/payment-failed",
+      element: <PaymentFailure/> 
       },
     ],
   },
