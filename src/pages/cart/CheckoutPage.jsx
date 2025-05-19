@@ -440,7 +440,7 @@ useEffect(() => {
           <div className="py-6 px-6 ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
             <CiCreditCard1 className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
-              Credit / Debit cards
+              Credit / Debit cards / UPI / Net Banking
             </span>
             <label className="flex items-center">
               <input
@@ -452,7 +452,7 @@ useEffect(() => {
               />
             </label>
           </div>
-          <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border ">
+          {/* <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border ">
             <LuMonitorSmartphone className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
               UPI Payment
@@ -466,7 +466,7 @@ useEffect(() => {
                 onChange={() => setPaymentMethod("UPI")}
               />
             </label>
-          </div>
+          </div> */}
           <div className="py-6 px-6  ultraSm:w-full lg:w-1/2 bg-white h-20 rounded-xl flex justify-between items-center border">
             <TbTruckDelivery className="text-3xl" />
             <span className="text-center font-sans text-sm font-bold text-black">
