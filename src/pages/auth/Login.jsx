@@ -110,29 +110,37 @@ const Login = () => {
           (template) => template.templateId === 1 && template.enabled === true
         );
         console.log('Found login template:', loginTemplate);
-
+        
+// By pass Whatsapp send message mandatory
         if (loginTemplate) {
-          console.log("sending whatsapp message via proxy...");
-          const res = await axios.post(`${import.meta.env.VITE_base_url}/send-whatsapp`, {
-            phone: phoneNumber,
-            text: loginTemplate.name,
-            params: "1,2,3",
-          });
-          whatsappMsgCount += 1;
-          console.log("Whatsapp MSG Sent:", res.data);
-          console.log("Whatsapp Count:", whatsappMsgCount);
-          
-        }
-        else{
-          console.log("No Active whatsapp login template found");
-        }}
-        catch{
-          console.error("Whatsapp error:", {
-            message: error.message,
-            response: error.response?.data,
-            status: error.response?.status,
-          });
-        }
+    try {
+      console.log("Sending WhatsApp message via proxy...");
+      const res = await axios.post(`${import.meta.env.VITE_base_url}/send-whatsapp`, {
+        phone: phoneNumber,
+        text: loginTemplate.name,
+        params: "1,2,3",
+      });
+      whatsappMsgCount += 1;
+      console.log("WhatsApp MSG Sent:", res.data);
+      console.log("WhatsApp Count:", whatsappMsgCount);
+    } catch (error) {
+      console.error("WhatsApp sending failed but will not block login:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    }
+  } else {
+    console.log("No active WhatsApp login template found");
+  }
+
+} catch (error) {
+  console.error("Template fetch error (non-blocking):", {
+    message: error.message,
+    response: error.response?.data,
+    status: error.response?.status,
+  });
+}
         
       notification.success({
         message: "Delicious success! Explore our menu and indulge in delights",
