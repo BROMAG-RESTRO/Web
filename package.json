@@ -17,6 +17,7 @@
     "aws-sdk": "^2.1516.0",
     "axios": "^1.6.2",
     "cors": "^2.8.5",
+    "daisyUI": "npm:daisyui@^4.12.24",
     "dayjs": "^1.11.10",
     "firebase": "^10.6.0",
     "formik": "^2.4.5",
