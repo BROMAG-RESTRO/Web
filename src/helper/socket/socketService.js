@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 let base_url = import.meta.env.VITE_base_url;
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = base_url || "http://localhost:8000";
+const URL = base_url;
 
 // export const BASEURL = "https://backendapi.qello.io";
 

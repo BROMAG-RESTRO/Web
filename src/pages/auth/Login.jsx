@@ -86,19 +86,54 @@ const Login = () => {
   };
 
   const validateLogin = async (result) => {
-    console.log("result", result);
+    console.log("Starting login validation:", result);
     if (_.get(result, "data.success", false)) {
       let formData = { number: `${phoneNumber}` };
       const result = await makeUserToken(formData);
-
+      console.log("Token result:", result);
+  
       localStorage.setItem(
         "chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq",
         _.get(result, "data.data", "")
       );
-
+  
       axios.defaults.headers.common["aizasycoxsewxv2t64dxca-wl8n8qfq0gzux1as"] =
         localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq");
+  
+      // Check WhatsApp template status and send message if enabled
+      try {
+        console.log("Fetching templates...");
+        const templateRes = await axios.get(`${import.meta.env.VITE_base_url}/templates`);
+        console.log('Templates response:', templateRes.data);
+        let whatsappMsgCount = 0;
+        const loginTemplate = templateRes.data.find(
+          (template) => template.templateId === 1 && template.enabled === true
+        );
+        console.log('Found login template:', loginTemplate);
 
+        if (loginTemplate) {
+          console.log("sending whatsapp message via proxy...");
+          const res = await axios.post(`${import.meta.env.VITE_base_url}/send-whatsapp`, {
+            phone: phoneNumber,
+            text: loginTemplate.name,
+            params: "1,2,3",
+          });
+          whatsappMsgCount += 1;
+          console.log("Whatsapp MSG Sent:", res.data);
+          console.log("Whatsapp Count:", whatsappMsgCount);
+          
+        }
+        else{
+          console.log("No Active whatsapp login template found");
+        }}
+        catch{
+          console.error("Whatsapp error:", {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status,
+          });
+        }
+        
       notification.success({
         message: "Delicious success! Explore our menu and indulge in delights",
       });

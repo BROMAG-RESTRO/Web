@@ -116,10 +116,7 @@ const TakeAwayChackout = () => {
           item_price: _.get(getTotalAmount(), "itemPrice", 0),
           orderedFood: food_data,
           bookingId: _.get(location, "state.table_details._id", ""),
-          orderId:
-            "BIPL031023" +
-            uuidv4()?.slice(0, 4)?.toUpperCase() +
-            moment(new Date()).format("DMy"),
+          orderId:`TAKE-${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
           tableNo: _.get(location, "state.table_details.tableNo", ""),
           timeSlot: _.get(location, "state.table_details.timeSlot", ""),
           customerName: _.get(location, "state.table_details.customerName", ""),
@@ -417,10 +414,7 @@ const TakeAwayChackout = () => {
         coupon,
         instructionsTakeaway: ProductInstructions,
         payment_mode: paymentMethod,
-        orderId:
-          "BIPL031023" +
-          uuidv4()?.slice(0, 4)?.toUpperCase() +
-          moment(new Date()).format("DMy"),
+        orderId:`TAKE-${moment().format("YYYYMMDD")}-${uuidv4().slice(0, 4).toUpperCase()}`,
       };
 
       await addTakeAwayOrder(formData);
