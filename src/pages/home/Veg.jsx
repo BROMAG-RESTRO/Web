@@ -46,9 +46,8 @@ const VegFoods = ({ veg }) => {
           <div className="w-[30px] lg:h-[40px]  h-[5px] ultraSm:bg-[#DF9300] lg:hidden xl:hidden 2xl:hidden md:hidden rounded-2xl "></div>
         </div>
         <p className="lg:text-lg !leading-loose text-light_gray font-light pt-4 px-4 text-sm text-start">
-          At Green Garden Bistro, vegetarians are in for a treat with a menu
-          that elevates plant-based cuisine to a whole new level. The restaurant
-          not only caters to vegetarians
+          Discover the vibrant flavors of our vegetarian dishes, made with fresh, natural ingredients and a touch of creativity. 
+          From hearty mains to light, nutritious sides, our menu is crafted to delight your taste buds while supporting a healthy lifestyle.
         </p>
       </div>
     </div>
