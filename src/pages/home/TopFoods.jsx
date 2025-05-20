@@ -29,10 +29,8 @@ const TopFoods = ({ topfoods }) => {
           <div className="w-[30px] lg:h-[40px]  h-[5px] ultraSm:bg-[#DF9300] lg:hidden xl:hidden 2xl:hidden md:hidden rounded-2xl "></div>
         </div>
         <p className="lg:text-lg !leading-loose text-light_gray pt-4 text-sm px-4 text-start font-light">
-          Immerse yourself in the rich tapestry of tastes, where every bite
-          tells a story of quality, creativity, and sustainability. Our chefs,
-          the architects of this culinary haven, invite you to experience a
-          world where gastronomy transcends expectations.
+          Explore our most-loved dishes that keep customers coming back for more! From flavorful classics to unique chef specials, 
+          our best sellers are a delicious showcase of quality and taste. Tried, tested, and top-rated—these favorites are a must-try for every food lover
         </p>
       </div>
     </div>
