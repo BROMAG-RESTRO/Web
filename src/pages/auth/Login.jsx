@@ -110,9 +110,10 @@ const Login = () => {
           (template) => template.templateId === 1 && template.enabled === true
         );
         console.log('Found login template:', loginTemplate);
-
+        
+// By pass Whatsapp send message mandatory
         if (loginTemplate) {
-          console.log("sending whatsapp message via proxy.");
+          console.log("sending whatsapp message via proxy...");
           const res = await axios.post(`${import.meta.env.VITE_base_url}/send-whatsapp`, {
             phone: phoneNumber,
             text: loginTemplate.name,

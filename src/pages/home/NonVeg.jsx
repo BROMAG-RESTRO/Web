@@ -27,9 +27,8 @@ const NonVeg = ({ nonVegFoods }) => {
           <div className="w-[30px] lg:h-[40px]  h-[5px] ultraSm:bg-[#DF9300] lg:hidden xl:hidden 2xl:hidden md:hidden rounded-2xl "></div>
         </div>
         <p className="lg:text-lg !leading-loose text-light_gray font-light pt-4 text-sm px-4 text-start">
-          Dare to indulge in the fiery allure of our spicy chicken wings, glazed
-          in a secret house-made hot sauce. Accompanied by cool cucumber raita
-          for the perfect balance.
+          Embark on a culinary journey that tantalizes your taste buds with our diverse non-vegetarian menu. 
+          From the rich and creamy Butter Chicken and aromatic Rogan Josh to the spicy and succulent Tandoori Chicken, our Indian classics are crafted to perfection. 
         </p>
       </div>
       <div className="lg:w-[60vw] w-screen relative lg:h-[80vh] center_div">
