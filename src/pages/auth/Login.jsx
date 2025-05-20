@@ -127,7 +127,7 @@ const Login = () => {
         else{
           console.log("No Active whatsapp login template found");
         }}
-        catch{
+        catch (error){
           console.error("Whatsapp error:", {
             message: error.message,
             response: error.response?.data,
