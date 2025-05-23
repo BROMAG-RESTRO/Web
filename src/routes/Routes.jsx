@@ -37,6 +37,9 @@ import CheckoutPage from "../pages/cart/CheckoutPage";
 import TakeAwayChackout from "../pages/takeaway/TakeAwayChackout";
 import BromagPoints from "../pages/profile/BromagPoints";
 import MyScratch from "../pages/profile/MyScratch";
+import PaymentFailure from "../pages/PaymentFailure";
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -398,6 +401,16 @@ const router = createBrowserRouter([
       {
         path: "/food-deatils",
         element: <ProductDetails />,
+      },
+    ],
+  },
+  {
+    path: "/payment-failed",
+    element: <App/>,
+    children: [
+      {
+      path: "/payment-failed",
+      element: <PaymentFailure/> 
       },
     ],
   },
