@@ -303,3 +303,37 @@ export const getStatus = async () => {
     throw error;
   }
 };
+
+export const getMyPoints = async ({ bromag_id, month }) => {
+  try {
+    const response = await axios.post(
+      "https://rewards.bromagresto.com/api/v2/my_points",
+      {
+        client_id: 1,
+        bromag_id,
+        month
+      }
+    );
+    return response;
+  } catch (e) {
+    console.error("Error fetching points:", e);
+    throw e;
+  }
+};
+
+export const getScratch = async ({ bromag_id }) => {
+  try {
+    const response = await axios.post(
+      "https://rewards.bromagresto.com/api/v2/my_scratch_cards",
+      {
+        client_id: 1,
+        bromag_id,
+    
+      }
+    );
+    return response;
+  } catch (e) {
+    console.error("Error fetching points:", e);
+    throw e;
+  }
+};

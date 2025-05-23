@@ -35,7 +35,8 @@ import Layout from "../pages/profile/Layout";
 import ProductDetails from "../pages/home/ProductDetails";
 import CheckoutPage from "../pages/cart/CheckoutPage";
 import TakeAwayChackout from "../pages/takeaway/TakeAwayChackout";
-
+import BromagPoints from "../pages/profile/BromagPoints";
+import MyScratch from "../pages/profile/MyScratch";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -307,6 +308,26 @@ const router = createBrowserRouter([
       {
         path: "/profile-my-contest",
         element: <YourContext />,
+      },
+    ],
+  },
+  {
+    path: "/profile-bromag-points",
+    element: <Layout />,
+    children: [
+      {
+        path: "/profile-bromag-points",
+        element: <BromagPoints />,
+      },
+    ],
+  },
+  {
+    path: "/profile-scratch-card",
+    element: <Layout />,
+    children: [
+      {
+        path: "/profile-scratch-card",
+        element: <MyScratch />,
       },
     ],
   },
