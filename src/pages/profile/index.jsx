@@ -26,15 +26,19 @@ import { SiWebmoney } from "react-icons/si";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoIosCall, IoMdLogOut } from "react-icons/io";
 import { MdFeedback } from "react-icons/md";
+import { PiCoinsLight } from "react-icons/pi";
 import YourReview from "./YourReview";
 import CallforOrders from "./CallforOrders";
 import { GiCardPickup } from "react-icons/gi";
+import { TbGiftCard } from "react-icons/tb";
 import YourContext from "./YourContext";
 import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 import MyProfile from "./MyProfile";
 import ProfileCard from "./ProfileCard";
 import { useSelector } from "react-redux";
+import BromagPoints from "./BromagPoints";
+import MyScratch from "./MyScratch";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -92,6 +96,20 @@ const Profile = () => {
     },
     {
       id: 8,
+      name: "Bromag Points",
+      component: <BromagPoints />,
+      icon: <PiCoinsLight />,
+      goto: "/profile-bromag-points",
+    },
+     {
+      id: 9,
+      name: "My Scratch Card",
+      component: <MyScratch />,
+      icon: <TbGiftCard  />,
+      goto: "/profile-scratch-card",
+    },
+    {
+      id: 10,
       name: "My Account",
       component: <MyProfile />,
       icon: <CgProfile />,
