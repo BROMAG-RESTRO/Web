@@ -1,6 +1,8 @@
 import axios from "axios";
 
 let base_url = import.meta.env.VITE_base_url;
+const CLientId = import.meta.env.VITE_client_id;
+let VITE_rewards_url = import.meta.env.VITE_rewards_url
 axios.defaults.headers.common["aizasycoxsewxv2t64dxca-wl8n8qfq0gzux1as"] =
   localStorage.getItem("chgi5kjieaoyaiackaiw_bbcqgy4akacsaiq_bbcqgyyaq");
 
@@ -230,9 +232,12 @@ export const deleteMyFeedBack = async (id) => {
 };
 
 // contest
-export const checkScrachCardDetails = async (formData) => {
-  return await axios.post(`${base_url}/check_scrach_details`, formData);
-};
+// export const checkScrachCardDetails = async (formData) => {
+//   return await axios.post(`${base_url}/check_scrach_details`, formData);
+// };
+
+
+
 
 export const checkMyContestDetails = async () => {
   return await axios.get(`${base_url}/check_my_contest_details`);
@@ -307,9 +312,10 @@ export const getStatus = async () => {
 export const getMyPoints = async ({ bromag_id, month }) => {
   try {
     const response = await axios.post(
-      "https://rewards.bromagresto.com/api/v2/my_points",
+      
+      `${VITE_rewards_url}/my_points`,
       {
-        client_id: 1,
+        client_id: CLientId,
         bromag_id,
         month
       }
@@ -324,10 +330,75 @@ export const getMyPoints = async ({ bromag_id, month }) => {
 export const getScratch = async ({ bromag_id }) => {
   try {
     const response = await axios.post(
-      "https://rewards.bromagresto.com/api/v2/my_scratch_cards",
+      `${VITE_rewards_url}/my_scratch_cards`,
       {
-        client_id: 1,
+        client_id: CLientId,
         bromag_id,
+    
+      }
+    );
+    return response;
+  } catch (e) {
+    console.error("Error fetching points:", e);
+    throw e;
+  }
+};
+
+export const ProcessScratch = async ({ Code }) => {
+  try {
+    const response = await axios.post(
+      `${VITE_rewards_url}/process_scratch_code`,
+      {
+        client_id: CLientId,
+        scratch_code:Code,
+    
+      }
+    );
+    return response;
+  } catch (e) {
+    console.error("Error fetching points:", e);
+    throw e;
+  }
+};
+
+export const WinningOffers = async ({ bromag_id }) => {
+  try {
+    const response = await axios.post(
+      `${VITE_rewards_url}/my_winning_offers`,
+      {
+        client_id: CLientId,
+        bromag_id,
+    
+      }
+    );
+    return response;
+  } catch (e) {
+    console.error("Error fetching points:", e);
+    throw e;
+  }
+};
+export const FetchCouponDetails = async ({ promotionId }) => {
+  try {
+    const response = await axios.get(
+      `${VITE_rewards_url}/get_offer_details/${CLientId}/${promotionId}`,
+     
+    );
+    return response;
+  } catch (e) {
+    console.error("Error fetching Offers:", e);
+    throw e;
+  }
+};
+
+export const ProcessContest = async ({ scratch_code ,orderRef,phoneNo}) => {
+  try {
+    const response = await axios.post(
+      `${VITE_rewards_url}/process_contest_request`,
+      {
+        client_id: CLientId,
+        scratch_code:scratch_code,
+        order_ref:orderRef,
+        phone:phoneNo,
     
       }
     );

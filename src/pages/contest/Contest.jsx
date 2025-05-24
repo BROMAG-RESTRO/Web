@@ -1,108 +1,20 @@
 import { Button, Form, Input, Modal, notification } from "antd";
 import { useEffect, useState } from "react";
 import { phoneNumberValidation } from "../../helper/validation";
-import { checkScrachCardDetails } from "../../helper/api/apiHelper";
+import {  ProcessContest } from "../../helper/api/apiHelper";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ContestImg from "../../assets/contest.png";
 import "../../assets/css/contest.css";
-{
-  /* <div className="lg:px-10 flex flex-col lg:gap-y-20 gap-y-10 px-4 items-center pb-[50px] w-full ">
-<div className="play_font text-white lg:text-5xl tracking-wider font-normal lg:pt-24 pt-10 ">
-  PLAY CONTEST
-</div>
-<div className="lg:w-[30vw] min-h-[60vh] w-full  rounded-[50px] relative ">
-  <div className="bg-white w-full min-h-[60vh] pb-10 absolute !z-10 gap-y-10   rounded-[50px] shadow-xl flex flex-col items-center">
-    <h1 className="pt-10 lg:text-2xl text-[#3A3A3A] font-semibold tracking-wider">
-      Fill the details
-    </h1>
-    <Form
-      className="w-full lg:px-10 px-4"
-      form={form}
-      onFinish={handleFinish}
-    >
-      <Form.Item
-        className="w-full"
-        name="order_id"
-        rules={[
-          {
-            required: true,
-            message: "Enter Order Id",
-          },
-        ]}
-      >
-        <Input
-          className="antd_input w-full"
-          placeholder="Enter your order ID"
-        />
-      </Form.Item>
-      <Form.Item
-        className="w-full"
-        name="contact_number"
-        rules={[
-          {
-            validator: (_, value) =>
-              phoneNumberValidation(
-                "Enter phone number Here",
-                value,
-                10
-              ),
-          },
-        ]}
-      >
-        <Input
-          type="number"
-          className="antd_input  w-full"
-          placeholder="Enter your phone number"
-        />
-      </Form.Item>
-      <Form.Item
-        className="w-full"
-        name="card_number"
-        rules={[
-          {
-            required: true,
-            message: "Enter Scrach Card Details",
-          },
-        ]}
-      >
-        <Input
-          className="antd_input w-full"
-          placeholder="Enter your scratch code"
-        />
-      </Form.Item>
-      <Form.Item className="pt-10">
-        <Button
-          loading={loading}
-          htmlType="submit"
-          block
-          className="!bg-yellow_color h-[50px] center_div rounded-2xl !border-none"
-        >
-          <div className="!text-[#EFEFEF] font-semibold">Submit</div>{" "}
-        </Button>
-      </Form.Item>
-    </Form>
 
-    <Link to={"/"}>
-      <button className="">Back</button>
-    </Link>
-  </div>
-  <img
-    src={ContestImg}
-    alt=""
-    className="absolute left-[-129px] top-[-100px] !z-20 lg:block hidden"
-  />
-</div>
-</div> */
-}
 const Contest = () => {
   const [openCard, setOpenCard] = useState(false);
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const [form] = Form.useForm();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -112,17 +24,27 @@ const Contest = () => {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
-      const result = await checkScrachCardDetails(values);
-      if (_.get(result, "data.data", "") === "failed") {
-        setStatus(false);
+      const result = await ProcessContest({
+        scratch_code: values.card_number,
+        orderRef: values.order_id,
+        phoneNo: values.contact_number
+      });
+      
+      if (result.data.success) {
+        setStatus(true);
+        setMessage(result.data.message);
         setOpenCard(true);
       } else {
-        setStatus(true);
+        setStatus(false);
+        setMessage("Sorry, please try again.");
         setOpenCard(true);
       }
     } catch (err) {
+      setStatus(false);
+      setMessage(_.get(err, "response.data.message", "Something Went Wrong"));
+      setOpenCard(true);
       notification.error({
-        message: _.get(err, "response.data.messsage", "Something Went Wrong"),
+        message: _.get(err, "response.data.message", "Something Went Wrong")
       });
     } finally {
       setLoading(false);
@@ -228,13 +150,35 @@ const Contest = () => {
         footer={false}
         centered
         closable={false}
-        className="lg:w-[400px] w-full"
+        className="lg:w-[400px] w-full custom-modal"
       >
-        {status ? (
-          <img src="/assets/icons/success.png" className="rounded-2xl" />
-        ) : (
-          <img src="/assets/icons/fail.png" className="rounded-2xl" />
-        )}
+        <div className="bg-gradient-to-br from-orange-100 via-yellow-200 to-orange-50 rounded-2xl text-center p-8 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-yellow-400 animate-pulse"></div>
+
+          {status ? (
+            <>
+              <img src="/assets/icons/success.png" className="w-16 h-16 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-orange-700 mt-4 mb-2">Congratulations!</h2>
+              <p className="text-lg text-gray-700 mb-6">{message}</p>
+            </>
+          ) : (
+            <>
+              <img src="/assets/icons/fail.png" className="w-16 h-16 mx-auto mb-4" />
+              <h2 className="text-xl font-bold text-gray-700 mt-4 mb-2">Oops!</h2>
+              <p className="text-gray-600 mb-6">{message}</p>
+            </>
+          )}
+
+          <button
+            onClick={() => {
+              setOpenCard(false);
+              navigate("/profile-my-contest");
+            }}
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full transition"
+          >
+            Close
+          </button>
+        </div>
       </Modal>
     </div>
   );

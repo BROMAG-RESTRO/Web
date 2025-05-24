@@ -38,6 +38,7 @@ import TakeAwayChackout from "../pages/takeaway/TakeAwayChackout";
 import BromagPoints from "../pages/profile/BromagPoints";
 import MyScratch from "../pages/profile/MyScratch";
 import PaymentFailure from "../pages/PaymentFailure";
+import MyWinningOffers from "../pages/profile/MyWiningOffers";
 
 
 const router = createBrowserRouter([
@@ -331,6 +332,16 @@ const router = createBrowserRouter([
       {
         path: "/profile-scratch-card",
         element: <MyScratch />,
+      },
+    ],
+  },
+  {
+    path: "/profile-my-winning-offers",
+    element: <Layout />,
+    children: [
+      {
+        path: "/profile-my-winning-offers",
+        element: <MyWinningOffers />,
       },
     ],
   },

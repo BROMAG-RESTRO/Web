@@ -39,6 +39,7 @@ import ProfileCard from "./ProfileCard";
 import { useSelector } from "react-redux";
 import BromagPoints from "./BromagPoints";
 import MyScratch from "./MyScratch";
+import MyWinningOffers from "./MyWiningOffers";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -109,7 +110,14 @@ const Profile = () => {
       goto: "/profile-scratch-card",
     },
     {
-      id: 10,
+      id: 11,
+      name: "My Winning Offers",
+      component: <MyWinningOffers />,
+      icon: <CgProfile />,
+      goto: "/profile-my-winning-offers",
+    },
+    {
+      id: 12,
       name: "My Account",
       component: <MyProfile />,
       icon: <CgProfile />,
